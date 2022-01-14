@@ -1,6 +1,7 @@
 package com.industrial.web.controller.monitor;
 
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,7 +29,7 @@ import com.industrial.system.service.ISysOperLogService;
 @RequestMapping("/monitor/operlog")
 public class SysOperlogController extends BaseController
 {
-    @Autowired
+    @Resource
     private ISysOperLogService operLogService;
 
     @PreAuthorize("@ss.hasPermi('monitor:operlog:list')")

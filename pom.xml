@@ -21,6 +21,7 @@
         <swagger.version>3.0.0</swagger.version>
         <kaptcha.version>2.3.2</kaptcha.version>
         <mybatis-spring-boot.version>2.2.0</mybatis-spring-boot.version>
+        <mybatis-plus-spring-boot.version>3.4.3.4</mybatis-plus-spring-boot.version>
         <pagehelper.boot.version>1.4.0</pagehelper.boot.version>
         <fastjson.version>1.2.79</fastjson.version>
         <oshi.version>5.8.6</oshi.version>
@@ -67,7 +68,11 @@
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis-spring-boot.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-spring-boot.version}</version>
+            </dependency>
             <!-- pagehelper 分页插件 -->
             <dependency>
                 <groupId>com.github.pagehelper</groupId>

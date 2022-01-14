@@ -16,6 +16,12 @@
     </description>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>3.4.3.4</version>
+        </dependency>
 
         <!-- 通用工具-->
         <dependency>

@@ -21,6 +21,8 @@ import com.industrial.system.mapper.SysDeptMapper;
 import com.industrial.system.mapper.SysRoleMapper;
 import com.industrial.system.service.ISysDeptService;
 
+import javax.annotation.Resource;
+
 /**
  * 部门管理 服务实现
  * 
@@ -29,10 +31,10 @@ import com.industrial.system.service.ISysDeptService;
 @Service
 public class SysDeptServiceImpl implements ISysDeptService
 {
-    @Autowired
+    @Resource
     private SysDeptMapper deptMapper;
 
-    @Autowired
+    @Resource
     private SysRoleMapper roleMapper;
 
     /**
