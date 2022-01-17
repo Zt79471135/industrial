@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.industrial.system.mapper.AppProductMapper">
-  <resultMap id="BaseResultMap" type="com.industrial.common.core.domain.entity.AppProduct">
+<mapper namespace="com.industrial.mapper.AppProductMapper">
+  <resultMap id="BaseResultMap" type="com.industrial.entity.AppProduct">
     <!--@mbg.generated-->
     <!--@Table app_product-->
     <id column="id" jdbcType="INTEGER" property="id" />
@@ -28,4 +28,36 @@
     id, `number`, `name`, category_id, stock, price, contacts, telephone, unit_id, floor_price, 
     `status`, main_img_url, summary, img_id, deleted, create_user_id, create_time, update_time
   </sql>
+  <update id="updateStockByProductId">
+    UPDATE app_product p
+    SET p.stock = #{stock}
+    WHERE p.id = #{productId}
+  </update>
+  <select id="selectProductByKeyword" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM app_product p
+    WHERE name LIKE '%'#{keyword}'%'
+  </select>
+  <select id="selectProductByOrderId" resultMap="BaseResultMap">
+    SELECT p.id,
+    p.number,
+    p.`name`,
+    p.category_id,
+    p.stock,
+    p.price,
+    p.contacts,
+    p.telephone,
+    p.unit_id,
+    p.floor_price,
+    p.`status`,
+    p.main_img_url,
+    p.summary,
+    p.img_id,
+    p.deleted,
+    p.create_user_id,
+    p.create_time,
+    p.update_time
+    FROM app_order_product op INNER JOIN app_product p ON op.product_id = p.id
+    WHERE op.order_id = #{orderId}
+  </select>
 </mapper>

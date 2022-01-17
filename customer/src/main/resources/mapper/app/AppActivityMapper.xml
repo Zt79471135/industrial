@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.industrial.mapper.AppActivityMapper">
+  <resultMap id="BaseResultMap" type="com.industrial.entity.AppActivity">
+    <!--@mbg.generated-->
+    <!--@Table app_activity-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="activity_name" jdbcType="VARCHAR" property="activityName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="activity_type" jdbcType="INTEGER" property="activityType" />
+    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="activity_status" jdbcType="INTEGER" property="activityStatus" />
+    <result column="expected_cost" jdbcType="DECIMAL" property="expectedCost" />
+    <result column="expected_income" jdbcType="DECIMAL" property="expectedIncome" />
+    <result column="head_user" jdbcType="VARCHAR" property="headUser" />
+    <result column="topic_img_id" jdbcType="INTEGER" property="topicImgId" />
+    <result column="head_img_id" jdbcType="INTEGER" property="headImgId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, activity_name, description, activity_type, begin_time, end_time, activity_status, 
+    expected_cost, expected_income, head_user, topic_img_id, head_img_id, update_time, 
+    deleted
+  </sql>
+</mapper>

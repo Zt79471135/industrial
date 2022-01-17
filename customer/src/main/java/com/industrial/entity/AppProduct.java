@@ -1,4 +1,4 @@
-package com.industrial.common.core.domain.entity;
+package com.industrial.entity;
 
 
 
@@ -19,8 +19,9 @@ import java.util.Date;
  */
 
 /**
-    * 商品表
-    */
+ * 商品表
+ * @author 79471
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

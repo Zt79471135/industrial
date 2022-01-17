@@ -1,6 +1,7 @@
-package com.industrial.system.domain.vo;
+package com.industrial.common.vo;
 
-import com.industrial.common.core.domain.entity.AppProduct;
+
+import com.industrial.entity.AppProduct;
 
 /**
  * @author zhu
