@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.industrial.common.annotation.Excel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,60 +26,70 @@ public class AppActivity {
     /**
      * 主键ID
      */
+    @Excel(name = "活动编号", cellType = Excel.ColumnType.NUMERIC, prompt = "活动编号")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
      * 专题名称
      */
+    @Excel(name = "专题名称")
     @TableField(value = "activity_name")
     private String activityName;
 
     /**
      * 名称描述
      */
+    @Excel(name = "名称描述")
     @TableField(value = "description")
     private String description;
 
     /**
      * 活动类型
      */
+    @Excel(name = "活动类型")
     @TableField(value = "activity_type")
     private Integer activityType;
 
     /**
      * 开始时间
      */
+    @Excel(name = "开始时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
     @TableField(value = "begin_time")
     private Date beginTime;
 
     /**
      * 结束时间
      */
+    @Excel(name = "结束时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
     @TableField(value = "end_time")
     private Date endTime;
 
     /**
      * 活动状态
      */
+    @Excel(name = "活动状态", readConverterExp = "0=正常,1=停用")
     @TableField(value = "activity_status")
     private Integer activityStatus;
 
     /**
      * 预计成本
      */
+    @Excel(name = "预计成本")
     @TableField(value = "expected_cost")
     private BigDecimal expectedCost;
 
     /**
      * 预计收入
      */
+    @Excel(name = "预计收入")
     @TableField(value = "expected_income")
     private BigDecimal expectedIncome;
 
     /**
      * 负责人员
      */
+    @Excel(name = "负责人员", type = Excel.Type.IMPORT)
     @TableField(value = "head_user")
     private Integer headUser;
 
@@ -96,6 +108,7 @@ public class AppActivity {
     /**
      * 更新时间
      */
+    @Excel(name = "更新时间", type = Excel.Type.EXPORT)
     @TableField(value = "update_time")
     private Date updateTime;
 

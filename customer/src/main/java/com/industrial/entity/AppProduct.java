@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.industrial.common.annotation.Excel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,58 +33,65 @@ public class AppProduct {
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-
     /**
      * 商品编号
      */
+    @Excel(name = "商品编号", cellType = Excel.ColumnType.NUMERIC, prompt = "商品编号")
     @TableField(value = "`number`")
     private String number;
-
     /**
      * 商品名称
      */
+    @Excel(name = "商品名称")
     @TableField(value = "`name`")
     private String name;
 
     /**
      * 商品类别
      */
+    @Excel(name = "商品类别")
     @TableField(value = "category_id")
     private Integer categoryId;
 
     /**
      * 库存量
      */
+    @Excel(name = "库存量")
     @TableField(value = "stock")
     private Integer stock;
 
     /**
      * 单价
      */
+    @Excel(name = "单价")
     @TableField(value = "price")
     private BigDecimal price;
 
     /**
      * 售后联系人
      */
+    @Excel(name = "售后联系人")
     @TableField(value = "contacts")
     private String contacts;
 
     /**
      * 售后服务电话
      */
+    @Excel(name = "售后服务电话")
     @TableField(value = "telephone")
     private String telephone;
 
     /**
      * 单位id
      */
+    @Excel(name = "单位id", type = Excel.Type.IMPORT)
     @TableField(value = "unit_id")
     private String unitId;
 
     /**
      * 最低价
      */
+    @Excel(name = "最低价")
     @TableField(value = "floor_price")
     private BigDecimal floorPrice;
 
@@ -96,18 +104,21 @@ public class AppProduct {
     /**
      * 主图ID
      */
+    @Excel(name = "主图ID", type = Excel.Type.IMPORT)
     @TableField(value = "main_img_url")
     private String mainImgUrl;
 
     /**
      * 摘要
      */
+    @Excel(name = "摘要")
     @TableField(value = "summary")
     private String summary;
 
     /**
      * 图片外键
      */
+    @Excel(name = "图片外键", type = Excel.Type.IMPORT)
     @TableField(value = "img_id")
     private Integer imgId;
 
@@ -120,12 +131,14 @@ public class AppProduct {
     /**
      * 创建用户ID
      */
+    @Excel(name = "创建用户ID", type = Excel.Type.IMPORT)
     @TableField(value = "create_user_id")
     private Integer createUserId;
 
     /**
      * 创建时间
      */
+    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
     @TableField(value = "create_time")
     private Date createTime;
 

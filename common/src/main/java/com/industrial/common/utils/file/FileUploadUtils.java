@@ -117,12 +117,61 @@ public class FileUploadUtils
     }
 
     /**
+     * 图片上传
+     *
+     * @param baseDir 相对应用的基目录
+     * @param file 上传的文件
+     * @param allowedExtension 上传文件类型
+     * @param fileLabel 上传图片的标签
+     * @return 返回上传成功的文件名
+     * @throws FileSizeLimitExceededException 如果超出最大大小
+     * @throws FileNameLengthLimitExceededException 文件名太长
+     * @throws IOException 比如读写文件出错时
+     * @throws InvalidExtensionException 文件校验异常
+     */
+    public static final String upload(String baseDir, MultipartFile file, String[] allowedExtension,String fileLabel)
+            throws FileSizeLimitExceededException, IOException, FileNameLengthLimitExceededException,
+            InvalidExtensionException
+    {
+        int fileNamelength = file.getOriginalFilename().length();
+        if (fileNamelength > FileUploadUtils.DEFAULT_FILE_NAME_LENGTH)
+        {
+            throw new FileNameLengthLimitExceededException(FileUploadUtils.DEFAULT_FILE_NAME_LENGTH);
+        }
+
+        assertAllowed(file, allowedExtension);
+
+        String imgName = extractFilename(file);
+
+        File desc = getAbsoluteFile(baseDir, imgName);
+        file.transferTo(desc);
+        String pathFileName = getPathFileName(baseDir, imgName);
+        return pathFileName;
+    }
+    /**
+     * 编码图片名
+     */
+    public static final String extractFilename(MultipartFile img,String fileLabel)
+    {
+        // 文件名
+        String imgName = img.getOriginalFilename();
+        // 4位随机数
+        long round = Math.round((Math.random() + 1) * 1000);
+        //获取文件后缀名
+        String extension = getExtension(img);
+        //新文件名
+        imgName = DateUtils.datePath()+fileLabel+ "/" + round+ "." + extension;
+        return imgName;
+    }
+    /**
      * 编码文件名
      */
     public static final String extractFilename(MultipartFile file)
     {
         String fileName = file.getOriginalFilename();
+        //获取文件后缀名
         String extension = getExtension(file);
+        //新文件名
         fileName = DateUtils.datePath() + "/" + IdUtils.fastUUID() + "." + extension;
         return fileName;
     }
