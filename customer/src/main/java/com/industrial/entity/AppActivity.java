@@ -79,7 +79,7 @@ public class AppActivity {
      * 负责人员
      */
     @TableField(value = "head_user")
-    private String headUser;
+    private Integer headUser;
 
     /**
      * 主体图外键
