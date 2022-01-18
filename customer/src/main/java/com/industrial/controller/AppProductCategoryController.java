@@ -21,7 +21,7 @@ import com.industrial.common.core.page.TableDataInfo;
  * @date 2022-01-17
  */
 @RestController
-@RequestMapping("/system/category")
+@RequestMapping("/category")
 public class AppProductCategoryController extends BaseController
 {
     @Autowired
@@ -30,7 +30,6 @@ public class AppProductCategoryController extends BaseController
     /**
      * 查询商品分类列表
      */
-    @PreAuthorize("@ss.hasPermi('system:category:list')")
     @GetMapping("/list")
     public TableDataInfo list(AppProductCategory appProductCategory)
     {
@@ -42,7 +41,6 @@ public class AppProductCategoryController extends BaseController
     /**
      * 导出商品分类列表
      */
-    @PreAuthorize("@ss.hasPermi('system:category:export')")
     @Log(title = "商品分类", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AppProductCategory appProductCategory)
@@ -55,7 +53,6 @@ public class AppProductCategoryController extends BaseController
     /**
      * 获取商品分类详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:category:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -65,7 +62,6 @@ public class AppProductCategoryController extends BaseController
     /**
      * 新增商品分类
      */
-    @PreAuthorize("@ss.hasPermi('system:category:add')")
     @Log(title = "商品分类", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody AppProductCategory appProductCategory)
@@ -76,7 +72,6 @@ public class AppProductCategoryController extends BaseController
     /**
      * 修改商品分类
      */
-    @PreAuthorize("@ss.hasPermi('system:category:edit')")
     @Log(title = "商品分类", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody AppProductCategory appProductCategory)
@@ -87,7 +82,6 @@ public class AppProductCategoryController extends BaseController
     /**
      * 删除商品分类
      */
-    @PreAuthorize("@ss.hasPermi('system:category:remove')")
     @Log(title = "商品分类", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
