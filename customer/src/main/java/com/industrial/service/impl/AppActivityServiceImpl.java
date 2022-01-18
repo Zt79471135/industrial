@@ -1,6 +1,7 @@
 package com.industrial.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.dto.ActivityDto;
 import com.industrial.common.exception.ServiceException;
 import com.industrial.common.vo.ActivityVo;
@@ -9,6 +10,7 @@ import com.industrial.entity.AppActivityUser;
 import com.industrial.mapper.AppActivityMapper;
 import com.industrial.mapper.AppActivityUserMapper;
 import com.industrial.service.AppActivityService;
+import com.industrial.system.mapper.SysUserMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -27,23 +29,32 @@ public class AppActivityServiceImpl implements AppActivityService {
     private AppActivityMapper activityMapper;
     @Resource
     private AppActivityUserMapper activityUserMapper;
-
+    @Resource
+    private SysUserMapper sysUserMapper;
     @Override
     public ActivityDto selectActivityById(Integer activityId) {
         AppActivity appActivity = activityMapper.selectById(activityId);
         if (appActivity != null) {
+            SysUser user = sysUserMapper.selectUserById(Long.valueOf(appActivity.getHeadUser()));
             QueryWrapper<AppActivityUser> qw = new QueryWrapper<>();
             qw.lambda().eq(AppActivityUser::getActivityId, activityId);
             List<AppActivityUser> activityUserList = activityUserMapper.selectList(qw);
+            List<SysUser> userList = activityUserList.stream().map(appActivityUser ->
+                    {
+                        SysUser sysUser = sysUserMapper.selectUserById(Long.valueOf(appActivityUser.getUserId()));
+
+                        return sysUser;
+                    }
+            ).collect(Collectors.toList());
             ActivityDto activityDto = new ActivityDto();
             BeanUtils.copyProperties(appActivity, activityDto);
-
+            activityDto.setUserList(userList);
+            activityDto.setUser(user);
             return activityDto;
         } else {
             throw new ServiceException("活动详情为空");
         }
     }
-
     @Override
     public boolean insertActivity(ActivityVo activityVo) {
         AppActivity activity = new AppActivity();
