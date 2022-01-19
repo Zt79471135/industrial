@@ -9,7 +9,7 @@ import com.industrial.entity.AppProductCategory;
  * 商品分类Service接口
  * 
  * @author chenjh
- * @date 2022-01-17
+ * @date 2022-01-19
  */
 public interface IAppProductCategoryService 
 {

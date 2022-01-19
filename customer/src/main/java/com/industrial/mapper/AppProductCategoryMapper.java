@@ -5,7 +5,7 @@ import com.industrial.common.dto.CategoryDto;
 import com.industrial.entity.AppProductCategory;
 
 /**
- * @author zhu
+ * @author chenjh
  * @date 2022年01月19日 10:22
  */
 public interface AppProductCategoryMapper extends BaseMapper<AppProductCategory>
