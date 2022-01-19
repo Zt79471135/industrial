@@ -73,7 +73,7 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     @Override
     public int updateAppProductCategory(AppProductCategory appProductCategory)
     {
-        //appProductCategory.setUpdateTime(DateUtils.getNowDate());
+        appProductCategory.setUpdateTime(DateUtils.getNowDate());
         return appProductCategoryMapper.updateById(appProductCategory);
     }
 

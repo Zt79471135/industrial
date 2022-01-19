@@ -65,7 +65,7 @@ public class AppProductCategory {
      * 更新时间
      */
     @TableField(value = "update_time")
-    private Integer updateTime;
+    private Date updateTime;
 
     /**
      * 删除时间
