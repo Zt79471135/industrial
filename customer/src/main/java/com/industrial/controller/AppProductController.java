@@ -90,4 +90,25 @@ public class AppProductController {
         }
         return result;
     }
+    @DeleteMapping("/remove")
+    public ResponseResult remove(@RequestParam Integer productId){
+        ResponseResult result = null;
+        if (productService.remove(productId)) {
+            result = ResponseResult.success();
+        } else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+
+    }
+    @PutMapping("/update")
+    public ResponseResult update(@RequestParam ProductVo productVo){
+        ResponseResult result = null;
+        if (productService.update(productVo)) {
+            result = ResponseResult.success();
+        } else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
 }
