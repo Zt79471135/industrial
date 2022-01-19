@@ -7,24 +7,36 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="user_manager" jdbcType="INTEGER" property="userManager" />
-    <result column="user_engineer" jdbcType="INTEGER" property="userEngineer" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="order_title" jdbcType="VARCHAR" property="orderTitle" />
     <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="order_type" jdbcType="INTEGER" property="orderType" />
+    <result column="sign_date" jdbcType="TIMESTAMP" property="signDate" />
+    <result column="begin_date" jdbcType="TIMESTAMP" property="beginDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="payment_mode" jdbcType="INTEGER" property="paymentMode" />
+    <result column="cust_contractor" jdbcType="INTEGER" property="custContractor" />
+    <result column="our_contractor" jdbcType="INTEGER" property="ourContractor" />
+    <result column="attribu_person" jdbcType="VARCHAR" property="attribuPerson" />
+    <result column="file_param" jdbcType="VARCHAR" property="fileParam" />
+    <result column="note_info" jdbcType="VARCHAR" property="noteInfo" />
+    <result column="user_manager" jdbcType="INTEGER" property="userManager" />
+    <result column="user_engineer" jdbcType="INTEGER" property="userEngineer" />
     <result column="snap_img" jdbcType="VARCHAR" property="snapImg" />
     <result column="snap_nam" jdbcType="VARCHAR" property="snapNam" />
     <result column="total_count" jdbcType="INTEGER" property="totalCount" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="snap_items" jdbcType="VARCHAR" property="snapItems" />
     <result column="snap_address" jdbcType="VARCHAR" property="snapAddress" />
     <result column="prepay_id" jdbcType="VARCHAR" property="prepayId" />
     <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, order_no, user_id, user_manager, user_engineer, create_time, total_price, `status`, 
-    snap_img, snap_nam, total_count, update_time, snap_items, snap_address, prepay_id, 
-    deleted
+    id, order_no, user_id, order_title, total_price, `status`, order_type, sign_date, 
+    begin_date, end_date, payment_mode, cust_contractor, our_contractor, attribu_person, 
+    file_param, note_info, user_manager, user_engineer, snap_img, snap_nam, total_count, 
+    snap_items, snap_address, prepay_id, deleted, create_time, update_time
   </sql>
 </mapper>

@@ -4,6 +4,7 @@ package com.industrial.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.industrial.common.dto.ProductDto;
 import com.industrial.common.exception.ServiceException;
+import com.industrial.common.vo.CheckVo;
 import com.industrial.common.vo.ProductVo;
 import com.industrial.entity.AppProduct;
 import com.industrial.entity.AppProductCategory;
@@ -27,6 +28,7 @@ public class AppProductServiceImpl implements AppProductService {
     private AppProductMapper productMapper;
     @Resource
     private AppProductCategoryMapper productCategoryMapper;
+
     private static ProductDto apply(AppProduct product) {
         ProductDto productDto = new ProductDto();
         BeanUtils.copyProperties(product, productDto);
@@ -76,6 +78,12 @@ public class AppProductServiceImpl implements AppProductService {
     public List<ProductDto> selectProductByStatus(int status) {
         QueryWrapper<AppProduct> qw = new QueryWrapper<>();
         qw.lambda().eq(AppProduct::getStatus, (byte) status);
+        /**
+         * 当查询上架商品时,同样把禁用商品一起查询出来
+         */
+        if (status == 3) {
+            qw.lambda().eq(AppProduct::getStatus, (byte) 0);
+        }
         List<AppProduct> productList = productMapper.selectList(qw);
         if (productList.size() == 0) {
             throw new ServiceException("无此状态的商品");
@@ -103,11 +111,23 @@ public class AppProductServiceImpl implements AppProductService {
         return productMapper.insert(product) == 1;
     }
 
+    /**
+     * 删除
+     *
+     * @param productId
+     * @return
+     */
     @Override
     public boolean remove(Integer productId) {
         return productMapper.deleteById(productId) == 1;
     }
 
+    /**
+     * 商品更新
+     *
+     * @param productVo
+     * @return
+     */
     @Override
     public boolean update(ProductVo productVo) {
         Integer id = productVo.getId();
@@ -137,16 +157,17 @@ public class AppProductServiceImpl implements AppProductService {
         QueryWrapper<AppProduct> qw = new QueryWrapper<>();
         qw.lambda().eq(AppProduct::getStatus, (byte) status);
         if (categoryId != 0 || !"".equals(productName)) {
-            if (categoryId!=0){
-                qw.lambda().eq(AppProduct::getCategoryId,categoryId);
+            if (categoryId != 0) {
+                qw.lambda().eq(AppProduct::getCategoryId, categoryId);
             }
-            if (!"".equals(productName)){
-                qw.lambda().like(AppProduct::getName,productName);
+            if (!"".equals(productName)) {
+                qw.lambda().like(AppProduct::getName, productName);
             }
         }
         List<AppProduct> productList = productMapper.selectList(qw);
         return productList.stream().map(AppProductServiceImpl::apply
         ).collect(Collectors.toList());
     }
+
 
 }
