@@ -58,4 +58,5 @@ public interface IAppProductCategoryService
      * @return 结果
      */
     public int deleteAppProductCategoryById(Long id);
+
 }

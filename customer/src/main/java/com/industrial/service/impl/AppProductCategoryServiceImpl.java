@@ -1,12 +1,17 @@
 package com.industrial.service.impl;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.industrial.common.utils.DateUtils;
+import com.industrial.entity.AppProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.industrial.mapper.AppProductCategoryMapper;
 import com.industrial.entity.AppProductCategory;
 import com.industrial.service.IAppProductCategoryService;
+
+import javax.annotation.Resource;
 
 /**
  * 商品分类Service业务层处理
@@ -17,7 +22,7 @@ import com.industrial.service.IAppProductCategoryService;
 @Service
 public class AppProductCategoryServiceImpl implements IAppProductCategoryService 
 {
-    @Autowired
+    @Resource
     private AppProductCategoryMapper appProductCategoryMapper;
 
     /**
@@ -29,7 +34,7 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     @Override
     public AppProductCategory selectAppProductCategoryById(Long id)
     {
-        return appProductCategoryMapper.selectAppProductCategoryById(id);
+        return appProductCategoryMapper.selectById(id);
     }
 
     /**
@@ -41,7 +46,10 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     @Override
     public List<AppProductCategory> selectAppProductCategoryList(AppProductCategory appProductCategory)
     {
-        return appProductCategoryMapper.selectAppProductCategoryList(appProductCategory);
+        QueryWrapper<AppProductCategory> qw = new QueryWrapper<>();
+        qw.lambda().eq(AppProductCategory::getCategoryCode, appProductCategory.getCategoryCode());
+        List<AppProductCategory> productList = appProductCategoryMapper.selectList(qw);
+        return  productList;
     }
 
     /**
@@ -53,7 +61,7 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     @Override
     public int insertAppProductCategory(AppProductCategory appProductCategory)
     {
-        return appProductCategoryMapper.insertAppProductCategory(appProductCategory);
+        return appProductCategoryMapper.insert(appProductCategory);
     }
 
     /**
@@ -65,8 +73,8 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     @Override
     public int updateAppProductCategory(AppProductCategory appProductCategory)
     {
-        appProductCategory.setUpdateTime(DateUtils.getNowDate());
-        return appProductCategoryMapper.updateAppProductCategory(appProductCategory);
+        //appProductCategory.setUpdateTime(DateUtils.getNowDate());
+        return appProductCategoryMapper.updateById(appProductCategory);
     }
 
     /**
@@ -78,7 +86,11 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     @Override
     public int deleteAppProductCategoryByIds(Long[] ids)
     {
-        return appProductCategoryMapper.deleteAppProductCategoryByIds(ids);
+        int ret = 0;
+        for (Long id : ids) {
+            ret = appProductCategoryMapper.deleteById(id);
+        }
+        return ret;
     }
 
     /**
@@ -90,6 +102,6 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     @Override
     public int deleteAppProductCategoryById(Long id)
     {
-        return appProductCategoryMapper.deleteAppProductCategoryById(id);
+        return appProductCategoryMapper.deleteById(id);
     }
 }

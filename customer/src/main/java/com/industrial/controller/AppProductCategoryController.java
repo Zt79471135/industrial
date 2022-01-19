@@ -88,4 +88,5 @@ public class AppProductCategoryController extends BaseController
     {
         return toAjax(appProductCategoryService.deleteAppProductCategoryByIds(ids));
     }
+
 }
