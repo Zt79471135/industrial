@@ -24,6 +24,12 @@ public class AppProductServiceImpl implements AppProductService {
     @Resource
     private AppProductMapper productMapper;
 
+    private static ProductDto apply(AppProduct product) {
+        ProductDto productDto = new ProductDto();
+        BeanUtils.copyProperties(product, productDto);
+        return productDto;
+    }
+
     /**
      * 更改商品状态
      *
@@ -56,6 +62,7 @@ public class AppProductServiceImpl implements AppProductService {
 
     /**
      * 根据状态检索商品
+     *
      * @param status
      * @return
      */
@@ -92,23 +99,48 @@ public class AppProductServiceImpl implements AppProductService {
 
     @Override
     public boolean remove(Integer productId) {
-       return  productMapper.deleteById(productId)==1;
+        return productMapper.deleteById(productId) == 1;
     }
 
     @Override
     public boolean update(ProductVo productVo) {
         Integer id = productVo.getId();
-        if (id != 0){
+        if (id != 0) {
             AppProduct product = new AppProduct();
-            BeanUtils.copyProperties(productVo,product);
-            product.setStatus((byte)1);
+            BeanUtils.copyProperties(productVo, product);
+            product.setStatus((byte) 1);
             QueryWrapper<AppProduct> qw = new QueryWrapper<>();
-            qw.lambda().eq(AppProduct::getId,id);
-            return productMapper.update(product,qw)==1;
-        }else {
+            qw.lambda().eq(AppProduct::getId, id);
+            return productMapper.update(product, qw) == 1;
+        } else {
             throw new ServiceException("id不能为空");
         }
 
+    }
+
+    /**
+     * 根据分类id或者商品名称查询
+     *
+     * @param categoryId
+     * @param productName
+     * @param status
+     * @return
+     */
+    @Override
+    public List<ProductDto> selectProductByCategoryId(Integer categoryId, String productName, int status) {
+        QueryWrapper<AppProduct> qw = new QueryWrapper<>();
+        qw.lambda().eq(AppProduct::getStatus, (byte) status);
+        if (categoryId != 0 || !"".equals(productName)) {
+            if (categoryId!=0){
+                qw.lambda().eq(AppProduct::getCategoryId,categoryId);
+            }
+            if (!"".equals(productName)){
+                qw.lambda().like(AppProduct::getName,productName);
+            }
+        }
+        List<AppProduct> productList = productMapper.selectList(qw);
+        return productList.stream().map(AppProductServiceImpl::apply
+        ).collect(Collectors.toList());
     }
 
 }

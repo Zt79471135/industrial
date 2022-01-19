@@ -33,13 +33,13 @@ public class AppProductController {
         return result;
     }
     /**
-     * 根据分类查询
+     * 根据分类ID查询
      *  status = 3 已经上架的商品
      */
     @GetMapping("/classify")
-    public ResponseResult<List<ProductDto>> classify(@RequestParam Integer status) {
+    public ResponseResult<List<ProductDto>> classify(@RequestParam Integer categoryId,@RequestParam String productName) {
         ResponseResult<List<ProductDto>> result = null;
-        List<ProductDto> productDto = productService.selectProductByStatus(status);
+        List<ProductDto> productDto = productService.selectProductByCategoryId(categoryId,productName,3);
         result = ResponseResult.success(productDto);
         return result;
     }

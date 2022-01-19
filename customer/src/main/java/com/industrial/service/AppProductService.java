@@ -53,4 +53,11 @@ public interface AppProductService {
      */
     boolean update(ProductVo productVo);
 
+    /**
+     * 根据分类查询
+     * @param categoryId
+     * @param productName
+     * @return
+     */
+    List<ProductDto> selectProductByCategoryId(Integer categoryId,String productName,int status);
 }

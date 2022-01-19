@@ -10,12 +10,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * 商品分类
  * @author zhu
  * @date 2022年01月19日 10:22
  */
-/**
-    * 商品分类
-    */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -8,6 +8,11 @@ import lombok.Data;
  */
 @Data
 public class CheckVo {
+    /**
+     * 审核人
+     * 审核结果
+     * 审核的物品ID
+     */
     private Integer uid;
     private Boolean check;
     private Integer id;
