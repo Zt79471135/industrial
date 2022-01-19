@@ -6,6 +6,8 @@ import com.industrial.common.dto.ProductDto;
 import com.industrial.common.exception.ServiceException;
 import com.industrial.common.vo.ProductVo;
 import com.industrial.entity.AppProduct;
+import com.industrial.entity.AppProductCategory;
+import com.industrial.mapper.AppProductCategoryMapper;
 import com.industrial.mapper.AppProductMapper;
 import com.industrial.service.AppProductService;
 import org.springframework.beans.BeanUtils;
@@ -23,7 +25,8 @@ import java.util.stream.Collectors;
 public class AppProductServiceImpl implements AppProductService {
     @Resource
     private AppProductMapper productMapper;
-
+    @Resource
+    private AppProductCategoryMapper productCategoryMapper;
     private static ProductDto apply(AppProduct product) {
         ProductDto productDto = new ProductDto();
         BeanUtils.copyProperties(product, productDto);
@@ -56,6 +59,9 @@ public class AppProductServiceImpl implements AppProductService {
     public ProductDto selectProductById(Integer productId) {
         ProductDto productDto = new ProductDto();
         AppProduct product = productMapper.selectById(productId);
+        Integer categoryId = product.getCategoryId();
+        AppProductCategory category = productCategoryMapper.selectById(categoryId);
+        productDto.setCategory(category);
         BeanUtils.copyProperties(product, productDto);
         return productDto;
     }

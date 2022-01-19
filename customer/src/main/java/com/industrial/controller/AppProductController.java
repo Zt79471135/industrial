@@ -33,7 +33,7 @@ public class AppProductController {
         return result;
     }
     /**
-     * 根据分类ID查询
+     * 根据分类ID查询与商品名称
      *  status = 3 已经上架的商品
      */
     @GetMapping("/classify")
@@ -90,6 +90,12 @@ public class AppProductController {
         }
         return result;
     }
+
+    /**
+     * 商品删除
+     * @param productId
+     * @return
+     */
     @DeleteMapping("/remove")
     public ResponseResult remove(@RequestParam Integer productId){
         ResponseResult result = null;
@@ -101,8 +107,14 @@ public class AppProductController {
         return result;
 
     }
+
+    /**
+     * 商品更新
+     * @param productVo
+     * @return
+     */
     @PutMapping("/update")
-    public ResponseResult update(@RequestParam ProductVo productVo){
+    public ResponseResult update(@RequestBody ProductVo productVo){
         ResponseResult result = null;
         if (productService.update(productVo)) {
             result = ResponseResult.success();
