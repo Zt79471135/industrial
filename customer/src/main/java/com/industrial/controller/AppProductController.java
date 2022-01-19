@@ -107,7 +107,27 @@ public class AppProductController {
         return result;
 
     }
-
+    /**
+     * 商品禁用与启用
+     * false 禁用 true 启用
+     * 状态为0为禁用
+     * @param checkVo
+     * @return
+     */
+    @DeleteMapping("/enable")
+    public ResponseResult enable(@RequestParam CheckVo checkVo){
+        ResponseResult result = null;
+        int status = 0;
+        if (checkVo.getCheck()) {
+            status = 3;
+        }
+        if (productService.changeStatus(status, checkVo.getId())) {
+            result = ResponseResult.success();
+        } else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
     /**
      * 商品更新
      * @param productVo

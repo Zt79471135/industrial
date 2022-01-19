@@ -10,12 +10,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * 客户收货地址表,用于客户联系人信息
  * @author zhu
  * @date 2022年01月19日 16:30
  */
-/**
-    * 客户收货地址表,用于客户联系人信息
-    */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
