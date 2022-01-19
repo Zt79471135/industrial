@@ -39,4 +39,18 @@ public interface AppProductService {
      */
     boolean insert(ProductVo productVo);
 
+    /**
+     * 移除商品
+     * @param productId
+     * @return
+     */
+    boolean remove(Integer productId);
+
+    /**
+     * 更新商品
+     * @param productVo
+     * @return
+     */
+    boolean update(ProductVo productVo);
+
 }

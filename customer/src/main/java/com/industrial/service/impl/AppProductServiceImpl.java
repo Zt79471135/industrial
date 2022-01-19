@@ -90,4 +90,25 @@ public class AppProductServiceImpl implements AppProductService {
         return productMapper.insert(product) == 1;
     }
 
+    @Override
+    public boolean remove(Integer productId) {
+       return  productMapper.deleteById(productId)==1;
+    }
+
+    @Override
+    public boolean update(ProductVo productVo) {
+        Integer id = productVo.getId();
+        if (id != 0){
+            AppProduct product = new AppProduct();
+            BeanUtils.copyProperties(productVo,product);
+            product.setStatus((byte)1);
+            QueryWrapper<AppProduct> qw = new QueryWrapper<>();
+            qw.lambda().eq(AppProduct::getId,id);
+            return productMapper.update(product,qw)==1;
+        }else {
+            throw new ServiceException("id不能为空");
+        }
+
+    }
+
 }
