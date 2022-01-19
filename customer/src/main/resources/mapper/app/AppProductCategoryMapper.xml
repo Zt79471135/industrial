@@ -5,7 +5,7 @@
     <!--@mbg.generated-->
     <!--@Table app_product_category-->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
     <result column="product_type" jdbcType="INTEGER" property="productType" />
     <result column="category_code" jdbcType="VARCHAR" property="categoryCode" />
     <result column="mnemonic_code" jdbcType="VARCHAR" property="mnemonicCode" />
@@ -17,7 +17,18 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `name`, product_type, category_code, mnemonic_code, topic_img_id, description, 
+    id, category_name, product_type, category_code, mnemonic_code, topic_img_id, description,
     update_time, delete_time, deleted
   </sql>
+
+  <sql id="selectAppProductCategoryVo">
+    select id, category_name, product_type, category_code, mnemonic_code, topic_img_id, description, update_time, delete_time, deleted from app_product_category
+  </sql>
+
+  <select id="selectAppProductCategoryById" parameterType="Long" resultMap="BaseResultMap">
+    <include refid="selectAppProductCategoryVo"/>
+    where id = #{id}
+  </select>
+
+
 </mapper>

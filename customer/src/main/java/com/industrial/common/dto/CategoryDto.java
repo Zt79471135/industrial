@@ -15,5 +15,5 @@ import java.util.List;
  * @version industrial V1.0.0
  */
 public class CategoryDto extends AppProductCategory {
-    private SysDictData dictLabel;
+    private SysDictData dictData;
 }

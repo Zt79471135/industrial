@@ -28,8 +28,8 @@ public class AppProductCategory {
     /**
      * 分类名称
      */
-    @TableField(value = "`name`")
-    private String name;
+    @TableField(value = "category_name")
+    private String categoryName;
 
     /**
      * 所属分类

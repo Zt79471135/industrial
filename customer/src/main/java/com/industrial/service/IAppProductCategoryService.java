@@ -1,6 +1,8 @@
 package com.industrial.service;
 
 import java.util.List;
+
+import com.industrial.common.dto.CategoryDto;
 import com.industrial.entity.AppProductCategory;
 
 /**
@@ -22,10 +24,10 @@ public interface IAppProductCategoryService
     /**
      * 查询商品分类列表
      * 
-     * @param appProductCategory 商品分类
+     * @param categoryName 分类名 ,categoryCode 分类编号
      * @return 商品分类集合
      */
-    public List<AppProductCategory> selectAppProductCategoryList(AppProductCategory appProductCategory);
+    public List<CategoryDto> selectAppProductCategoryList(String categoryName, String categoryCode);
 
     /**
      * 新增商品分类

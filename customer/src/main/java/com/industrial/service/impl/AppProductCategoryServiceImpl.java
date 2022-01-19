@@ -1,10 +1,13 @@
 package com.industrial.service.impl;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
+import com.industrial.common.dto.CategoryDto;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.industrial.common.dto.ProductDto;
 import com.industrial.common.utils.DateUtils;
 import com.industrial.entity.AppProduct;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.industrial.mapper.AppProductCategoryMapper;
@@ -25,6 +28,12 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     @Resource
     private AppProductCategoryMapper appProductCategoryMapper;
 
+    private static CategoryDto apply(AppProductCategory category) {
+        CategoryDto categoryDto = new CategoryDto();
+        BeanUtils.copyProperties(category, categoryDto);
+        return categoryDto;
+    }
+
     /**
      * 查询商品分类
      * 
@@ -40,16 +49,25 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     /**
      * 查询商品分类列表
      * 
-     * @param appProductCategory 商品分类
+     * @param categoryName,categoryCode
      * @return 商品分类
      */
     @Override
-    public List<AppProductCategory> selectAppProductCategoryList(AppProductCategory appProductCategory)
+    public List<CategoryDto> selectAppProductCategoryList(String categoryName,String categoryCode)
     {
         QueryWrapper<AppProductCategory> qw = new QueryWrapper<>();
-        qw.lambda().eq(AppProductCategory::getCategoryCode, appProductCategory.getCategoryCode());
-        List<AppProductCategory> productList = appProductCategoryMapper.selectList(qw);
-        return  productList;
+        if (!"".equals(categoryName) || !"".equals(categoryCode)) {
+            if (!"".equals(categoryName)){
+                qw.lambda().eq(AppProductCategory::getCategoryName,categoryName);
+            }
+            if (!"".equals(categoryCode)){
+                qw.lambda().like(AppProductCategory::getCategoryCode,categoryCode);
+            }
+        }
+
+        List<AppProductCategory> CategoryList = appProductCategoryMapper.selectList(qw);
+        return CategoryList.stream().map(AppProductCategoryServiceImpl::apply
+        ).collect(Collectors.toList());
     }
 
     /**
@@ -87,8 +105,8 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     public int deleteAppProductCategoryByIds(Long[] ids)
     {
         int ret = 0;
-        for (Long id : ids) {
-            ret = appProductCategoryMapper.deleteById(id);
+        for (Long Id : ids) {
+            ret = appProductCategoryMapper.deleteById(Id);
         }
         return ret;
     }
