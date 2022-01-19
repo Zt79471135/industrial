@@ -2,13 +2,14 @@ package com.industrial.controller;
 
 import com.industrial.common.config.IndustrialConfig;
 import com.industrial.common.core.domain.AjaxResult;
+import com.industrial.common.core.domain.ResponseCode;
+import com.industrial.common.core.domain.ResponseResult;
 import com.industrial.common.utils.file.FileUploadUtils;
 import com.industrial.common.utils.file.MimeTypeUtils;
+import com.industrial.entity.AppImageFile;
 import com.industrial.framework.config.ServerConfig;
 import com.industrial.service.AppImageFileService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
  * @date 2022年01月17日 17:41
  */
 @RestController
+@RequestMapping("/upload")
 public class AppImageFileController {
     @Resource
     private AppImageFileService imageFileService;
@@ -32,7 +34,7 @@ public class AppImageFileController {
      * @param fileLabel
      * @return
      */
-    @PostMapping(value = "/fileUpload")
+    @PostMapping(value = "/imgUpload")
     public AjaxResult fileUpload(@RequestParam(value = "img") MultipartFile img,String fileLabel){
         try
         {
@@ -53,4 +55,15 @@ public class AppImageFileController {
         }
 
     }
+    @PostMapping("/save")
+    public ResponseResult save(@RequestBody AppImageFile imageFile){
+        ResponseResult result = null;
+        if (imageFileService.insert(imageFile)) {
+            result = ResponseResult.success();
+        } else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
+
 }
