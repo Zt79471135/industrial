@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.industrial.common.dto.ProductDto;
 import com.industrial.common.utils.DateUtils;
 import com.industrial.entity.AppProduct;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,31 +44,20 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     @Override
     public AppProductCategory selectAppProductCategoryById(Long id)
     {
-        return appProductCategoryMapper.selectById(id);
+        //return appProductCategoryMapper.selectById(id);
+        return appProductCategoryMapper.selectAppProductCategoryById(id);
     }
 
     /**
      * 查询商品分类列表
-     * 
-     * @param categoryName,categoryCode
+     *
+     * @param appProductCategory 商品分类
      * @return 商品分类
      */
     @Override
-    public List<CategoryDto> selectAppProductCategoryList(String categoryName,String categoryCode)
+    public List<AppProductCategory> selectAppProductCategoryList(AppProductCategory appProductCategory)
     {
-        QueryWrapper<AppProductCategory> qw = new QueryWrapper<>();
-        if (!"".equals(categoryName) || !"".equals(categoryCode)) {
-            if (!"".equals(categoryName)){
-                qw.lambda().eq(AppProductCategory::getCategoryName,categoryName);
-            }
-            if (!"".equals(categoryCode)){
-                qw.lambda().like(AppProductCategory::getCategoryCode,categoryCode);
-            }
-        }
-
-        List<AppProductCategory> CategoryList = appProductCategoryMapper.selectList(qw);
-        return CategoryList.stream().map(AppProductCategoryServiceImpl::apply
-        ).collect(Collectors.toList());
+        return appProductCategoryMapper.selectAppProductCategoryList(appProductCategory);
     }
 
     /**
@@ -79,7 +69,8 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     @Override
     public int insertAppProductCategory(AppProductCategory appProductCategory)
     {
-        return appProductCategoryMapper.insert(appProductCategory);
+        //return appProductCategoryMapper.insert(appProductCategory);
+        return appProductCategoryMapper.insertAppProductCategory(appProductCategory);
     }
 
     /**
@@ -92,7 +83,44 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     public int updateAppProductCategory(AppProductCategory appProductCategory)
     {
         appProductCategory.setUpdateTime(DateUtils.getNowDate());
-        return appProductCategoryMapper.updateById(appProductCategory);
+        return appProductCategoryMapper.updateAppProductCategory(appProductCategory);
+        //return appProductCategoryMapper.updateById(appProductCategory);
+    }
+
+    /**
+     * 根据ID更新所属分类
+     *
+     * @param ids,productType
+     * @return 结果
+     */
+    @Override
+    public int updateTypeById(Integer productType,Long[] ids)
+    {
+        //return appProductCategoryMapper.updateTypeById(productType,ids);
+        int ret = 0;
+        for (Long categoryId : ids) {
+            ret = appProductCategoryMapper.updateTypeById(productType,categoryId);
+        }
+        return ret;
+    }
+
+    /**
+     * 根据ID更新启用状态
+     *
+     * @param ids,deleted
+     * @return 结果
+     */
+    @Override
+    public int updateDeletedById(Integer deleted,Long[] ids)
+    {
+        //return appProductCategoryMapper.updateDeletedById(deleted,ids);
+        int ret = 0;
+        for (Long categoryId : ids) {
+            ret = appProductCategoryMapper.updateDeletedById(deleted,categoryId);
+        }
+        return ret;
+
+
     }
 
     /**
@@ -104,11 +132,12 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     @Override
     public int deleteAppProductCategoryByIds(Long[] ids)
     {
-        int ret = 0;
-        for (Long Id : ids) {
-            ret = appProductCategoryMapper.deleteById(Id);
-        }
-        return ret;
+        return appProductCategoryMapper.deleteAppProductCategoryByIds(ids);
+//        int ret = 0;
+//        for (Long Id : ids) {
+//            ret = appProductCategoryMapper.deleteById(Id);
+//        }
+//        return ret;
     }
 
     /**
@@ -120,6 +149,8 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     @Override
     public int deleteAppProductCategoryById(Long id)
     {
-        return appProductCategoryMapper.deleteById(id);
+        return appProductCategoryMapper.deleteAppProductCategoryById(id);
+        //return appProductCategoryMapper.deleteById(id);
     }
+
 }

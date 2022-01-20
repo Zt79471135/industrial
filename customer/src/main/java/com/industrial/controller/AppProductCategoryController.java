@@ -33,31 +33,35 @@ public class AppProductCategoryController extends BaseController
     /**
      * 查询商品分类列表
      */
+    @PreAuthorize("@ss.hasPermi('category:list')")
     @GetMapping("/list")
-    public TableDataInfo list(@RequestParam String CategoryName,@RequestParam String CategoryCode)
+    public TableDataInfo list(AppProductCategory appProductCategory)
     {
         startPage();
-        List<CategoryDto> list = appProductCategoryService.selectAppProductCategoryList(CategoryName,CategoryCode);
+        //List<CategoryDto> list = appProductCategoryService.selectAppProductCategoryList(CategoryName,CategoryCode);
+        List<AppProductCategory> list = appProductCategoryService.selectAppProductCategoryList(appProductCategory);
         return getDataTable(list);
     }
 
     /**
      * 导出商品分类列表
      */
+    @PreAuthorize("@ss.hasPermi('category:export')")
     @Log(title = "商品分类", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, @RequestParam String CategoryName,@RequestParam String CategoryCode)
+    public void export(HttpServletResponse response, AppProductCategory appProductCategory)
     {
-        List<CategoryDto> list = appProductCategoryService.selectAppProductCategoryList(CategoryName,CategoryCode);
-        ExcelUtil<CategoryDto> util = new ExcelUtil<CategoryDto>(CategoryDto.class);
+        List<AppProductCategory> list = appProductCategoryService.selectAppProductCategoryList(appProductCategory);
+        ExcelUtil<AppProductCategory> util = new ExcelUtil<AppProductCategory>(AppProductCategory.class);
         util.exportExcel(response, list, "商品分类数据");
     }
 
     /**
      * 获取商品分类详细信息
      */
-    @GetMapping("/details")
-    public AjaxResult getInfo(@RequestParam Long id)
+    @PreAuthorize("@ss.hasPermi('category:query')")
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return AjaxResult.success(appProductCategoryService.selectAppProductCategoryById(id));
     }
@@ -65,8 +69,9 @@ public class AppProductCategoryController extends BaseController
     /**
      * 新增商品分类
      */
+    @PreAuthorize("@ss.hasPermi('category:add')")
     @Log(title = "商品分类", businessType = BusinessType.INSERT)
-    @PutMapping("/add")
+    @PostMapping
     public AjaxResult add(@RequestBody AppProductCategory appProductCategory)
     {
         return toAjax(appProductCategoryService.insertAppProductCategory(appProductCategory));
@@ -75,8 +80,9 @@ public class AppProductCategoryController extends BaseController
     /**
      * 修改商品分类
      */
+    @PreAuthorize("@ss.hasPermi('category:edit')")
     @Log(title = "商品分类", businessType = BusinessType.UPDATE)
-    @PutMapping("/update")
+    @PutMapping
     public AjaxResult edit(@RequestBody AppProductCategory appProductCategory)
     {
         return toAjax(appProductCategoryService.updateAppProductCategory(appProductCategory));
@@ -85,9 +91,10 @@ public class AppProductCategoryController extends BaseController
     /**
      * 删除商品分类
      */
+    @PreAuthorize("@ss.hasPermi('category:remove')")
     @Log(title = "商品分类", businessType = BusinessType.DELETE)
-	@DeleteMapping("/remove")
-    public AjaxResult remove(@RequestParam Long[] ids)
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(appProductCategoryService.deleteAppProductCategoryByIds(ids));
     }

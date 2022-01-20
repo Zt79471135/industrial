@@ -22,13 +22,88 @@
   </sql>
 
   <sql id="selectAppProductCategoryVo">
-    select id, category_name, product_type, category_code, mnemonic_code, topic_img_id, description, update_time, delete_time, deleted from app_product_category
+    select id, category_name, product_type, category_code, mnemonic_code, topic_img_id, description, update_time, delete_time, deleted
+    from app_product_category
   </sql>
+
+  <select id="selectAppProductCategoryList" parameterType="com.industrial.entity.AppProductCategory" resultMap="BaseResultMap">
+    <include refid="selectAppProductCategoryVo"/>
+    <where>
+      <if test="categoryName != null  and categoryName != ''"> and category_name like concat('%', #{categoryName}, '%')</if>
+      <if test="productType != null "> and product_type = #{productType}</if>
+      <if test="categoryCode != null  and categoryCode != ''"> and category_code = #{categoryCode}</if>
+
+      <if test="deleted != null "> and deleted = #{deleted}</if>
+    </where>
+  </select>
 
   <select id="selectAppProductCategoryById" parameterType="Long" resultMap="BaseResultMap">
     <include refid="selectAppProductCategoryVo"/>
     where id = #{id}
   </select>
+  <insert id="insertAppProductCategory" parameterType="com.industrial.entity.AppProductCategory" useGeneratedKeys="true" keyProperty="id">
+    insert into app_product_category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="categoryName != null and categoryName != ''">category_name,</if>
+      <if test="productType != null">product_type,</if>
+      <if test="categoryCode != null and categoryCode != ''">category_code,</if>
+      <if test="mnemonicCode != null">mnemonic_code,</if>
+      <if test="topicImgId != null">topic_img_id,</if>
+      <if test="description != null">description,</if>
+      <if test="updateTime != null">update_time,</if>
+      <if test="deleteTime != null">delete_time,</if>
+      <if test="deleted != null">deleted,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="categoryName != null and categoryName != ''">#{categoryName},</if>
+      <if test="productType != null">#{productType},</if>
+      <if test="categoryCode != null and categoryCode != ''">#{categoryCode},</if>
+      <if test="mnemonicCode != null">#{mnemonicCode},</if>
+      <if test="topicImgId != null">#{topicImgId},</if>
+      <if test="description != null">#{description},</if>
+      <if test="updateTime != null">#{updateTime},</if>
+      <if test="deleteTime != null">#{deleteTime},</if>
+      <if test="deleted != null">#{deleted},</if>
+    </trim>
+  </insert>
 
+  <update id="updateAppProductCategory" parameterType="com.industrial.entity.AppProductCategory">
+    update app_product_category
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="categoryName != null and categoryName != ''">category_name = #{categoryName},</if>
+      <if test="productType != null">product_type = #{productType},</if>
+      <if test="categoryCode != null and categoryCode != ''">category_code = #{categoryCode},</if>
+      <if test="mnemonicCode != null">mnemonic_code = #{mnemonicCode},</if>
+      <if test="topicImgId != null">topic_img_id = #{topicImgId},</if>
+      <if test="description != null">description = #{description},</if>
+      <if test="updateTime != null">update_time = #{updateTime},</if>
+      <if test="deleteTime != null">delete_time = #{deleteTime},</if>
+      <if test="deleted != null">deleted = #{deleted},</if>
+    </trim>
+    where id = #{id}
+  </update>
+
+  <update id="updateTypeById">
+    UPDATE app_product_category p
+    SET p.product_type = #{productType}
+    WHERE p.id = #{categoryId}
+  </update>
+
+  <update id="updateDeletedById">
+    UPDATE app_product_category p
+    SET p.deleted = #{deleted}
+    WHERE p.id = #{categoryId}
+  </update>
+
+  <delete id="deleteAppProductCategoryById" parameterType="Long">
+    delete from app_product_category where id = #{id}
+  </delete>
+
+  <delete id="deleteAppProductCategoryByIds" parameterType="String">
+    delete from app_product_category where id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
 
 </mapper>

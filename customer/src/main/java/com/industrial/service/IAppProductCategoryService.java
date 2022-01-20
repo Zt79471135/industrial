@@ -23,11 +23,12 @@ public interface IAppProductCategoryService
 
     /**
      * 查询商品分类列表
-     * 
-     * @param categoryName 分类名 ,categoryCode 分类编号
+     *
+     * @param appProductCategory 商品分类
      * @return 商品分类集合
      */
-    public List<CategoryDto> selectAppProductCategoryList(String categoryName, String categoryCode);
+    //public List<CategoryDto> selectAppProductCategoryList(String categoryName, String categoryCode);
+    public List<AppProductCategory> selectAppProductCategoryList(AppProductCategory appProductCategory);
 
     /**
      * 新增商品分类
@@ -44,6 +45,22 @@ public interface IAppProductCategoryService
      * @return 结果
      */
     public int updateAppProductCategory(AppProductCategory appProductCategory);
+
+    /**
+     * 根据ID更新所属分类
+     *
+     * @param categoryId,productType
+     * @return 结果
+     */
+     int updateTypeById(Integer productType,Long[] categoryId);
+
+    /**
+     * 根据ID更新启用状态
+     *
+     * @param categoryId,deleted
+     * @return 结果
+     */
+     int updateDeletedById(Integer deleted,Long[] categoryId);
 
     /**
      * 批量删除商品分类
