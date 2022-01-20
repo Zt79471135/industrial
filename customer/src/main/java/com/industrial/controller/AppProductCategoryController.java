@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.industrial.common.dto.CategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.industrial.common.annotation.Log;
 import com.industrial.common.core.controller.BaseController;
@@ -74,7 +75,7 @@ public class AppProductCategoryController extends BaseController
     //@PreAuthorize("@ss.hasPermi('category:add')")
     @Log(title = "商品分类", businessType = BusinessType.INSERT)
     @PostMapping("/add")
-    public AjaxResult add(@RequestBody AppProductCategory appProductCategory)
+    public AjaxResult add(@Validated  @RequestBody AppProductCategory appProductCategory)
     {
         return toAjax(appProductCategoryService.insertAppProductCategory(appProductCategory));
     }
@@ -85,7 +86,7 @@ public class AppProductCategoryController extends BaseController
     //@PreAuthorize("@ss.hasPermi('category:edit')")
     @Log(title = "商品分类", businessType = BusinessType.UPDATE)
     @PutMapping("/update")
-    public AjaxResult edit(@RequestBody AppProductCategory appProductCategory)
+    public AjaxResult edit(@Validated @RequestBody AppProductCategory appProductCategory)
     {
         return toAjax(appProductCategoryService.updateAppProductCategory(appProductCategory));
     }
