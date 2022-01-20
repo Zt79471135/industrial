@@ -3,6 +3,8 @@ package com.industrial.service;
 import java.util.List;
 
 import com.industrial.common.dto.CategoryDto;
+import com.industrial.common.vo.updateTypeVo;
+import com.industrial.common.vo.UpdateDeletedVo;
 import com.industrial.domin.AppProductCategory;
 
 /**
@@ -48,18 +50,18 @@ public interface IAppProductCategoryService
     /**
      * 根据ID更新所属分类
      *
-     * @param ids,productType
+     * @param typeVo
      * @return 结果
      */
-     int updateTypeById(Integer productType,Long[] ids);
+     int updateType(updateTypeVo typeVo);
 
     /**
      * 根据ID更新启用状态
      *
-     * @param ids,deleted
+     * @param deletedVo
      * @return 结果
      */
-     int updateDeletedById(Integer deleted,Long[] ids);
+     int updateDeleted(UpdateDeletedVo deletedVo);
 
     /**
      * 批量删除商品分类

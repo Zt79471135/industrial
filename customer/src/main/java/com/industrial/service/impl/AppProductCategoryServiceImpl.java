@@ -6,6 +6,8 @@ import com.industrial.common.dto.CategoryDto;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.industrial.common.dto.ProductDto;
 import com.industrial.common.utils.DateUtils;
+import com.industrial.common.vo.updateTypeVo;
+import com.industrial.common.vo.UpdateDeletedVo;
 import com.industrial.domin.AppProductCategory;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
@@ -89,13 +91,15 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     /**
      * 根据ID更新所属分类
      *
-     * @param ids,productType
+     * @param typeVo
      * @return 结果
      */
     @Override
-    public int updateTypeById(Integer productType,Long[] ids)
+    public int updateType(updateTypeVo typeVo)
     {
         //return appProductCategoryMapper.updateTypeById(productType,ids);
+        Long[] ids = typeVo.getIds();
+        Integer productType = typeVo.getProductType();
         int ret = 0;
         for (Long categoryId : ids) {
             ret = appProductCategoryMapper.updateTypeById(productType,categoryId);
@@ -106,13 +110,15 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     /**
      * 根据ID更新启用状态
      *
-     * @param ids,deleted
+     * @param deletedVo
      * @return 结果
      */
     @Override
-    public int updateDeletedById(Integer deleted,Long[] ids)
+    public int updateDeleted(UpdateDeletedVo deletedVo)
     {
         //return appProductCategoryMapper.updateDeletedById(deleted,ids);
+        Long[] ids = deletedVo.getIds();
+        Integer deleted = deletedVo.getDeleted();
         int ret = 0;
         for (Long categoryId : ids) {
             ret = appProductCategoryMapper.updateDeletedById(deleted,categoryId);
