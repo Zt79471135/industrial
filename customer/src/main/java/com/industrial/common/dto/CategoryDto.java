@@ -1,10 +1,7 @@
 package com.industrial.common.dto;
 
-import com.industrial.common.core.domain.entity.SysUser;
-import com.industrial.entity.AppProductCategory;
+import com.industrial.domin.AppProductCategory;
 import com.industrial.common.core.domain.entity.SysDictData;
-import lombok.Data;
-import java.util.List;
 
 /**
  * 描述:

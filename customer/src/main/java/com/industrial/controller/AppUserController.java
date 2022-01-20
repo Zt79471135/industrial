@@ -16,7 +16,7 @@ import com.industrial.common.annotation.Log;
 import com.industrial.common.core.controller.BaseController;
 import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.enums.BusinessType;
-import com.industrial.entity.AppUser;
+import com.industrial.domin.AppUser;
 import com.industrial.service.IAppUserService;
 import com.industrial.common.utils.poi.ExcelUtil;
 import com.industrial.common.core.page.TableDataInfo;

@@ -1,6 +1,6 @@
 package com.industrial.common.vo;
 
-import com.industrial.entity.AppActivity;
+import com.industrial.domin.AppActivity;
 import lombok.Data;
 
 import java.util.List;

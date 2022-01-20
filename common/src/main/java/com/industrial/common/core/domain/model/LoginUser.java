@@ -2,10 +2,11 @@ package com.industrial.common.core.domain.model;
 
 import java.util.Collection;
 import java.util.Set;
+
+import com.industrial.common.core.domain.entity.SysUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.industrial.common.core.domain.entity.SysUser;
 
 /**
  * 登录用户身份权限

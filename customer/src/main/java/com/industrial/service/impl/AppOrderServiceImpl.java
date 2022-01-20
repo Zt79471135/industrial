@@ -2,7 +2,7 @@ package com.industrial.service.impl;
 
 import com.industrial.common.dto.OrderDto;
 import com.industrial.common.vo.OrderVo;
-import com.industrial.entity.AppOrder;
+import com.industrial.domin.AppOrder;
 import com.industrial.mapper.AppOrderMapper;
 import com.industrial.service.AppOrderService;
 import org.springframework.beans.BeanUtils;

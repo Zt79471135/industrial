@@ -3,7 +3,6 @@ package com.industrial.system.domain;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.industrial.common.annotation.Excel;
-import com.industrial.common.annotation.Excel.ColumnType;
 import com.industrial.common.core.domain.BaseEntity;
 
 /**
@@ -16,7 +15,7 @@ public class SysOperLog extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 日志主键 */
-    @Excel(name = "操作序号", cellType = ColumnType.NUMERIC)
+    @Excel(name = "操作序号", cellType = Excel.ColumnType.NUMERIC)
     private Long operId;
 
     /** 操作模块 */

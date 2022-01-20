@@ -2,7 +2,6 @@ package com.industrial.service;
 
 import com.industrial.common.dto.OrderDto;
 import com.industrial.common.vo.OrderVo;
-import org.springframework.stereotype.Service;
 
 /**
  * @author zhu

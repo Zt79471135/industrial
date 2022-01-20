@@ -1,12 +1,12 @@
 package com.industrial.common.utils.ip;
 
+import com.industrial.common.config.IndustrialConfig;
+import com.industrial.common.constant.Constants;
+import com.industrial.common.utils.http.HttpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSONObject;
-import com.industrial.common.config.IndustrialConfig;
-import com.industrial.common.constant.Constants;
 import com.industrial.common.utils.StringUtils;
-import com.industrial.common.utils.http.HttpUtils;
 
 /**
  * 获取地址类

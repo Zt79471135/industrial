@@ -1,8 +1,8 @@
 package com.industrial.common.dto;
 
 
-import com.industrial.entity.AppProduct;
-import com.industrial.entity.AppProductCategory;
+import com.industrial.domin.AppProduct;
+import com.industrial.domin.AppProductCategory;
 import lombok.Data;
 
 /**

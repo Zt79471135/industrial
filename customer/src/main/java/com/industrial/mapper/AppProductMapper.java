@@ -1,7 +1,7 @@
 package com.industrial.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.industrial.entity.AppProduct;
+import com.industrial.domin.AppProduct;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

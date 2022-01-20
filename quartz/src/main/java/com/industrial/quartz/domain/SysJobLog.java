@@ -1,10 +1,11 @@
 package com.industrial.quartz.domain;
 
 import java.util.Date;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.industrial.common.annotation.Excel;
 import com.industrial.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 定时任务调度日志表 sys_job_log

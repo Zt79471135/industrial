@@ -3,6 +3,17 @@ package com.industrial.web.controller.system;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
+
+import com.industrial.common.annotation.Log;
+import com.industrial.common.constant.UserConstants;
+import com.industrial.common.core.controller.BaseController;
+import com.industrial.common.enums.BusinessType;
+import com.industrial.common.utils.SecurityUtils;
+import com.industrial.common.utils.StringUtils;
+import com.industrial.common.utils.poi.ExcelUtil;
+import com.industrial.system.service.ISysPostService;
+import com.industrial.system.service.ISysRoleService;
+import com.industrial.system.service.ISysUserService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,20 +27,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.industrial.common.annotation.Log;
-import com.industrial.common.constant.UserConstants;
-import com.industrial.common.core.controller.BaseController;
 import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.core.domain.entity.SysRole;
 import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.core.page.TableDataInfo;
-import com.industrial.common.enums.BusinessType;
-import com.industrial.common.utils.SecurityUtils;
-import com.industrial.common.utils.StringUtils;
-import com.industrial.common.utils.poi.ExcelUtil;
-import com.industrial.system.service.ISysPostService;
-import com.industrial.system.service.ISysRoleService;
-import com.industrial.system.service.ISysUserService;
 
 /**
  * 用户信息

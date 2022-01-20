@@ -1,7 +1,7 @@
 package com.industrial.common.vo;
 
 
-import com.industrial.entity.AppProduct;
+import com.industrial.domin.AppProduct;
 
 /**
  * @author zhu

@@ -1,7 +1,6 @@
 package com.industrial.service;
 
 import com.industrial.common.dto.ProductDto;
-import com.industrial.common.vo.CheckVo;
 import com.industrial.common.vo.ProductVo;
 
 import java.util.List;

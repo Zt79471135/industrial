@@ -1,4 +1,4 @@
-package com.industrial.entity;
+package com.industrial.domin;
 
 
 

@@ -1,6 +1,6 @@
 package com.industrial.common.vo;
 
-import com.industrial.entity.AppOrder;
+import com.industrial.domin.AppOrder;
 
 /**
  * @author zhu

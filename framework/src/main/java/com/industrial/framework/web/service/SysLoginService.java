@@ -1,6 +1,13 @@
 package com.industrial.framework.web.service;
 
 import javax.annotation.Resource;
+
+import com.industrial.common.exception.user.CaptchaException;
+import com.industrial.common.exception.user.CaptchaExpireException;
+import com.industrial.common.exception.user.UserPasswordNotMatchException;
+import com.industrial.framework.manager.factory.AsyncFactory;
+import com.industrial.system.service.ISysConfigService;
+import com.industrial.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,17 +19,11 @@ import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.core.domain.model.LoginUser;
 import com.industrial.common.core.redis.RedisCache;
 import com.industrial.common.exception.ServiceException;
-import com.industrial.common.exception.user.CaptchaException;
-import com.industrial.common.exception.user.CaptchaExpireException;
-import com.industrial.common.exception.user.UserPasswordNotMatchException;
 import com.industrial.common.utils.DateUtils;
 import com.industrial.common.utils.MessageUtils;
 import com.industrial.common.utils.ServletUtils;
 import com.industrial.common.utils.ip.IpUtils;
 import com.industrial.framework.manager.AsyncManager;
-import com.industrial.framework.manager.factory.AsyncFactory;
-import com.industrial.system.service.ISysConfigService;
-import com.industrial.system.service.ISysUserService;
 
 /**
  * 登录校验方法

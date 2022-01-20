@@ -1,6 +1,7 @@
 package com.industrial.controller;
 
 
+import com.industrial.common.core.controller.BaseController;
 import com.industrial.common.core.domain.ResponseCode;
 import com.industrial.common.core.domain.ResponseResult;
 import com.industrial.common.dto.ProductDto;
@@ -11,14 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-
 /**
  * @author zhu
  * @date 2021年12月24日 8:51
  */
 @RestController
 @RequestMapping("/product")
-public class AppProductController {
+public class AppProductController extends BaseController {
     @Resource
     private AppProductService productService;
 
@@ -39,6 +39,7 @@ public class AppProductController {
     @GetMapping("/classify")
     public ResponseResult<List<ProductDto>> classify(@RequestParam Integer categoryId,@RequestParam String productName) {
         ResponseResult<List<ProductDto>> result = null;
+        startPage();
         List<ProductDto> productDto = productService.selectProductByCategoryId(categoryId,productName,3);
         result = ResponseResult.success(productDto);
         return result;
@@ -52,6 +53,7 @@ public class AppProductController {
     @GetMapping("/status")
     public ResponseResult<List<ProductDto>> status(@RequestParam Integer status) {
         ResponseResult<List<ProductDto>> result = null;
+        startPage();
         List<ProductDto> productDto = productService.selectProductByStatus(status);
         result = ResponseResult.success(productDto);
         return result;

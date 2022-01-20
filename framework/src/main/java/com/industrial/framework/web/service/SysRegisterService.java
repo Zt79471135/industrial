@@ -1,21 +1,21 @@
 package com.industrial.framework.web.service;
 
+import com.industrial.common.exception.user.CaptchaException;
+import com.industrial.common.exception.user.CaptchaExpireException;
 import com.industrial.common.constant.Constants;
 import com.industrial.common.constant.UserConstants;
 import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.core.domain.model.RegisterBody;
 import com.industrial.common.core.redis.RedisCache;
-import com.industrial.common.exception.user.CaptchaException;
-import com.industrial.common.exception.user.CaptchaExpireException;
 import com.industrial.common.utils.MessageUtils;
 import com.industrial.common.utils.SecurityUtils;
 import com.industrial.common.utils.StringUtils;
+import com.industrial.framework.manager.AsyncManager;
+import com.industrial.framework.manager.factory.AsyncFactory;
 import com.industrial.system.service.ISysConfigService;
 import com.industrial.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.industrial.framework.manager.AsyncManager;
-import com.industrial.framework.manager.factory.AsyncFactory;
 
 /**
  * 注册校验方法

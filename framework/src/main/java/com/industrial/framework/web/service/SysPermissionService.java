@@ -2,11 +2,12 @@ package com.industrial.framework.web.service;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import com.industrial.system.service.ISysMenuService;
+import com.industrial.system.service.ISysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.industrial.common.core.domain.entity.SysUser;
-import com.industrial.system.service.ISysMenuService;
-import com.industrial.system.service.ISysRoleService;
 
 /**
  * 用户权限处理

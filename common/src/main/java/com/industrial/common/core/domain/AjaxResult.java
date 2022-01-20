@@ -1,6 +1,7 @@
 package com.industrial.common.core.domain;
 
 import java.util.HashMap;
+
 import com.industrial.common.constant.HttpStatus;
 import com.industrial.common.utils.StringUtils;
 

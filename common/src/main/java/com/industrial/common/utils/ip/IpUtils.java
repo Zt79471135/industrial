@@ -3,8 +3,9 @@ package com.industrial.common.utils.ip;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import javax.servlet.http.HttpServletRequest;
-import com.industrial.common.utils.StringUtils;
+
 import com.industrial.common.utils.html.EscapeUtil;
+import com.industrial.common.utils.StringUtils;
 
 /**
  * 获取IP方法

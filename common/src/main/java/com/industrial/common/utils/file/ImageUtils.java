@@ -7,11 +7,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
+
+import com.industrial.common.config.IndustrialConfig;
+import com.industrial.common.constant.Constants;
 import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.industrial.common.config.IndustrialConfig;
-import com.industrial.common.constant.Constants;
 import com.industrial.common.utils.StringUtils;
 
 /**

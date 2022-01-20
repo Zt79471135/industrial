@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.utils.StringUtils;
+import com.industrial.common.core.domain.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;

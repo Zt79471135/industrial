@@ -1,7 +1,7 @@
 package com.industrial.service;
 
 import java.util.List;
-import com.industrial.entity.AppUser;
+import com.industrial.domin.AppUser;
 
 /**
  * 客户管理Service接口

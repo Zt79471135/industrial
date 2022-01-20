@@ -4,6 +4,12 @@ import java.util.Collection;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.industrial.common.annotation.Log;
+import com.industrial.common.utils.ServletUtils;
+import com.industrial.framework.manager.AsyncManager;
+import com.industrial.framework.manager.factory.AsyncFactory;
+import com.industrial.system.domain.SysOperLog;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -15,17 +21,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerMapping;
 import com.alibaba.fastjson.JSON;
-import com.industrial.common.annotation.Log;
 import com.industrial.common.core.domain.model.LoginUser;
 import com.industrial.common.enums.BusinessStatus;
 import com.industrial.common.enums.HttpMethod;
-import com.industrial.common.utils.ServletUtils;
 import com.industrial.common.utils.StringUtils;
 import com.industrial.common.utils.ip.IpUtils;
 import com.industrial.common.utils.SecurityUtils;
-import com.industrial.framework.manager.AsyncManager;
-import com.industrial.framework.manager.factory.AsyncFactory;
-import com.industrial.system.domain.SysOperLog;
 
 /**
  * 操作日志记录处理

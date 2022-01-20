@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.industrial.mapper.AppUserMapper">
     
-    <resultMap type="com.industrial.entity.AppUser" id="AppUserResult">
+    <resultMap type="com.industrial.domin.AppUser" id="AppUserResult">
         <result property="id"    column="id"    />
         <result property="openid"    column="openid"    />
         <result property="company"    column="company"    />
@@ -31,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, openid, company, client_code, brief, registrant, registrat_time, nickname, mobile, cust_type, company_type, invoice_up, credit_code, bank, bank_account, phone_num, address, update_time, extend, deleted from app_user
     </sql>
 
-    <select id="selectAppUserList" parameterType="com.industrial.entity.AppUser" resultMap="AppUserResult">
+    <select id="selectAppUserList" parameterType="com.industrial.domin.AppUser" resultMap="AppUserResult">
         <include refid="selectAppUserVo"/>
         <where>  
             <if test="openid != null  and openid != ''"> and openid = #{openid}</if>
@@ -60,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
         
-    <insert id="insertAppUser" parameterType="com.industrial.entity.AppUser" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertAppUser" parameterType="com.industrial.domin.AppUser" useGeneratedKeys="true" keyProperty="id">
         insert into app_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="openid != null and openid != ''">openid,</if>
@@ -106,7 +106,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateAppUser" parameterType="com.industrial.entity.AppUser">
+    <update id="updateAppUser" parameterType="com.industrial.domin.AppUser">
         update app_user
         <trim prefix="SET" suffixOverrides=",">
             <if test="openid != null and openid != ''">openid = #{openid},</if>

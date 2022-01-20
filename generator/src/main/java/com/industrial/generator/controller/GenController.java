@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import com.industrial.generator.service.IGenTableColumnService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,7 +27,6 @@ import com.industrial.common.core.text.Convert;
 import com.industrial.common.enums.BusinessType;
 import com.industrial.generator.domain.GenTable;
 import com.industrial.generator.domain.GenTableColumn;
-import com.industrial.generator.service.IGenTableColumnService;
 import com.industrial.generator.service.IGenTableService;
 
 /**

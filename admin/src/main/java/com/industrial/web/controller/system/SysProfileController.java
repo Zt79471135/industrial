@@ -1,6 +1,19 @@
 package com.industrial.web.controller.system;
 
 import java.io.IOException;
+
+import com.industrial.common.annotation.Log;
+import com.industrial.common.config.IndustrialConfig;
+import com.industrial.common.constant.UserConstants;
+import com.industrial.common.core.controller.BaseController;
+import com.industrial.common.core.domain.AjaxResult;
+import com.industrial.common.core.domain.entity.SysUser;
+import com.industrial.common.enums.BusinessType;
+import com.industrial.common.utils.SecurityUtils;
+import com.industrial.common.utils.StringUtils;
+import com.industrial.common.utils.file.FileUploadUtils;
+import com.industrial.framework.web.service.TokenService;
+import com.industrial.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,19 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.industrial.common.annotation.Log;
-import com.industrial.common.config.IndustrialConfig;
-import com.industrial.common.constant.UserConstants;
-import com.industrial.common.core.controller.BaseController;
-import com.industrial.common.core.domain.AjaxResult;
-import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.core.domain.model.LoginUser;
-import com.industrial.common.enums.BusinessType;
-import com.industrial.common.utils.SecurityUtils;
-import com.industrial.common.utils.StringUtils;
-import com.industrial.common.utils.file.FileUploadUtils;
-import com.industrial.framework.web.service.TokenService;
-import com.industrial.system.service.ISysUserService;
 
 /**
  * 个人信息 业务处理
