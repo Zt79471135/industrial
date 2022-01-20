@@ -10,6 +10,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import com.industrial.common.exception.ServiceException;
+import com.industrial.generator.domain.GenTable;
+import com.industrial.generator.domain.GenTableColumn;
+import com.industrial.generator.mapper.GenTableColumnMapper;
+import com.industrial.generator.mapper.GenTableMapper;
+import com.industrial.generator.util.GenUtils;
+import com.industrial.generator.util.VelocityInitializer;
+import com.industrial.generator.util.VelocityUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
@@ -25,16 +34,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.industrial.common.constant.Constants;
 import com.industrial.common.constant.GenConstants;
 import com.industrial.common.core.text.CharsetKit;
-import com.industrial.common.exception.ServiceException;
 import com.industrial.common.utils.SecurityUtils;
 import com.industrial.common.utils.StringUtils;
-import com.industrial.generator.domain.GenTable;
-import com.industrial.generator.domain.GenTableColumn;
-import com.industrial.generator.mapper.GenTableColumnMapper;
-import com.industrial.generator.mapper.GenTableMapper;
-import com.industrial.generator.util.GenUtils;
-import com.industrial.generator.util.VelocityInitializer;
-import com.industrial.generator.util.VelocityUtils;
 
 /**
  * 业务 服务层实现

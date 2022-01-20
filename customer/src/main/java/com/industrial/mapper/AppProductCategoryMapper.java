@@ -1,8 +1,6 @@
 package com.industrial.mapper;
-import java.util.List;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.industrial.common.dto.CategoryDto;
-import com.industrial.entity.AppProductCategory;
+import com.industrial.domin.AppProductCategory;
 
 /**
  * @author chenjh

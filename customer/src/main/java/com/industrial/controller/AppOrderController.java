@@ -3,14 +3,12 @@ package com.industrial.controller;
 import com.industrial.common.core.domain.ResponseCode;
 import com.industrial.common.core.domain.ResponseResult;
 import com.industrial.common.dto.OrderDto;
-import com.industrial.common.dto.ProductDto;
 import com.industrial.common.vo.OrderVo;
-import com.industrial.entity.AppOrder;
+import com.industrial.domin.AppOrder;
 import com.industrial.service.AppOrderService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author zhu

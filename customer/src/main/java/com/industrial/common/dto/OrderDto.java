@@ -1,6 +1,6 @@
 package com.industrial.common.dto;
 
-import com.industrial.entity.AppOrder;
+import com.industrial.domin.AppOrder;
 
 /**
  * @author zhu

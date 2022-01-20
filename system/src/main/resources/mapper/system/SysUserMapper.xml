@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="updateBy"     column="update_by"    />
 		<result property="updateTime"   column="update_time"  />
 		<result property="remark"       column="remark"       />
-		<association property="dept"    column="dept_id" javaType="com.industrial.common.core.domain.entity.SysDept" resultMap="deptResult" />
+		<association property="dept" column="dept_id" javaType="com.industrial.common.core.domain.entity.SysDept" resultMap="deptResult" />
 		<collection  property="roles"   javaType="java.util.List"        resultMap="RoleResult" />
 	</resultMap>
 	

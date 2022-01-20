@@ -1,6 +1,9 @@
 package com.industrial.framework.aspectj;
 
 import java.util.Objects;
+
+import com.industrial.common.annotation.DataSource;
+import com.industrial.framework.datasource.DynamicDataSourceContextHolder;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,9 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import com.industrial.common.annotation.DataSource;
 import com.industrial.common.utils.StringUtils;
-import com.industrial.framework.datasource.DynamicDataSourceContextHolder;
 
 /**
  * 多数据源处理

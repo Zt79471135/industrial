@@ -2,11 +2,11 @@ package com.industrial.common.core.domain.entity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import com.industrial.common.annotation.Excel;
+import com.industrial.common.constant.UserConstants;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.industrial.common.annotation.Excel;
-import com.industrial.common.annotation.Excel.ColumnType;
-import com.industrial.common.constant.UserConstants;
 import com.industrial.common.core.domain.BaseEntity;
 
 /**
@@ -19,11 +19,11 @@ public class SysDictData extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 字典编码 */
-    @Excel(name = "字典编码", cellType = ColumnType.NUMERIC)
+    @Excel(name = "字典编码", cellType = Excel.ColumnType.NUMERIC)
     private Long dictCode;
 
     /** 字典排序 */
-    @Excel(name = "字典排序", cellType = ColumnType.NUMERIC)
+    @Excel(name = "字典排序", cellType = Excel.ColumnType.NUMERIC)
     private Long dictSort;
 
     /** 字典标签 */

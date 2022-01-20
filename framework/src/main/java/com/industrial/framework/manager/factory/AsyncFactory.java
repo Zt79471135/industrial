@@ -1,6 +1,11 @@
 package com.industrial.framework.manager.factory;
 
 import java.util.TimerTask;
+
+import com.industrial.system.domain.SysLogininfor;
+import com.industrial.system.domain.SysOperLog;
+import com.industrial.system.service.ISysLogininforService;
+import com.industrial.system.service.ISysOperLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.industrial.common.constant.Constants;
@@ -10,10 +15,6 @@ import com.industrial.common.utils.StringUtils;
 import com.industrial.common.utils.ip.AddressUtils;
 import com.industrial.common.utils.ip.IpUtils;
 import com.industrial.common.utils.spring.SpringUtils;
-import com.industrial.system.domain.SysLogininfor;
-import com.industrial.system.domain.SysOperLog;
-import com.industrial.system.service.ISysLogininforService;
-import com.industrial.system.service.ISysOperLogService;
 import eu.bitwalker.useragentutils.UserAgent;
 
 /**

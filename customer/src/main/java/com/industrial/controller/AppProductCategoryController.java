@@ -4,18 +4,16 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.industrial.common.dto.CategoryDto;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.industrial.common.annotation.Log;
 import com.industrial.common.core.controller.BaseController;
 import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.enums.BusinessType;
-import com.industrial.entity.AppProductCategory;
+import com.industrial.domin.AppProductCategory;
 import com.industrial.service.IAppProductCategoryService;
 import com.industrial.common.utils.poi.ExcelUtil;
 import com.industrial.common.core.page.TableDataInfo;
-import org.springframework.web.bind.annotation.*;
 
 /**
  * 商品分类Controller

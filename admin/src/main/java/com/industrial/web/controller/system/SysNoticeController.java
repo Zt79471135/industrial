@@ -1,6 +1,12 @@
 package com.industrial.web.controller.system;
 
 import java.util.List;
+
+import com.industrial.common.annotation.Log;
+import com.industrial.common.core.controller.BaseController;
+import com.industrial.common.enums.BusinessType;
+import com.industrial.system.domain.SysNotice;
+import com.industrial.system.service.ISysNoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -12,13 +18,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.industrial.common.annotation.Log;
-import com.industrial.common.core.controller.BaseController;
 import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.core.page.TableDataInfo;
-import com.industrial.common.enums.BusinessType;
-import com.industrial.system.domain.SysNotice;
-import com.industrial.system.service.ISysNoticeService;
 
 /**
  * 公告 信息操作处理

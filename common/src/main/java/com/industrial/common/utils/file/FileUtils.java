@@ -11,12 +11,13 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.ArrayUtils;
+
 import com.industrial.common.config.IndustrialConfig;
 import com.industrial.common.utils.DateUtils;
-import com.industrial.common.utils.StringUtils;
 import com.industrial.common.utils.uuid.IdUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import com.industrial.common.utils.StringUtils;
 
 /**
  * 文件处理工具类

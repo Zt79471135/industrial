@@ -1,6 +1,6 @@
 package com.industrial.service;
 
-import com.industrial.entity.AppImageFile;
+import com.industrial.domin.AppImageFile;
 
 /**
  * @author zhu

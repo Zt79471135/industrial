@@ -1,10 +1,10 @@
 package com.industrial.framework.aspectj;
 
+import com.industrial.common.annotation.DataScope;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
-import com.industrial.common.annotation.DataScope;
 import com.industrial.common.core.domain.BaseEntity;
 import com.industrial.common.core.domain.entity.SysRole;
 import com.industrial.common.core.domain.entity.SysUser;

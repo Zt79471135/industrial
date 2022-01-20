@@ -4,10 +4,9 @@ package com.industrial.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.industrial.common.dto.ProductDto;
 import com.industrial.common.exception.ServiceException;
-import com.industrial.common.vo.CheckVo;
 import com.industrial.common.vo.ProductVo;
-import com.industrial.entity.AppProduct;
-import com.industrial.entity.AppProductCategory;
+import com.industrial.domin.AppProduct;
+import com.industrial.domin.AppProductCategory;
 import com.industrial.mapper.AppProductCategoryMapper;
 import com.industrial.mapper.AppProductMapper;
 import com.industrial.service.AppProductService;
@@ -156,6 +155,7 @@ public class AppProductServiceImpl implements AppProductService {
     public List<ProductDto> selectProductByCategoryId(Integer categoryId, String productName, int status) {
         QueryWrapper<AppProduct> qw = new QueryWrapper<>();
         qw.lambda().eq(AppProduct::getStatus, (byte) status);
+        qw.lambda().eq(AppProduct::getStatus, (byte) 0);
         if (categoryId != 0 || !"".equals(productName)) {
             if (categoryId != 0) {
                 qw.lambda().eq(AppProduct::getCategoryId, categoryId);

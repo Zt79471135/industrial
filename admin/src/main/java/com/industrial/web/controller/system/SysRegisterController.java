@@ -1,15 +1,15 @@
 package com.industrial.web.controller.system;
 
+import com.industrial.common.core.controller.BaseController;
+import com.industrial.common.utils.StringUtils;
 import com.industrial.framework.web.service.SysRegisterService;
+import com.industrial.system.service.ISysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.industrial.common.core.controller.BaseController;
 import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.core.domain.model.RegisterBody;
-import com.industrial.common.utils.StringUtils;
-import com.industrial.system.service.ISysConfigService;
 
 /**
  * 注册验证

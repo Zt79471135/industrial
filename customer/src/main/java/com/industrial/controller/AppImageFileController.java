@@ -6,7 +6,7 @@ import com.industrial.common.core.domain.ResponseCode;
 import com.industrial.common.core.domain.ResponseResult;
 import com.industrial.common.utils.file.FileUploadUtils;
 import com.industrial.common.utils.file.MimeTypeUtils;
-import com.industrial.entity.AppImageFile;
+import com.industrial.domin.AppImageFile;
 import com.industrial.framework.config.ServerConfig;
 import com.industrial.service.AppImageFileService;
 import org.springframework.web.bind.annotation.*;

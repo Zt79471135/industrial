@@ -13,7 +13,6 @@ import com.industrial.common.enums.BusinessType;
 import com.industrial.common.utils.StringUtils;
 import com.industrial.system.service.ISysDeptService;
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;

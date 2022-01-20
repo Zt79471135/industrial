@@ -2,6 +2,14 @@ package com.industrial.web.controller.common;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.industrial.common.config.IndustrialConfig;
+import com.industrial.common.constant.Constants;
+import com.industrial.common.core.domain.AjaxResult;
+import com.industrial.common.utils.StringUtils;
+import com.industrial.common.utils.file.FileUploadUtils;
+import com.industrial.common.utils.file.FileUtils;
+import com.industrial.framework.config.ServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.industrial.common.config.IndustrialConfig;
-import com.industrial.common.constant.Constants;
-import com.industrial.common.core.domain.AjaxResult;
-import com.industrial.common.utils.StringUtils;
-import com.industrial.common.utils.file.FileUploadUtils;
-import com.industrial.common.utils.file.FileUtils;
-import com.industrial.framework.config.ServerConfig;
 
 /**
  * 通用请求处理

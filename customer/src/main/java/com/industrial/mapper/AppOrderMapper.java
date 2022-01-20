@@ -1,7 +1,7 @@
 package com.industrial.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.industrial.entity.AppOrder;
+import com.industrial.domin.AppOrder;
 
 /**
  * @author zhu

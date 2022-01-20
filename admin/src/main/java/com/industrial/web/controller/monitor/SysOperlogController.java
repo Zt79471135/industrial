@@ -3,7 +3,13 @@ package com.industrial.web.controller.monitor;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.industrial.common.annotation.Log;
+import com.industrial.common.core.controller.BaseController;
+import com.industrial.common.enums.BusinessType;
+import com.industrial.common.utils.poi.ExcelUtil;
+import com.industrial.system.domain.SysOperLog;
+import com.industrial.system.service.ISysOperLogService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,14 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.industrial.common.annotation.Log;
-import com.industrial.common.core.controller.BaseController;
 import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.core.page.TableDataInfo;
-import com.industrial.common.enums.BusinessType;
-import com.industrial.common.utils.poi.ExcelUtil;
-import com.industrial.system.domain.SysOperLog;
-import com.industrial.system.service.ISysOperLogService;
 
 /**
  * 操作日志记录

@@ -2,10 +2,11 @@ package com.industrial.common.utils;
 
 import java.util.Collection;
 import java.util.List;
+
 import com.industrial.common.constant.Constants;
+import com.industrial.common.utils.spring.SpringUtils;
 import com.industrial.common.core.domain.entity.SysDictData;
 import com.industrial.common.core.redis.RedisCache;
-import com.industrial.common.utils.spring.SpringUtils;
 
 /**
  * 字典工具类

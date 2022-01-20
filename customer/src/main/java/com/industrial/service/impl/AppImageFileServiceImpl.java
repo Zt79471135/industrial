@@ -1,6 +1,6 @@
 package com.industrial.service.impl;
 
-import com.industrial.entity.AppImageFile;
+import com.industrial.domin.AppImageFile;
 import com.industrial.mapper.AppImageFileMapper;
 import com.industrial.service.AppImageFileService;
 import org.springframework.stereotype.Service;

@@ -4,17 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
+
+import com.industrial.common.annotation.RepeatSubmit;
+import com.industrial.framework.interceptor.RepeatSubmitInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONObject;
-import com.industrial.common.annotation.RepeatSubmit;
 import com.industrial.common.constant.Constants;
 import com.industrial.common.core.redis.RedisCache;
 import com.industrial.common.filter.RepeatedlyRequestWrapper;
 import com.industrial.common.utils.StringUtils;
 import com.industrial.common.utils.http.HttpHelper;
-import com.industrial.framework.interceptor.RepeatSubmitInterceptor;
 
 /**
  * 判断请求url和数据是否和上一次相同，

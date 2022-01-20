@@ -1,4 +1,4 @@
-package com.industrial.entity;
+package com.industrial.domin;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;

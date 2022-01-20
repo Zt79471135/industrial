@@ -5,11 +5,11 @@ import java.util.Set;
 
 
 import com.industrial.common.constant.Constants;
-import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.core.domain.entity.SysMenu;
+import com.industrial.common.utils.SecurityUtils;
+import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.core.domain.model.LoginBody;
-import com.industrial.common.utils.SecurityUtils;
 import com.industrial.framework.web.service.SysLoginService;
 import com.industrial.framework.web.service.SysPermissionService;
 import com.industrial.system.service.ISysMenuService;

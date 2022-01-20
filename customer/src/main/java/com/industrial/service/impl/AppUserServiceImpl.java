@@ -2,11 +2,11 @@ package com.industrial.service.impl;
 
 import java.util.List;
 import com.industrial.common.utils.DateUtils;
+import com.industrial.domin.AppUser;
+import com.industrial.mapper.AppUserMapper;
+import com.industrial.service.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.industrial.mapper.AppUserMapper;
-import com.industrial.entity.AppUser;
-import com.industrial.service.IAppUserService;
 
 /**
  * 客户管理Service业务层处理
@@ -15,7 +15,7 @@ import com.industrial.service.IAppUserService;
  * @date 2022-01-18
  */
 @Service
-public class AppUserServiceImpl implements IAppUserService 
+public class AppUserServiceImpl implements IAppUserService
 {
     @Autowired
     private AppUserMapper appUserMapper;

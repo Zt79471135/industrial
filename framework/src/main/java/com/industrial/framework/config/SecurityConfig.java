@@ -1,5 +1,8 @@
 package com.industrial.framework.config;
 
+import com.industrial.framework.security.filter.JwtAuthenticationTokenFilter;
+import com.industrial.framework.security.handle.AuthenticationEntryPointImpl;
+import com.industrial.framework.security.handle.LogoutSuccessHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -14,9 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.filter.CorsFilter;
-import com.industrial.framework.security.filter.JwtAuthenticationTokenFilter;
-import com.industrial.framework.security.handle.AuthenticationEntryPointImpl;
-import com.industrial.framework.security.handle.LogoutSuccessHandlerImpl;
+
+import javax.annotation.Resource;
 
 /**
  * spring security配置
@@ -29,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     /**
      * 自定义用户认证逻辑
      */
-    @Autowired
+    @Resource
     private UserDetailsService userDetailsService;
     
     /**

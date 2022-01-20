@@ -1,6 +1,7 @@
 package com.industrial.generator.mapper;
 
 import java.util.List;
+
 import com.industrial.generator.domain.GenTableColumn;
 
 /**

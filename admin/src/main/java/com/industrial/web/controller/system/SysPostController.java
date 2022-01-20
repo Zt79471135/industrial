@@ -2,6 +2,14 @@ package com.industrial.web.controller.system;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.industrial.common.annotation.Log;
+import com.industrial.common.constant.UserConstants;
+import com.industrial.common.core.controller.BaseController;
+import com.industrial.common.enums.BusinessType;
+import com.industrial.common.utils.poi.ExcelUtil;
+import com.industrial.system.domain.SysPost;
+import com.industrial.system.service.ISysPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -13,15 +21,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.industrial.common.annotation.Log;
-import com.industrial.common.constant.UserConstants;
-import com.industrial.common.core.controller.BaseController;
 import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.core.page.TableDataInfo;
-import com.industrial.common.enums.BusinessType;
-import com.industrial.common.utils.poi.ExcelUtil;
-import com.industrial.system.domain.SysPost;
-import com.industrial.system.service.ISysPostService;
 
 /**
  * 岗位信息操作处理

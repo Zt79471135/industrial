@@ -1,6 +1,6 @@
 package com.industrial.common.vo;
 
-import com.industrial.entity.AppImageFile;
+import com.industrial.domin.AppImageFile;
 
 /**
  * @author zhu

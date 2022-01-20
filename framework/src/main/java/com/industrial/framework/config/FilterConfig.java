@@ -3,14 +3,15 @@ package com.industrial.framework.config;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.DispatcherType;
+
+import com.industrial.common.filter.RepeatableFilter;
+import com.industrial.common.filter.XssFilter;
+import com.industrial.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.industrial.common.filter.RepeatableFilter;
-import com.industrial.common.filter.XssFilter;
-import com.industrial.common.utils.StringUtils;
 
 /**
  * Filter配置

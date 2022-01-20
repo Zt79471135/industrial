@@ -1,4 +1,4 @@
-package com.industrial.entity;
+package com.industrial.domin;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -10,15 +10,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 客户收货地址表,用于客户联系人信息
+ * 业务员信息表
  * @author zhu
  * @date 2022年01月19日 16:30
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "app_user_address")
-public class AppUserAddress {
+@TableName(value = "app_user_salesman")
+public class AppUserSalesman {
     /**
      * 主键
      */
@@ -32,16 +32,16 @@ public class AppUserAddress {
     private Integer userId;
 
     /**
-     * 收货人姓名
+     * 姓名
      */
-    @TableField(value = "`name`")
-    private String name;
+    @TableField(value = "sale_name")
+    private String saleName;
 
     /**
-     * 用户编号
+     * 编号
      */
-    @TableField(value = "`uid`")
-    private String uid;
+    @TableField(value = "sale_code")
+    private String saleCode;
 
     /**
      * 手机号
@@ -50,22 +50,10 @@ public class AppUserAddress {
     private String mobile;
 
     /**
-     * 地址类型
-     */
-    @TableField(value = "addr_type")
-    private Integer addrType;
-
-    /**
-     * 用户地址
+     * 地址
      */
     @TableField(value = "address")
     private String address;
-
-    /**
-     * 详细地址
-     */
-    @TableField(value = "detail")
-    private String detail;
 
     /**
      * 更新时间
@@ -89,17 +77,13 @@ public class AppUserAddress {
 
     public static final String COL_USER_ID = "user_id";
 
-    public static final String COL_NAME = "name";
+    public static final String COL_SALE_NAME = "sale_name";
 
-    public static final String COL_UID = "uid";
+    public static final String COL_SALE_CODE = "sale_code";
 
     public static final String COL_MOBILE = "mobile";
 
-    public static final String COL_ADDR_TYPE = "addr_type";
-
     public static final String COL_ADDRESS = "address";
-
-    public static final String COL_DETAIL = "detail";
 
     public static final String COL_UPDATE_TIME = "update_time";
 
