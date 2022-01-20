@@ -63,8 +63,8 @@ public class AppProductCategoryController extends BaseController
      * 获取商品分类详细信息
      */
     //@PreAuthorize("@ss.hasPermi('category:query')")
-    @GetMapping("/details")
-    public AjaxResult getInfo(@RequestParam Long id)
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return AjaxResult.success(appProductCategoryService.selectAppProductCategoryById(id));
     }
