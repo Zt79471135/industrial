@@ -15,6 +15,24 @@
     <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
     <result column="deleted" jdbcType="TINYINT" property="deleted" />
   </resultMap>
+  <resultMap type="com.industrial.common.core.domain.entity.SysDictData" id="DictDataResult">
+    <id     property="dictCode"   column="dict_code"   />
+    <result property="dictSort"   column="dict_sort"   />
+    <result property="dictLabel"  column="dict_label"  />
+    <result property="dictValue"  column="dict_value"  />
+    <result property="dictType"   column="dict_type"   />
+    <result property="cssClass"   column="css_class"   />
+    <result property="listClass"  column="list_class"  />
+    <result property="isDefault"  column="is_default"  />
+    <result property="status"     column="status"      />
+    <result property="createBy"   column="create_by"   />
+    <result property="createTime" column="create_time" />
+    <result property="updateBy"   column="update_by"   />
+    <result property="updateTime" column="update_time" />
+  </resultMap>
+  <resultMap id="CategoryDictDataMap" type="com.industrial.common.dto.CategoryDto" extends="BaseResultMap">
+    <association property="dictData" resultMap="DictDataResult"/>
+  </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, category_name, product_type, category_code, mnemonic_code, topic_img_id, description,
@@ -22,11 +40,12 @@
   </sql>
 
   <sql id="selectAppProductCategoryVo">
-    select id, category_name, product_type, category_code, mnemonic_code, topic_img_id, description, update_time, delete_time, deleted
-    from app_product_category
+    select id, category_name, product_type, category_code, mnemonic_code, topic_img_id, description, p.update_time, delete_time, deleted,d.dict_label
+    from app_product_category p
+    left join sys_dict_data d on d.dict_value = p.product_type and dict_type = 'dict_cate_type'
   </sql>
 
-  <select id="selectAppProductCategoryList" parameterType="com.industrial.domin.AppProductCategory" resultMap="BaseResultMap">
+  <select id="selectAppProductCategoryList"  resultMap="CategoryDictDataMap">
     <include refid="selectAppProductCategoryVo"/>
     <where>
       <if test="categoryName != null  and categoryName != ''"> and category_name like concat('%', #{categoryName}, '%')</if>
