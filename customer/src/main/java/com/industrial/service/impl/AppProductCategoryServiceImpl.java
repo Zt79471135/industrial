@@ -6,13 +6,12 @@ import com.industrial.common.dto.CategoryDto;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.industrial.common.dto.ProductDto;
 import com.industrial.common.utils.DateUtils;
-import com.industrial.entity.AppProduct;
+import com.industrial.domin.AppProductCategory;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.industrial.mapper.AppProductCategoryMapper;
-import com.industrial.entity.AppProductCategory;
 import com.industrial.service.IAppProductCategoryService;
 
 import javax.annotation.Resource;
@@ -55,7 +54,7 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
      * @return 商品分类
      */
     @Override
-    public List<AppProductCategory> selectAppProductCategoryList(AppProductCategory appProductCategory)
+    public List<CategoryDto> selectAppProductCategoryList(AppProductCategory appProductCategory)
     {
         return appProductCategoryMapper.selectAppProductCategoryList(appProductCategory);
     }
@@ -119,8 +118,6 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
             ret = appProductCategoryMapper.updateDeletedById(deleted,categoryId);
         }
         return ret;
-
-
     }
 
     /**

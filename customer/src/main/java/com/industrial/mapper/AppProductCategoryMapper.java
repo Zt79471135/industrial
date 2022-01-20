@@ -2,7 +2,7 @@ package com.industrial.mapper;
 import java.util.List;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.industrial.common.dto.CategoryDto;
-import com.industrial.entity.AppProductCategory;
+import com.industrial.domin.AppProductCategory;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -25,7 +25,7 @@ public interface AppProductCategoryMapper extends BaseMapper<AppProductCategory>
          * @param appProductCategory 商品分类
          * @return 商品分类集合
          */
-        public List<AppProductCategory> selectAppProductCategoryList(AppProductCategory appProductCategory);
+        public List<CategoryDto> selectAppProductCategoryList(AppProductCategory appProductCategory);
 
         /**
          * 新增商品分类

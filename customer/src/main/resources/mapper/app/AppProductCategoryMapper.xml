@@ -26,7 +26,7 @@
     from app_product_category
   </sql>
 
-  <select id="selectAppProductCategoryList" parameterType="com.industrial.entity.AppProductCategory" resultMap="BaseResultMap">
+  <select id="selectAppProductCategoryList" parameterType="com.industrial.domin.AppProductCategory" resultMap="BaseResultMap">
     <include refid="selectAppProductCategoryVo"/>
     <where>
       <if test="categoryName != null  and categoryName != ''"> and category_name like concat('%', #{categoryName}, '%')</if>
@@ -41,7 +41,7 @@
     <include refid="selectAppProductCategoryVo"/>
     where id = #{id}
   </select>
-  <insert id="insertAppProductCategory" parameterType="com.industrial.entity.AppProductCategory" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertAppProductCategory" parameterType="com.industrial.domin.AppProductCategory" useGeneratedKeys="true" keyProperty="id">
     insert into app_product_category
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="categoryName != null and categoryName != ''">category_name,</if>
@@ -67,7 +67,7 @@
     </trim>
   </insert>
 
-  <update id="updateAppProductCategory" parameterType="com.industrial.entity.AppProductCategory">
+  <update id="updateAppProductCategory" parameterType="com.industrial.domin.AppProductCategory">
     update app_product_category
     <trim prefix="SET" suffixOverrides=",">
       <if test="categoryName != null and categoryName != ''">category_name = #{categoryName},</if>
