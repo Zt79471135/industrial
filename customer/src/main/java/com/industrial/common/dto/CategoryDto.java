@@ -1,5 +1,7 @@
 package com.industrial.common.dto;
 
+import com.industrial.common.annotation.Excel;
+import com.industrial.common.annotation.Excels;
 import com.industrial.domin.AppProductCategory;
 import com.industrial.common.core.domain.entity.SysDictData;
 
@@ -12,5 +14,7 @@ import com.industrial.common.core.domain.entity.SysDictData;
  * @version industrial V1.0.0
  */
 public class CategoryDto extends AppProductCategory {
-    private SysDictData dictData;
+    /** 字典对象 */
+
+    //private SysDictData dictData;
 }

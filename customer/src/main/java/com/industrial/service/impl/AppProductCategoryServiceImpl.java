@@ -62,7 +62,7 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
      * @return 商品分类
      */
     @Override
-    public List<CategoryDto> selectAppProductCategoryList(AppProductCategory appProductCategory)
+    public List<AppProductCategory> selectAppProductCategoryList(AppProductCategory appProductCategory)
     {
         return appProductCategoryMapper.selectAppProductCategoryList(appProductCategory);
     }

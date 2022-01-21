@@ -5,6 +5,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
+
+import com.industrial.common.annotation.Excel;
+import com.industrial.common.annotation.Excels;
+import com.industrial.common.core.domain.BaseEntity;
+import com.industrial.common.core.domain.entity.SysDictData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,17 +23,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "app_product_category")
-public class AppProductCategory {
+public class AppProductCategory  {
+    private static final long serialVersionUID = 1L;
     /**
      * 主键
      */
     @TableId(value = "id", type = IdType.INPUT)
+    @Excel(name = "分类序号", cellType = Excel.ColumnType.NUMERIC, prompt = "分类编号")
     private Integer id;
 
     /**
      * 分类名称
      */
     @TableField(value = "category_name")
+    @Excel(name = "分类名称")
     private String categoryName;
 
     /**
@@ -41,6 +49,7 @@ public class AppProductCategory {
      * 分类编号
      */
     @TableField(value = "category_code")
+    @Excel(name = "分类编号")
     private String categoryCode;
 
     /**
@@ -59,6 +68,7 @@ public class AppProductCategory {
      * 描述
      */
     @TableField(value = "description")
+    @Excel(name = "描述")
     private String description;
 
     /**
@@ -74,10 +84,16 @@ public class AppProductCategory {
     private Date deleteTime;
 
     /**
-     * 标志（0：禁用，1：启用)
+     * 标志（1：禁用，0：启用)
      */
     @TableField(value = "deleted")
+    @Excel(name = "启用状态", readConverterExp = "0=启用,1=禁用")
     private Byte deleted;
+
+//    @Excels({
+//            @Excel(name = "所属分类", targetAttr = "dictLabel", type = Excel.Type.EXPORT)
+//    })
+    //private SysDictData dictData;
 
     public static final String COL_ID = "id";
 

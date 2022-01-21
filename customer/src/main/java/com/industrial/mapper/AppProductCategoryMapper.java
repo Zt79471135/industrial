@@ -25,7 +25,7 @@ public interface AppProductCategoryMapper extends BaseMapper<AppProductCategory>
          * @param appProductCategory 商品分类
          * @return 商品分类集合
          */
-        public List<CategoryDto> selectAppProductCategoryList(AppProductCategory appProductCategory);
+        public List<AppProductCategory> selectAppProductCategoryList(AppProductCategory appProductCategory);
 
         /**
          * 新增商品分类

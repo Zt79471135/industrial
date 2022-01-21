@@ -45,7 +45,7 @@ public class AppProductCategoryController extends BaseController
     {
         startPage();
         //List<CategoryDto> list = appProductCategoryService.selectAppProductCategoryList(CategoryName,CategoryCode);
-        List<CategoryDto> list = appProductCategoryService.selectAppProductCategoryList(appProductCategory);
+        List<AppProductCategory> list = appProductCategoryService.selectAppProductCategoryList(appProductCategory);
         return getDataTable(list);
     }
 
@@ -78,8 +78,8 @@ public class AppProductCategoryController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, AppProductCategory appProductCategory)
     {
-        List<CategoryDto> list = appProductCategoryService.selectAppProductCategoryList(appProductCategory);
-        ExcelUtil<CategoryDto> util = new ExcelUtil<CategoryDto>(CategoryDto.class);
+        List<AppProductCategory> list = appProductCategoryService.selectAppProductCategoryList(appProductCategory);
+        ExcelUtil<AppProductCategory> util = new ExcelUtil<AppProductCategory>(AppProductCategory.class);
         util.exportExcel(response, list, "商品分类数据");
     }
 
