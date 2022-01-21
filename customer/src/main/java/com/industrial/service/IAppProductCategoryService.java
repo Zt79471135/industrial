@@ -2,6 +2,8 @@ package com.industrial.service;
 
 import java.util.List;
 
+import com.industrial.common.core.domain.TreeSelect;
+import com.industrial.common.core.domain.entity.SysDept;
 import com.industrial.common.dto.CategoryDto;
 import com.industrial.common.vo.updateTypeVo;
 import com.industrial.common.vo.UpdateDeletedVo;
@@ -64,6 +66,14 @@ public interface IAppProductCategoryService
      int updateDeleted(UpdateDeletedVo deletedVo);
 
     /**
+     * 修改启用状态
+     *
+     * @param category
+     * @return 结果
+     */
+   int changeStatus(AppProductCategory category);
+
+    /**
      * 批量删除商品分类
      * 
      * @param ids 需要删除的商品分类主键集合
@@ -78,5 +88,6 @@ public interface IAppProductCategoryService
      * @return 结果
      */
     public int deleteAppProductCategoryById(Long id);
+
 
 }

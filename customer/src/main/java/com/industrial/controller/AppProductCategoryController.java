@@ -3,6 +3,8 @@ package com.industrial.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.industrial.common.core.domain.entity.SysDept;
+import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.dto.CategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +21,7 @@ import com.industrial.common.vo.updateTypeVo;
 import com.industrial.common.vo.UpdateDeletedVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 商品分类Controller
@@ -44,6 +47,27 @@ public class AppProductCategoryController extends BaseController
         //List<CategoryDto> list = appProductCategoryService.selectAppProductCategoryList(CategoryName,CategoryCode);
         List<CategoryDto> list = appProductCategoryService.selectAppProductCategoryList(appProductCategory);
         return getDataTable(list);
+    }
+
+
+
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<AppProductCategory> util = new ExcelUtil<AppProductCategory>(AppProductCategory.class);
+        util.importTemplateExcel(response, "商品分类数据");
+    }
+
+    @Log(title = "商品分类", businessType = BusinessType.IMPORT)
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<AppProductCategory> util = new ExcelUtil<AppProductCategory>(AppProductCategory.class);
+        List<AppProductCategory> List = util.importExcel(file.getInputStream());
+        String operName = getUsername();
+        String message ="";
+        // message = userService.importUser(List, updateSupport, operName);
+        return AjaxResult.success(message);
     }
 
     /**
@@ -118,6 +142,16 @@ public class AppProductCategoryController extends BaseController
     public AjaxResult updateDeleted(@RequestBody UpdateDeletedVo deletedVo)
     {
         return toAjax(appProductCategoryService.updateDeleted(deletedVo));
+    }
+
+    /**
+     * 状态修改
+     */
+    @Log(title = "商品分类", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeStatus")
+    public AjaxResult changeStatus(@RequestBody AppProductCategory category)
+    {
+        return toAjax(appProductCategoryService.changeStatus(category));
     }
 
 }

@@ -1,11 +1,17 @@
 package com.industrial.service.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.industrial.common.core.domain.TreeSelect;
+import com.industrial.common.core.domain.entity.SysDept;
 import com.industrial.common.dto.CategoryDto;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.industrial.common.dto.ProductDto;
 import com.industrial.common.utils.DateUtils;
+import com.industrial.common.utils.StringUtils;
 import com.industrial.common.vo.updateTypeVo;
 import com.industrial.common.vo.UpdateDeletedVo;
 import com.industrial.domin.AppProductCategory;
@@ -127,6 +133,20 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     }
 
     /**
+     * 修改启用状态
+     *
+     * @param category
+     * @return 结果
+     */
+    @Override
+    public int changeStatus(AppProductCategory category)
+    {
+        Integer deleted = (int)category.getDeleted();
+        Long categoryId = (long)category.getId();
+        return appProductCategoryMapper.updateDeletedById(deleted,categoryId);
+    }
+
+    /**
      * 批量删除商品分类
      * 
      * @param ids 需要删除的商品分类主键
@@ -136,11 +156,6 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
     public int deleteAppProductCategoryByIds(Long[] ids)
     {
         return appProductCategoryMapper.deleteAppProductCategoryByIds(ids);
-//        int ret = 0;
-//        for (Long Id : ids) {
-//            ret = appProductCategoryMapper.deleteById(Id);
-//        }
-//        return ret;
     }
 
     /**
@@ -155,5 +170,7 @@ public class AppProductCategoryServiceImpl implements IAppProductCategoryService
         return appProductCategoryMapper.deleteAppProductCategoryById(id);
         //return appProductCategoryMapper.deleteById(id);
     }
+
+
 
 }

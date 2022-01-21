@@ -17,6 +17,6 @@ public class UpdateDeletedVo {
      * ID数组
      *
      */
-    private Integer deleted;
-    private Long[] ids;
+    private Integer deleted; //标志（0：禁用，1：启用)
+    private Long[] ids;  //ID数组
 }
