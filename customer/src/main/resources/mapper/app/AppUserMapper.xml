@@ -52,12 +52,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="address != null  and address != ''"> and address = #{address}</if>
             <if test="extend != null  and extend != ''"> and extend = #{extend}</if>
             <if test="deleted != null "> and deleted = #{deleted}</if>
+            <if test="1 == 1"> and isdeleted = 0</if>
         </where>
     </select>
     
     <select id="selectAppUserById" parameterType="Long" resultMap="AppUserResult">
         <include refid="selectAppUserVo"/>
-        where id = #{id}
+        where id = #{id} and isdeleted = 0
     </select>
         
     <insert id="insertAppUser" parameterType="com.industrial.domin.AppUser" useGeneratedKeys="true" keyProperty="id">
@@ -132,14 +133,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteAppUserById" parameterType="Long">
-        delete from app_user where id = #{id}
-    </delete>
+    <update id="deleteAppUserById" parameterType="Long">
+        update app_user set isdeleted=1 from app_user where id = #{id}
+    </update>
 
-    <delete id="deleteAppUserByIds" parameterType="String">
-        delete from app_user where id in 
+    <update id="deleteAppUserByIds" parameterType="String">
+        update app_user set isdeleted=1 where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
-    </delete>
+    </update>
 </mapper>

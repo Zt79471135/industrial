@@ -2,16 +2,15 @@ package com.industrial.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.industrial.common.dto.AppUserDto;
+import com.industrial.domin.AppUserAddress;
+import com.industrial.domin.AppUserSalesman;
+import com.industrial.service.IAppUserAddressService;
+import com.industrial.service.IAppUserSalesmanService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.industrial.common.annotation.Log;
 import com.industrial.common.core.controller.BaseController;
 import com.industrial.common.core.domain.AjaxResult;
@@ -28,16 +27,20 @@ import com.industrial.common.core.page.TableDataInfo;
  * @date 2022-01-18
  */
 @RestController
-@RequestMapping("/appuser/appuser")
+@RequestMapping("/appuser")
 public class AppUserController extends BaseController
 {
     @Autowired
     private IAppUserService appUserService;
+    @Autowired
+    private IAppUserAddressService appUserAddressService;
+    @Autowired
+    private IAppUserSalesmanService appUserSalesmanService;
 
     /**
      * 查询客户管理列表
      */
-    @PreAuthorize("@ss.hasPermi('appuser:appuser:list')")
+//    @PreAuthorize("@ss.hasPermi('appuser:list')")
     @GetMapping("/list")
     public TableDataInfo list(AppUser appUser)
     {
@@ -49,7 +52,7 @@ public class AppUserController extends BaseController
     /**
      * 导出客户管理列表
      */
-    @PreAuthorize("@ss.hasPermi('appuser:appuser:export')")
+//    @PreAuthorize("@ss.hasPermi('appuser:export')")
     @Log(title = "客户管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AppUser appUser)
@@ -62,31 +65,46 @@ public class AppUserController extends BaseController
     /**
      * 获取客户管理详细信息
      */
-    @PreAuthorize("@ss.hasPermi('appuser:appuser:query')")
+//    @PreAuthorize("@ss.hasPermi('appuser:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
-        return AjaxResult.success(appUserService.selectAppUserById(id));
+        AppUser model=appUserService.selectAppUserById(id);
+        List<AppUserAddress> address=appUserAddressService.selectAppUserAddressByUserId(id);
+        List<AppUserSalesman> salesman=appUserSalesmanService.selectAppUserSalesmanByUserId(id);
+        AppUserDto appUserDto=new AppUserDto();
+        appUserDto.appUser=model;
+        appUserDto.customList=address;
+        appUserDto.saleManList=salesman;
+        return AjaxResult.success(appUserDto);
     }
 
     /**
      * 新增客户管理
      */
-    @PreAuthorize("@ss.hasPermi('appuser:appuser:add')")
+//    @PreAuthorize("@ss.hasPermi('appuser:add')")
     @Log(title = "客户管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody AppUser appUser)
+    public AjaxResult add(@RequestParam("appUser") AppUser appUser,@RequestParam("customList") List<AppUserAddress> customList,
+    @RequestParam("saleManList") List<AppUserSalesman> saleManList)
     {
-        return toAjax(appUserService.insertAppUser(appUser));
+        return toAjax(appUserService.addOrEditAppUserAll(appUser,customList,saleManList));
     }
 
     /**
      * 修改客户管理
      */
-    @PreAuthorize("@ss.hasPermi('appuser:appuser:edit')")
+//    @PreAuthorize("@ss.hasPermi('appuser:edit')")
     @Log(title = "客户管理", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody AppUser appUser)
+    public AjaxResult edit(@RequestBody AppUserDto appUserDto)
+    {
+        return toAjax(appUserService.addOrEditAppUserAll(appUserDto.appUser,appUserDto.customList,appUserDto.saleManList));
+    }
+
+    @Log(title = "客户管理更改状态", businessType = BusinessType.UPDATE)
+    @PutMapping("/state")
+    public AjaxResult updateState(@RequestBody AppUser appUser)
     {
         return toAjax(appUserService.updateAppUser(appUser));
     }
@@ -94,7 +112,7 @@ public class AppUserController extends BaseController
     /**
      * 删除客户管理
      */
-    @PreAuthorize("@ss.hasPermi('appuser:appuser:remove')")
+//    @PreAuthorize("@ss.hasPermi('appuser:remove')")
     @Log(title = "客户管理", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
