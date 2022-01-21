@@ -1,21 +1,110 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.industrial.mapper.AppUserSalesmanMapper">
-  <resultMap id="BaseResultMap" type="com.industrial.domin.AppUserSalesman">
-    <!--@mbg.generated-->
-    <!--@Table app_user_salesman-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="sale_name" jdbcType="VARCHAR" property="saleName" />
-    <result column="sale_code" jdbcType="VARCHAR" property="saleCode" />
-    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
-    <result column="deleted" jdbcType="TINYINT" property="deleted" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, user_id, sale_name, sale_code, mobile, address, update_time, delete_time, deleted
-  </sql>
+    
+    <resultMap type="com.industrial.domin.AppUserSalesman" id="AppUserSalesmanResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="saleName"    column="sale_name"    />
+        <result property="saleCode"    column="sale_code"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="phone"    column="phone"    />
+        <result property="sex"    column="sex"    />
+        <result property="address"    column="address"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleteTime"    column="delete_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectAppUserSalesmanVo">
+        select id, user_id, sale_name, sale_code, mobile,phone,sex, address, update_time, delete_time, deleted from app_user_salesman
+    </sql>
+
+    <select id="selectAppUserSalesmanList" parameterType="com.industrial.domin.AppUserSalesman" resultMap="AppUserSalesmanResult">
+        <include refid="selectAppUserSalesmanVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="saleName != null  and saleName != ''"> and sale_name like concat('%', #{saleName}, '%')</if>
+            <if test="saleCode != null  and saleCode != ''"> and sale_code = #{saleCode}</if>
+            <if test="mobile != null  and mobile != ''"> and mobile = #{mobile}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="deleteTime != null "> and delete_time = #{deleteTime}</if>
+            <if test="deleted != null "> and deleted = #{deleted}</if>
+        </where>
+    </select>
+    <select id="selectAppUserSalesmanByUserId" parameterType="Long" resultMap="AppUserSalesmanResult">
+        <include refid="selectAppUserSalesmanVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{id}</if>
+        </where>
+    </select>
+    
+    <select id="selectAppUserSalesmanById" parameterType="Long" resultMap="AppUserSalesmanResult">
+        <include refid="selectAppUserSalesmanVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAppUserSalesman" parameterType="com.industrial.domin.AppUserSalesman" useGeneratedKeys="true" keyProperty="id">
+        insert into app_user_salesman
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="saleName != null and saleName != ''">sale_name,</if>
+            <if test="saleCode != null and saleCode != ''">sale_code,</if>
+            <if test="mobile != null and mobile != ''">mobile,</if>
+            <if test="phone != null  and phone != ''">  phone = #{phone}</if>
+            <if test="sex != null  and sex != ''">sex = #{sex}</if>
+            <if test="address != null and address != ''">address,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleteTime != null">delete_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="saleName != null and saleName != ''">#{saleName},</if>
+            <if test="saleCode != null and saleCode != ''">#{saleCode},</if>
+            <if test="mobile != null and mobile != ''">#{mobile},</if>
+            <if test="phone != null  and phone != ''">  phone = #{phone}</if>
+            <if test="sex != null  and sex != ''">sex = #{sex}</if>
+            <if test="address != null and address != ''">#{address},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleteTime != null">#{deleteTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAppUserSalesman" parameterType="com.industrial.domin.AppUserSalesman">
+        update app_user_salesman
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="saleName != null and saleName != ''">sale_name = #{saleName},</if>
+            <if test="saleCode != null and saleCode != ''">sale_code = #{saleCode},</if>
+            <if test="mobile != null and mobile != ''">mobile = #{mobile},</if>
+            <if test="phone != null  and phone != ''">  phone = #{phone}</if>
+            <if test="sex != null  and sex != ''">sex = #{sex}</if>
+            <if test="address != null and address != ''">address = #{address},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleteTime != null">delete_time = #{deleteTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAppUserAddressByUserId" parameterType="Long">
+        delete from app_user_salesman where id = #{id}
+    </delete>
+
+    <delete id="deleteAppUserSalesmanByUserId" parameterType="Long">
+        delete from app_user_salesman where user_id = #{id}
+    </delete>
+
+    <delete id="deleteAppUserSalesmanByIds" parameterType="String">
+        delete from app_user_salesman where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

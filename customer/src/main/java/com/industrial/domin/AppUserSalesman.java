@@ -1,93 +1,166 @@
 package com.industrial.domin;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.industrial.common.annotation.Excel;
+import com.industrial.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 业务员信息表
- * @author zhu
- * @date 2022年01月19日 16:30
+ * 业务员信息对象 app_user_salesman
+ * 
+ * @author ruoyi
+ * @date 2022-01-20
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@TableName(value = "app_user_salesman")
-public class AppUserSalesman {
-    /**
-     * 主键
-     */
-    @TableId(value = "id", type = IdType.INPUT)
-    private Integer id;
+public class AppUserSalesman extends BaseEntity
+{
+    private static final long serialVersionUID = 1L;
 
-    /**
-     * 外键，客户ID 关联app_user表ID
-     */
-    @TableField(value = "user_id")
-    private Integer userId;
+    /** 主键 */
+    private Long id;
 
-    /**
-     * 姓名
-     */
-    @TableField(value = "sale_name")
+    /** 外键，客户ID 关联app_user表ID */
+    @Excel(name = "外键，客户ID 关联app_user表ID")
+    private Long userId;
+
+    /** 姓名 */
+    @Excel(name = "姓名")
     private String saleName;
 
-    /**
-     * 编号
-     */
-    @TableField(value = "sale_code")
+    /** 编号 */
+    @Excel(name = "编号")
     private String saleCode;
 
-    /**
-     * 手机号
-     */
-    @TableField(value = "mobile")
+    /** 性别 */
+    @Excel(name = "性别")
+    private Integer sex;
+
+    /** 手机号 */
+    @Excel(name = "手机号")
     private String mobile;
 
-    /**
-     * 地址
-     */
-    @TableField(value = "address")
+    /** 电话 */
+    @Excel(name = "手机号")
+    private String phone;
+
+    /** 地址 */
+    @Excel(name = "地址")
     private String address;
 
-    /**
-     * 更新时间
-     */
-    @TableField(value = "update_time")
-    private Date updateTime;
-
-    /**
-     * 删除时间
-     */
-    @TableField(value = "delete_time")
+    /** 删除时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "删除时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date deleteTime;
 
-    /**
-     * 0表示删除,1表示启用
-     */
-    @TableField(value = "deleted")
-    private Byte deleted;
+    /** 0表示删除,1表示启用 */
+    @Excel(name = "0表示删除,1表示启用")
+    private Integer deleted;
 
-    public static final String COL_ID = "id";
+    public void setId(Long id) 
+    {
+        this.id = id;
+    }
 
-    public static final String COL_USER_ID = "user_id";
+    public Long getId() 
+    {
+        return id;
+    }
+    public void setUserId(Long userId) 
+    {
+        this.userId = userId;
+    }
 
-    public static final String COL_SALE_NAME = "sale_name";
+    public Long getUserId() 
+    {
+        return userId;
+    }
+    public void setSaleName(String saleName) 
+    {
+        this.saleName = saleName;
+    }
 
-    public static final String COL_SALE_CODE = "sale_code";
+    public String getSaleName() 
+    {
+        return saleName;
+    }
+    public void setSaleCode(String saleCode) 
+    {
+        this.saleCode = saleCode;
+    }
 
-    public static final String COL_MOBILE = "mobile";
+    public String getSaleCode() 
+    {
+        return saleCode;
+    }
+    public void setSex(Integer sex)
+    {
+        this.sex = sex;
+    }
 
-    public static final String COL_ADDRESS = "address";
+    public Integer getSex()
+    {
+        return sex;
+    }
+    public void setPhone(String phone)
+    {
+        this.phone = phone;
+    }
+    public String getPhone()
+    {
+        return phone;
+    }
+    public void setMobile(String mobile) 
+    {
+        this.mobile = mobile;
+    }
 
-    public static final String COL_UPDATE_TIME = "update_time";
+    public String getMobile() 
+    {
+        return mobile;
+    }
+    public void setAddress(String address) 
+    {
+        this.address = address;
+    }
 
-    public static final String COL_DELETE_TIME = "delete_time";
+    public String getAddress() 
+    {
+        return address;
+    }
+    public void setDeleteTime(Date deleteTime) 
+    {
+        this.deleteTime = deleteTime;
+    }
 
-    public static final String COL_DELETED = "deleted";
+    public Date getDeleteTime() 
+    {
+        return deleteTime;
+    }
+    public void setDeleted(Integer deleted) 
+    {
+        this.deleted = deleted;
+    }
+
+    public Integer getDeleted() 
+    {
+        return deleted;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+            .append("id", getId())
+            .append("userId", getUserId())
+            .append("saleName", getSaleName())
+            .append("saleCode", getSaleCode())
+            .append("sex", getSex())
+            .append("mobile", getMobile())
+            .append("phone", getPhone())
+            .append("address", getAddress())
+            .append("updateTime", getUpdateTime())
+            .append("deleteTime", getDeleteTime())
+            .append("deleted", getDeleted())
+            .toString();
+    }
 }

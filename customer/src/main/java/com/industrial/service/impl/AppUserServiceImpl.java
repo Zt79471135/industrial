@@ -2,11 +2,19 @@ package com.industrial.service.impl;
 
 import java.util.List;
 import com.industrial.common.utils.DateUtils;
+import com.industrial.common.utils.uuid.UUID;
 import com.industrial.domin.AppUser;
+import com.industrial.domin.AppUserAddress;
+import com.industrial.domin.AppUserSalesman;
+import com.industrial.mapper.AppUserAddressMapper;
 import com.industrial.mapper.AppUserMapper;
+import com.industrial.mapper.AppUserSalesmanMapper;
 import com.industrial.service.IAppUserService;
+import io.lettuce.core.api.async.RedisTransactionalAsyncCommands;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 /**
  * 客户管理Service业务层处理
@@ -19,6 +27,10 @@ public class AppUserServiceImpl implements IAppUserService
 {
     @Autowired
     private AppUserMapper appUserMapper;
+    @Autowired
+    private AppUserAddressMapper appUserAddressMapper;
+    @Autowired
+    private AppUserSalesmanMapper appUserSalesmanMapper;
 
     /**
      * 查询客户管理
@@ -91,5 +103,32 @@ public class AppUserServiceImpl implements IAppUserService
     public int deleteAppUserById(Long id)
     {
         return appUserMapper.deleteAppUserById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int addOrEditAppUserAll(AppUser appUser, List<AppUserAddress> customList, List<AppUserSalesman> saleManList) {
+        try{
+            if(appUser.getId()!=null&&appUser.getId()>0){
+                if(appUserMapper.updateAppUser(appUser)<=0){ throw new Exception("appUserMapper插入失败");}
+            }else{
+                if(appUserMapper.insertAppUser(appUser)<=0){ throw new Exception("appUserMapper插入失败");}
+            }
+            appUserAddressMapper.deleteAppUserAddressByUserId(appUser.getId());
+            appUserSalesmanMapper.deleteAppUserSalesmanByUserId(appUser.getId());
+            for (AppUserAddress item:customList) {
+                item.setUid("CT-"+UUID.randomUUID().toString());
+                if(appUserAddressMapper.insertAppUserAddress(item)<=0){ throw new Exception("appUserAddressMapper插入失败");}
+            }
+            for (AppUserSalesman item:saleManList) {
+                item.setSaleCode("Sale-"+UUID.randomUUID().toString());
+                if(appUserSalesmanMapper.insertAppUserSalesman(item)<=0){ throw new Exception("appUserSalesmanMapper插入失败");}
+            }
+            return 1;
+        }catch (Exception ex){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return 0;
+        }
+
     }
 }

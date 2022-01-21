@@ -55,11 +55,11 @@ public class AppUser extends BaseEntity
 
     /** 客户类型 */
     @Excel(name = "客户类型")
-    private Long custType;
+    private Integer custType;
 
     /** 公司类型 */
     @Excel(name = "公司类型")
-    private Long companyType;
+    private Integer companyType;
 
     /** 发票抬头 */
     @Excel(name = "发票抬头")
@@ -174,21 +174,21 @@ public class AppUser extends BaseEntity
     {
         return mobile;
     }
-    public void setCustType(Long custType) 
+    public void setCustType(Integer custType)
     {
         this.custType = custType;
     }
 
-    public Long getCustType() 
+    public Integer getCustType()
     {
         return custType;
     }
-    public void setCompanyType(Long companyType) 
+    public void setCompanyType(Integer companyType)
     {
         this.companyType = companyType;
     }
 
-    public Long getCompanyType() 
+    public Integer getCompanyType()
     {
         return companyType;
     }

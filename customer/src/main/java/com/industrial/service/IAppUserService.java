@@ -2,6 +2,8 @@ package com.industrial.service;
 
 import java.util.List;
 import com.industrial.domin.AppUser;
+import com.industrial.domin.AppUserAddress;
+import com.industrial.domin.AppUserSalesman;
 
 /**
  * 客户管理Service接口
@@ -58,4 +60,6 @@ public interface IAppUserService
      * @return 结果
      */
     public int deleteAppUserById(Long id);
+
+    int addOrEditAppUserAll(AppUser appUser, List<AppUserAddress> customList, List<AppUserSalesman> saleManList);
 }
