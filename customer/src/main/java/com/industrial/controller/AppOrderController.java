@@ -37,12 +37,12 @@ public class AppOrderController {
      * 订单添加
      */
     @PostMapping("add")
-    public ResponseResult add(@RequestBody OrderVo orderVo, @RequestBody FollowVo follow) {
-        ResponseResult result = null;
+    public ResponseResult<String> add(@RequestBody OrderVo orderVo, @RequestBody FollowVo follow) {
+        ResponseResult<String> result = null;
         if (orderService.insert(orderVo)) {
             if (follow.getFollowOrder() != 0) {
-                /**
-                 * 建立跟进任务
+                /*
+                  建立跟进任务
                  */
                 if (orderService.insertFollow(follow)) {
                     result = ResponseResult.success();

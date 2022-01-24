@@ -2,15 +2,21 @@ package com.industrial.controller;
 
 
 import com.industrial.common.core.controller.BaseController;
+import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.core.domain.ResponseCode;
 import com.industrial.common.core.domain.ResponseResult;
 import com.industrial.common.dto.ProductDto;
+import com.industrial.common.pojo.ProductExcel;
+import com.industrial.common.utils.poi.ExcelUtil;
 import com.industrial.common.vo.CheckVo;
 import com.industrial.common.vo.ProductVo;
+import com.industrial.domin.AppProduct;
 import com.industrial.service.AppProductService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -157,7 +163,7 @@ public class AppProductController extends BaseController {
     }
 
     /**
-     * 商品上架
+     * 商品批量上架
      * status = 2
      *
      * @return
@@ -172,4 +178,36 @@ public class AppProductController extends BaseController {
         }
         return result;
     }
+    /**
+     * 导出商品分类列表
+     */
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, ProductVo productVo)
+    {
+        List<ProductExcel> productList = productService.selectProductExcelList(productVo);
+        ExcelUtil<ProductExcel> util = new ExcelUtil<ProductExcel>(ProductExcel.class);
+        util.exportExcel(response, productList, "商品数据");
+    }
+    /**
+     * 下载模板
+     */
+    @GetMapping("/importTemplate")
+    public AjaxResult importTemplate()
+    {
+        ExcelUtil<AppProduct> util = new ExcelUtil<AppProduct>(AppProduct.class);
+        return util.importTemplateExcel("商品数据");
+    }
+    /**
+     * 导入
+     */
+    @PostMapping("/importStudent")
+    public AjaxResult importStudent(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<AppProduct> util = new ExcelUtil<AppProduct>(AppProduct.class);
+        List<AppProduct> productList = util.importExcel(file.getInputStream());
+        String operName = getUsername();
+        String message = productService.importData(productList, updateSupport, operName);
+        return AjaxResult.success(message);
+    }
+
 }

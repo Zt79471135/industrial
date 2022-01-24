@@ -2,19 +2,20 @@ package com.industrial.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.industrial.common.core.domain.entity.SysDictData;
 import com.industrial.common.dto.ProductDto;
 import com.industrial.common.exception.ServiceException;
+import com.industrial.common.pojo.ProductExcel;
+import com.industrial.common.utils.StringUtils;
 import com.industrial.common.vo.ProductVo;
 import com.industrial.domin.*;
 import com.industrial.mapper.*;
 import com.industrial.service.AppProductService;
-import com.industrial.system.mapper.SysDictDataMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,9 @@ public class AppProductServiceImpl implements AppProductService {
     private AppProductCategoryMapper productCategoryMapper;
     @Resource
     private AppImageFileMapper imageFileMapper;
+    @Resource
+    private UserMapper userMapper;
+    public static final Byte PUTAWAY_STATUS = 3;
     /**
      * 商品类别
      */
@@ -52,11 +56,11 @@ public class AppProductServiceImpl implements AppProductService {
      */
     @Override
     public boolean changeStatus(int status, Integer productId) {
-        AppProduct product = new AppProduct();
+        com.industrial.domin.AppProduct product = new com.industrial.domin.AppProduct();
         product.setStatus((byte) status);
         product.setId(productId);
-        QueryWrapper<AppProduct> qw = new QueryWrapper<>();
-        qw.lambda().eq(AppProduct::getDeleted, 1);
+        QueryWrapper<com.industrial.domin.AppProduct> qw = new QueryWrapper<>();
+        qw.lambda().eq(com.industrial.domin.AppProduct::getDeleted, 1);
         return productMapper.update(product, qw) == 1;
     }
 
@@ -69,7 +73,7 @@ public class AppProductServiceImpl implements AppProductService {
     @Override
     public ProductDto selectProductById(Integer productId) {
         ProductDto productDto = new ProductDto();
-        AppProduct product = productMapper.selectById(productId);
+        com.industrial.domin.AppProduct product = productMapper.selectById(productId);
         Integer categoryId = product.getCategoryId();
         BeanUtils.copyProperties(product, productDto);
         return productDto;
@@ -83,15 +87,15 @@ public class AppProductServiceImpl implements AppProductService {
      */
     @Override
     public List<ProductDto> selectProductByStatus(int status) {
-        QueryWrapper<AppProduct> qw = new QueryWrapper<>();
-        qw.lambda().eq(AppProduct::getStatus, (byte) status);
+        QueryWrapper<com.industrial.domin.AppProduct> qw = new QueryWrapper<>();
+        qw.lambda().eq(com.industrial.domin.AppProduct::getStatus, (byte) status);
         /**
          * 当查询上架商品时,同样把禁用商品一起查询出来
          */
-        if (status == 3) {
-            qw.lambda().eq(AppProduct::getStatus, (byte) 0);
+        if (status == PUTAWAY_STATUS) {
+            qw.lambda().eq(com.industrial.domin.AppProduct::getStatus, (byte) 0);
         }
-        List<AppProduct> productList = productMapper.selectList(qw);
+        List<com.industrial.domin.AppProduct> productList = productMapper.selectList(qw);
         if (productList.size() == 0) {
             throw new ServiceException("无此状态的商品");
         } else {
@@ -110,10 +114,10 @@ public class AppProductServiceImpl implements AppProductService {
     @Transactional(rollbackFor = ServiceException.class)
     @Override
     public boolean insert(ProductVo productVo) {
-        AppProduct product = new AppProduct();
+        com.industrial.domin.AppProduct product = new com.industrial.domin.AppProduct();
         BeanUtils.copyProperties(productVo, product);
         List<Integer> imgIds = productVo.getImgIds();
-        if(imgIds.size()>0){
+        if (imgIds.size() > 0) {
             Integer integer = imgIds.get(0);
             AppImageFile imageFile = imageFileMapper.selectById(integer);
             String filePath = imageFile.getFilePath();
@@ -153,11 +157,11 @@ public class AppProductServiceImpl implements AppProductService {
     public boolean update(ProductVo productVo) {
         Integer id = productVo.getId();
         if (id != 0) {
-            AppProduct product = new AppProduct();
+            com.industrial.domin.AppProduct product = new com.industrial.domin.AppProduct();
             BeanUtils.copyProperties(productVo, product);
             product.setStatus((byte) 1);
-            QueryWrapper<AppProduct> qw = new QueryWrapper<>();
-            qw.lambda().eq(AppProduct::getId, id);
+            QueryWrapper<com.industrial.domin.AppProduct> qw = new QueryWrapper<>();
+            qw.lambda().eq(com.industrial.domin.AppProduct::getId, id);
             return productMapper.update(product, qw) == 1;
         } else {
             throw new ServiceException("id不能为空");
@@ -175,17 +179,17 @@ public class AppProductServiceImpl implements AppProductService {
      */
     @Override
     public List<ProductDto> selectProductByCategoryId(Integer categoryId, String productName, int status) {
-        QueryWrapper<AppProduct> qw = new QueryWrapper<>();
+        QueryWrapper<com.industrial.domin.AppProduct> qw = new QueryWrapper<>();
         if (categoryId != null || !"".equals(productName)) {
             if (categoryId != null) {
-                qw.lambda().eq(AppProduct::getCategoryId, categoryId);
+                qw.lambda().eq(com.industrial.domin.AppProduct::getCategoryId, categoryId);
             }
             if (!"".equals(productName)) {
-                qw.lambda().like(AppProduct::getName, productName);
+                qw.lambda().like(com.industrial.domin.AppProduct::getName, productName);
             }
         }
         String sql = "and (status = " + status + " or status =" + 0;
-        List<AppProduct> productList = productMapper.selectList(qw);
+        List<com.industrial.domin.AppProduct> productList = productMapper.selectList(qw);
         if (productList.size() == 0) {
             throw new ServiceException("无此状态的商品");
         } else {
@@ -194,15 +198,129 @@ public class AppProductServiceImpl implements AppProductService {
         }
 
     }
-
     @Override
     public boolean putaway(List<Integer> ids, byte status) {
+        int size = ids.size();
+        if (size > 0) {
+            List<Integer> integerList = ids.stream().map(id -> {
+                if (!changeStatus(status, id)) {
+                    throw new ServiceException();
+                }
+                return 1;
+            }).collect(Collectors.toList());
+            return integerList.size() == size;
+        } else {
+            throw new ServiceException();
+        }
+    }
+    @Override
+    public List<ProductExcel> selectProductExcelList(ProductVo productVo) {
+        Integer id = productVo.getId();
+        Integer categoryId = productVo.getCategoryId();
+        String contacts = productVo.getContacts();
+        Integer createUserId = productVo.getCreateUserId();
+        BigDecimal floorPrice = productVo.getFloorPrice();
+        String name = productVo.getName();
+        String maintenance = productVo.getMaintenance();
+        QueryWrapper<com.industrial.domin.AppProduct> qw = new QueryWrapper<>();
+        if (id != null && id != 0) {
+            qw.lambda().eq(com.industrial.domin.AppProduct::getId, id);
+        }
+        if (categoryId != null && categoryId != 0) {
+            qw.lambda().eq(com.industrial.domin.AppProduct::getCategoryId, categoryId);
+        }
+        if (contacts != null && !"".equals(contacts)) {
+            qw.lambda().like(com.industrial.domin.AppProduct::getContacts, contacts);
+        }
+        if (createUserId != null && createUserId != 0) {
+            qw.lambda().eq(com.industrial.domin.AppProduct::getCreateUserId, createUserId);
+        }
+        if (floorPrice != null) {
+            qw.lambda().eq(com.industrial.domin.AppProduct::getFloorPrice, floorPrice);
+        }
+        if (name != null && !"".equals(name)) {
+            qw.lambda().like(com.industrial.domin.AppProduct::getName, name);
+        }
+        if (maintenance != null && !"".equals(maintenance)) {
+            qw.lambda().eq(com.industrial.domin.AppProduct::getMaintenance, maintenance);
+        }
+        List<AppProduct> productList = productMapper.selectList(qw);
+        return productList.stream().map(this::getProductExcel).collect(Collectors.toList());
+    }
 
-        return false;
+    /**
+     * 导入用户数据
+     *
+     * @param productList 用户数据列表
+     * @param productList
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
+     * @return 结果
+     */
+    @Override
+    public String importData(List<AppProduct> productList, Boolean isUpdateSupport, String operName)
+    {
+        if (StringUtils.isNull(productList) || productList.size() == 0)
+        {
+            throw new ServiceException("导入数据不能为空！");
+        }
+        int successNum = 0;
+        int failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
+        List<ProductExcel> existList = selectProductExcelList(null);
+        for (AppProduct product : productList)
+        {
+            try {
+
+                boolean userFlag = false;
+                for (ProductExcel entry : existList) {
+                    if (entry.getName().equals(product.getName())) {
+                        userFlag = true;
+                        break;
+                    }
+                }
+                if (!userFlag) {
+                    insertProductExcelList(product);
+                    successNum++;
+                    successMsg.append("<br/>" + successNum + "、数据 " + product.getName() + " 导入成功");
+                } else if (isUpdateSupport) {
+                    updateProductExcelList(product);
+                    successNum++;
+                    successMsg.append("<br/>" + successNum + "、数据 " + product.getName() + " 更新成功");
+                } else {
+                    failureNum++;
+                    failureMsg.append("<br/>" + failureNum + "、数据 " + product.getName() + " 已存在");
+                }
+            }catch (Exception e)
+            {
+                failureNum++;
+                String msg = "<br/>" + failureNum + "、账号 " + product.getName() + " 导入失败：";
+                failureMsg.append(msg + e.getMessage());
+            }
+        }
+        if (failureNum > 0)
+        {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new ServiceException(failureMsg.toString());
+        }
+        else
+        {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+        return successMsg.toString();
+    }
+
+    private void updateProductExcelList(AppProduct product) {
+        productMapper.insert(product);
+    }
+
+    private void insertProductExcelList(AppProduct product) {
+        productMapper.updateById(product);
     }
 
 
-    private ProductDto apply(AppProduct product) {
+    private ProductDto apply(com.industrial.domin.AppProduct product) {
         ProductDto productDto = new ProductDto();
         QueryWrapper<DictData> queryWrapper = null;
         /**
@@ -216,10 +334,32 @@ public class AppProductServiceImpl implements AppProductService {
         queryWrapper.lambda().eq(DictData::getDictType, DICT_UNIT);
         queryWrapper.lambda().eq(DictData::getDictValue, product.getUnitId());
         DictData dictData = dictDataMapper.selectOne(queryWrapper);
-        String  dictLabel = dictData.getDictLabel();
+        String dictLabel = dictData.getDictLabel();
         productDto.setUnitName(dictLabel);
         productDto.setCategory(productCategory);
         BeanUtils.copyProperties(product, productDto);
         return productDto;
+    }
+
+    private ProductExcel getProductExcel(com.industrial.domin.AppProduct product) {
+        ProductExcel productExcel = new ProductExcel();
+        String categoryName = productCategoryMapper.selectById(product.getCategoryId()).getCategoryName();
+        productExcel.setCategoryName(categoryName);
+        String userName = userMapper.selectById(product.getCreateUserId()).getUserName();
+        productExcel.setContactsUserName(userName);
+        productExcel.setFloorPrice(String.valueOf(product.getFloorPrice()));
+        productExcel.setMaintenance(product.getMaintenance());
+        productExcel.setPrice(String.valueOf(product.getPrice()));
+        productExcel.setCreateTime(String.valueOf(product.getCreateTime()));
+        productExcel.setId(product.getId());
+        productExcel.setName(product.getName());
+        productExcel.setStock(product.getStock());
+        productExcel.setSpecifica(product.getSpecifica());
+        if (product.getStatus() == 0) {
+            productExcel.setStatus("禁用");
+        } else {
+            productExcel.setStatus("启用");
+        }
+        return productExcel;
     }
 }

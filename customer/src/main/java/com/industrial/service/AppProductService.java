@@ -1,7 +1,9 @@
 package com.industrial.service;
 
 import com.industrial.common.dto.ProductDto;
+import com.industrial.common.pojo.ProductExcel;
 import com.industrial.common.vo.ProductVo;
+import com.industrial.domin.AppProduct;
 
 import java.util.List;
 
@@ -69,4 +71,23 @@ public interface AppProductService {
      * @return
      */
     boolean putaway(List<Integer> ids,byte status);
+
+    /**
+     * 通过商品信息查询商品
+     * @param productVo
+     * @return
+     */
+    List<ProductExcel> selectProductExcelList(ProductVo productVo);
+    /**
+     * 导入用户数据
+     *
+     * @param productList 数据列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
+     * @return 结果
+     */
+    String importData(List<AppProduct> productList, Boolean isUpdateSupport, String operName);
+
+
+
 }
