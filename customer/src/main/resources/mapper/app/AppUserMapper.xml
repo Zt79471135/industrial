@@ -21,38 +21,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="bank"    column="bank"    />
         <result property="bankAccount"    column="bank_account"    />
         <result property="phoneNum"    column="phone_num"    />
+        <result property="addrArea"    column="addr_area"    />
         <result property="address"    column="address"    />
+        <result property="addrCode"    column="addr_code"    />
         <result property="updateTime"    column="update_time"    />
         <result property="extend"    column="extend"    />
         <result property="deleted"    column="deleted"    />
     </resultMap>
 
     <sql id="selectAppUserVo">
-        select id, openid, company, client_code, brief, registrant, registrat_time, nickname, mobile, cust_type, company_type, invoice_up, credit_code, bank, bank_account, phone_num, address, update_time, extend, deleted from app_user
+        select id, openid, company, client_code, brief, registrant, registrat_time, nickname, mobile, cust_type, company_type, invoice_up, credit_code, bank, bank_account, phone_num, addr_area,address,addr_code, update_time, extend, deleted from app_user
     </sql>
 
     <select id="selectAppUserList" parameterType="com.industrial.domin.AppUser" resultMap="AppUserResult">
-        <include refid="selectAppUserVo"/>
-        <where>  
-            <if test="openid != null  and openid != ''"> and openid = #{openid}</if>
-            <if test="company != null  and company != ''"> and company = #{company}</if>
-            <if test="clientCode != null  and clientCode != ''"> and client_code = #{clientCode}</if>
-            <if test="brief != null  and brief != ''"> and brief = #{brief}</if>
-            <if test="registrant != null  and registrant != ''"> and registrant = #{registrant}</if>
-            <if test="registratTime != null "> and registrat_time = #{registratTime}</if>
-            <if test="nickname != null  and nickname != ''"> and nickname like concat('%', #{nickname}, '%')</if>
-            <if test="mobile != null  and mobile != ''"> and mobile = #{mobile}</if>
-            <if test="custType != null "> and cust_type = #{custType}</if>
-            <if test="companyType != null "> and company_type = #{companyType}</if>
-            <if test="invoiceUp != null  and invoiceUp != ''"> and invoice_up = #{invoiceUp}</if>
-            <if test="creditCode != null  and creditCode != ''"> and credit_code = #{creditCode}</if>
-            <if test="bank != null  and bank != ''"> and bank = #{bank}</if>
-            <if test="bankAccount != null  and bankAccount != ''"> and bank_account = #{bankAccount}</if>
-            <if test="phoneNum != null  and phoneNum != ''"> and phone_num = #{phoneNum}</if>
-            <if test="address != null  and address != ''"> and address = #{address}</if>
-            <if test="extend != null  and extend != ''"> and extend = #{extend}</if>
-            <if test="deleted != null "> and deleted = #{deleted}</if>
-            <if test="1 == 1"> and isdeleted = 0</if>
+        select au.id, au.openid, au.company, au.client_code, au.brief, au.registrant, au.registrat_time,aua.name as nickname, au.mobile, au.cust_type, au.company_type, au.invoice_up, au.credit_code, au.bank, au.bank_account,aua.mobile as phone_num, au.addr_area,au.address,au.addr_code, au.update_time, au.extend, au.deleted from app_user au
+       Left JOIN app_user_address aua ON aua.user_id=au.id and aua.isdefault=0
+        <where>
+            <if test="openid != null  and openid != ''"> and au.openid = #{openid}</if>
+            <if test="company != null  and company != ''"> and au.company = #{company}</if>
+            <if test="clientCode != null  and clientCode != ''"> and au.client_code = #{clientCode}</if>
+            <if test="brief != null  and brief != ''"> and au.brief = #{brief}</if>
+            <if test="registrant != null  and registrant != ''"> and au.registrant = #{registrant}</if>
+            <if test="registratTime != null "> and au.registrat_time = #{registratTime}</if>
+            <if test="nickname != null  and nickname != ''"> and aua.name like concat('%', #{nickname}, '%')</if>
+            <if test="mobile != null  and mobile != ''"> and aua.mobile = #{mobile}</if>
+            <if test="custType != null "> and au.cust_type = #{custType}</if>
+            <if test="companyType != null "> and au.company_type = #{companyType}</if>
+            <if test="invoiceUp != null  and invoiceUp != ''"> and au.invoice_up = #{invoiceUp}</if>
+            <if test="creditCode != null  and creditCode != ''"> and au.credit_code = #{creditCode}</if>
+            <if test="bank != null  and bank != ''"> and au.bank = #{bank}</if>
+            <if test="bankAccount != null  and bankAccount != ''"> and au.bank_account = #{bankAccount}</if>
+            <if test="phoneNum != null  and phoneNum != ''"> and aua.mobile = #{phoneNum}</if>
+            <if test="addrArea != null  and addrArea != ''"> and au.addr_area = #{addrArea}</if>
+            <if test="address != null  and address != ''"> and au.address = #{address}</if>
+            <if test="addrCode != null  and addrCode != ''"> and au.addr_code = #{addrCode}</if>
+            <if test="extend != null  and extend != ''"> and au.extend = #{extend}</if>
+            <if test="deleted != null "> and au.deleted = #{deleted}</if>
+            <if test="1 == 1"> and au.isdeleted = 0 </if>
         </where>
     </select>
     
@@ -79,7 +84,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bank != null">bank,</if>
             <if test="bankAccount != null">bank_account,</if>
             <if test="phoneNum != null">phone_num,</if>
+            <if test="addrArea != null">addr_area,</if>
             <if test="address != null">address,</if>
+            <if test="addrCode != null">addr_code,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="extend != null">extend,</if>
             <if test="deleted != null">deleted,</if>
@@ -100,7 +107,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bank != null">#{bank},</if>
             <if test="bankAccount != null">#{bankAccount},</if>
             <if test="phoneNum != null">#{phoneNum},</if>
+            <if test="addrArea != null">#{addrArea},</if>
             <if test="address != null">#{address},</if>
+            <if test="addrCode != null">#{addrCode},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="extend != null">#{extend},</if>
             <if test="deleted != null">#{deleted},</if>
@@ -125,7 +134,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="bank != null">bank = #{bank},</if>
             <if test="bankAccount != null">bank_account = #{bankAccount},</if>
             <if test="phoneNum != null">phone_num = #{phoneNum},</if>
+            <if test="addrArea != null">addr_area = #{addrArea},</if>
             <if test="address != null">address = #{address},</if>
+            <if test="addrCode != null">addr_code = #{addrCode},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="extend != null">extend = #{extend},</if>
             <if test="deleted != null">deleted = #{deleted},</if>

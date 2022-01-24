@@ -85,10 +85,9 @@ public class AppUserController extends BaseController
 //    @PreAuthorize("@ss.hasPermi('appuser:add')")
     @Log(title = "客户管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestParam("appUser") AppUser appUser,@RequestParam("customList") List<AppUserAddress> customList,
-    @RequestParam("saleManList") List<AppUserSalesman> saleManList)
+    public AjaxResult add(@RequestBody AppUserDto appUserDto)
     {
-        return toAjax(appUserService.addOrEditAppUserAll(appUser,customList,saleManList));
+        return toAjax(appUserService.addOrEditAppUserAll(appUserDto.appUser,appUserDto.customList,appUserDto.saleManList));
     }
 
     /**

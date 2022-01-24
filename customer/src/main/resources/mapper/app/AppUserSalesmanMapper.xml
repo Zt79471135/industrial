@@ -16,10 +16,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
         <result property="deleteTime"    column="delete_time"    />
         <result property="deleted"    column="deleted"    />
+        <result property="isdefault"    column="isdefault"    />
     </resultMap>
 
     <sql id="selectAppUserSalesmanVo">
-        select id, user_id, sale_name, sale_code, mobile,phone,sex, address, update_time, delete_time, deleted from app_user_salesman
+        select id, user_id, sale_name, sale_code, mobile,phone,sex, address, update_time, delete_time, deleted,isdefault from app_user_salesman
     </sql>
 
     <select id="selectAppUserSalesmanList" parameterType="com.industrial.domin.AppUserSalesman" resultMap="AppUserSalesmanResult">
@@ -33,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
             <if test="address != null  and address != ''"> and address = #{address}</if>
             <if test="deleteTime != null "> and delete_time = #{deleteTime}</if>
+            <if test="isdefault != null "> and isdefault = #{isdefault}</if>
             <if test="deleted != null "> and deleted = #{deleted}</if>
         </where>
     </select>
@@ -55,11 +57,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="saleName != null and saleName != ''">sale_name,</if>
             <if test="saleCode != null and saleCode != ''">sale_code,</if>
             <if test="mobile != null and mobile != ''">mobile,</if>
-            <if test="phone != null  and phone != ''">  phone = #{phone}</if>
-            <if test="sex != null  and sex != ''">sex = #{sex}</if>
+            <if test="phone != null  and phone != ''">  phone,</if>
+            <if test="sex != null  and sex != ''">sex,</if>
             <if test="address != null and address != ''">address,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="deleteTime != null">delete_time,</if>
+            <if test="isdefault != null">isdefault,</if>
             <if test="deleted != null">deleted,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -67,11 +70,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="saleName != null and saleName != ''">#{saleName},</if>
             <if test="saleCode != null and saleCode != ''">#{saleCode},</if>
             <if test="mobile != null and mobile != ''">#{mobile},</if>
-            <if test="phone != null  and phone != ''">  phone = #{phone}</if>
-            <if test="sex != null  and sex != ''">sex = #{sex}</if>
+            <if test="phone != null  and phone != ''">  #{phone},</if>
+            <if test="sex != null  and sex != ''">#{sex},</if>
             <if test="address != null and address != ''">#{address},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="deleteTime != null">#{deleteTime},</if>
+            <if test="isdefault != null">#{isdefault},</if>
             <if test="deleted != null">#{deleted},</if>
          </trim>
     </insert>
@@ -88,6 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="address != null and address != ''">address = #{address},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="deleteTime != null">delete_time = #{deleteTime},</if>
+            <if test="isdefault != null">isdefault = #{isdefault},</if>
             <if test="deleted != null">deleted = #{deleted},</if>
         </trim>
         where id = #{id}

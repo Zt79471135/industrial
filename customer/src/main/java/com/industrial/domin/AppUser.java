@@ -81,6 +81,10 @@ public class AppUser extends BaseEntity
     @Excel(name = "电话号码")
     private String phoneNum;
 
+    /** 所在地区 */
+    @Excel(name = "所在地区")
+    private String addrArea;
+
     /** 单位地址 */
     @Excel(name = "单位地址")
     private String address;
@@ -92,6 +96,9 @@ public class AppUser extends BaseEntity
     /** 标志（0：禁用，1：启用) */
     @Excel(name = "标志", readConverterExp = "标志（0：禁用，1：启用)")
     private Integer deleted;
+
+    private String addrCode;
+
 
     public void setId(Long id) 
     {
@@ -288,6 +295,23 @@ public class AppUser extends BaseEntity
             .append("updateTime", getUpdateTime())
             .append("extend", getExtend())
             .append("deleted", getDeleted())
+            .append("addrCode", getAddrCode())
             .toString();
+    }
+
+    public String getAddrCode() {
+        return addrCode;
+    }
+
+    public void setAddrCode(String addrCode) {
+        this.addrCode = addrCode;
+    }
+
+    public String getAddrArea() {
+        return addrArea;
+    }
+
+    public void setAddrArea(String addrArea) {
+        this.addrArea = addrArea;
     }
 }
