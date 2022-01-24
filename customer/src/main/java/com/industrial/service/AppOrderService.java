@@ -1,7 +1,9 @@
 package com.industrial.service;
 
 import com.industrial.common.dto.OrderDto;
+import com.industrial.common.vo.FollowVo;
 import com.industrial.common.vo.OrderVo;
+import com.industrial.domin.AppFollow;
 
 /**
  * @author zhu
@@ -22,4 +24,12 @@ public interface AppOrderService {
      * @return
      */
     boolean insert(OrderVo orderVo);
+
+    /**
+     * 创建跟进任务
+     * @param follow
+     * @return
+     */
+    boolean insertFollow(FollowVo follow);
+
 }

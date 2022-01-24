@@ -122,8 +122,6 @@ public class MyBatisConfig
         String typeAliasesPackage = env.getProperty("mybatis-plus.type-aliases-package");
         String mapperLocations = env.getProperty("mybatis-plus.mapper-locations");
         String configLocation = env.getProperty("mybatis-plus.config-location");
-        System.out.println("typeAliasesPackage = " + typeAliasesPackage);
-        System.out.println("configLocation = " + configLocation);
         typeAliasesPackage = setTypeAliasesPackage(typeAliasesPackage);
         VFS.addImplClass(SpringBootVFS.class);
 

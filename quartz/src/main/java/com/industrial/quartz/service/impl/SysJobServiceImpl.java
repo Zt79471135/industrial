@@ -2,6 +2,7 @@ package com.industrial.quartz.service.impl;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 import com.industrial.common.constant.ScheduleConstants;
 import com.industrial.common.exception.job.TaskException;
@@ -26,10 +27,10 @@ import com.industrial.quartz.util.CronUtils;
 @Service
 public class SysJobServiceImpl implements ISysJobService
 {
-    @Autowired
+    @Resource
     private Scheduler scheduler;
 
-    @Autowired
+    @Resource
     private SysJobMapper jobMapper;
 
     /**

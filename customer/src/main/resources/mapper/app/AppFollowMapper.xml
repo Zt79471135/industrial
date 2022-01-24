@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.industrial.mapper.AppFollowMapper">
+  <resultMap id="BaseResultMap" type="com.industrial.domin.AppFollow">
+    <!--@mbg.generated-->
+    <!--@Table app_follow-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="follow_order" jdbcType="INTEGER" property="followOrder" />
+    <result column="follow_user" jdbcType="INTEGER" property="followUser" />
+    <result column="follow_time" jdbcType="TIMESTAMP" property="followTime" />
+    <result column="reminder_type" jdbcType="TINYINT" property="reminderType" />
+    <result column="reminder_time" jdbcType="TIMESTAMP" property="reminderTime" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, follow_order, follow_user, follow_time, reminder_type, reminder_time, deleted
+  </sql>
+</mapper>

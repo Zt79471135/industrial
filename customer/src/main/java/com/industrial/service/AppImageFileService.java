@@ -12,6 +12,6 @@ public interface AppImageFileService {
      * @param imageFile
      * @return
      */
-    boolean insert(AppImageFile imageFile);
+    Integer insert(AppImageFile imageFile);
 
 }

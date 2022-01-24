@@ -13,6 +13,7 @@ import com.industrial.service.AppActivityService;
 import com.industrial.system.mapper.SysUserMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -55,15 +56,18 @@ public class AppActivityServiceImpl implements AppActivityService {
             throw new ServiceException("活动详情为空");
         }
     }
+    @Transactional(rollbackFor = ServiceException.class)
     @Override
     public boolean insertActivity(ActivityVo activityVo) {
         AppActivity activity = new AppActivity();
         List<Integer> integerList = new ArrayList<>();
         BeanUtils.copyProperties(activityVo, activity);
         if (activityMapper.insert(activity) == 1) {
+            AppActivityUser activityUser = new AppActivityUser();
+            activityUser.setActivityId(activity.getId());
             List<Integer> userIdList = activityVo.getUserIdList();
             integerList = userIdList.stream().map(userId -> {
-                AppActivityUser activityUser = new AppActivityUser();
+                activityUser.setUserId(userId);
                 return activityUserMapper.insert(activityUser);
             }).collect(Collectors.toList());
             return integerList.size() == userIdList.size();

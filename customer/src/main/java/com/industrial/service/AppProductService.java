@@ -57,9 +57,16 @@ public interface AppProductService {
      * 根据分类查询
      * @param categoryId
      * @param productName
+     * @param status
      * @return
      */
     List<ProductDto> selectProductByCategoryId(Integer categoryId,String productName,int status);
 
-
+    /**
+     * 根据id上架商品
+     * @param ids
+     * @param status
+     * @return
+     */
+    boolean putaway(List<Integer> ids,byte status);
 }

@@ -17,7 +17,8 @@ public class AppImageFileServiceImpl implements AppImageFileService {
     private AppImageFileMapper imageFileMapper;
 
     @Override
-    public boolean insert(AppImageFile imageFile) {
-        return imageFileMapper.insert(imageFile) == 1;
+    public Integer insert(AppImageFile imageFile) {
+        imageFileMapper.insert(imageFile);
+        return imageFile.getId();
     }
 }

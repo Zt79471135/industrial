@@ -14,10 +14,13 @@
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
     <result column="unit_id" jdbcType="VARCHAR" property="unitId" />
     <result column="floor_price" jdbcType="DECIMAL" property="floorPrice" />
+    <result column="specifica" jdbcType="VARCHAR" property="specifica" />
+    <result column="maintenance" jdbcType="VARCHAR" property="maintenance" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="PictureParam" jdbcType="VARCHAR" property="pictureparam" />
+    <result column="img_id" jdbcType="INTEGER" property="imgId" />
     <result column="main_img_url" jdbcType="VARCHAR" property="mainImgUrl" />
     <result column="summary" jdbcType="VARCHAR" property="summary" />
-    <result column="img_id" jdbcType="INTEGER" property="imgId" />
     <result column="deleted" jdbcType="TINYINT" property="deleted" />
     <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -26,7 +29,8 @@
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, `number`, `name`, category_id, stock, price, contacts, telephone, unit_id, floor_price, 
-    `status`, main_img_url, summary, img_id, deleted, create_user_id, create_time, update_time
+    specifica, maintenance, `status`, PictureParam, img_id, main_img_url, summary, deleted, 
+    create_user_id, create_time, update_time
   </sql>
   <update id="updateStockByProductId">
     UPDATE app_product p
@@ -34,7 +38,7 @@
     WHERE p.id = #{productId}
   </update>
   <select id="selectProductByKeyword" resultMap="BaseResultMap">
-    SELECT <include refid="Base_Column_List"/>
+    SELECT <include refid="Base_Column_List" />
     FROM app_product p
     WHERE name LIKE '%'#{keyword}'%'
   </select>

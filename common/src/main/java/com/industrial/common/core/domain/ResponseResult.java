@@ -17,7 +17,7 @@ public class ResponseResult<T>{
     /**
      * 返回的数据
      */
-    private T date;
+    private T data;
     private ResponseCode responseCode;
 
     /**
@@ -27,7 +27,7 @@ public class ResponseResult<T>{
      * @return ResultReturn
      */
     public static<T> ResponseResult<T> result(T date, ResponseCode responseCode) {
-        return new ResponseResultBuilder<T>().responseCode(responseCode).date(date).build();
+        return new ResponseResultBuilder<T>().responseCode(responseCode).data(date).build();
     }
 
     /**

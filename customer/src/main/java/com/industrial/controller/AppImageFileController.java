@@ -1,9 +1,11 @@
 package com.industrial.controller;
 
 import com.industrial.common.config.IndustrialConfig;
+import com.industrial.common.core.controller.BaseController;
 import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.core.domain.ResponseCode;
 import com.industrial.common.core.domain.ResponseResult;
+import com.industrial.common.core.domain.model.LoginUser;
 import com.industrial.common.utils.file.FileUploadUtils;
 import com.industrial.common.utils.file.MimeTypeUtils;
 import com.industrial.domin.AppImageFile;
@@ -21,7 +23,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/upload")
-public class AppImageFileController {
+public class AppImageFileController extends BaseController {
     @Resource
     private AppImageFileService imageFileService;
     @Resource
@@ -44,10 +46,19 @@ public class AppImageFileController {
             String imgName = FileUploadUtils.upload(filePath, img, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION,fileLabel);
             //获取图片完整的请求路径
             String url = serverConfig.getUrl() + imgName;
-            AjaxResult ajax = AjaxResult.success();
-            ajax.put("imgName", imgName);
-            ajax.put("url", url);
-            return ajax;
+            //获取图片后缀
+            String originalName = img.getOriginalFilename();
+            String suffix = originalName.substring(originalName.lastIndexOf("."));
+            LoginUser user = getLoginUser();
+            //将文件相关信息存储到MySQL
+            AppImageFile imageFile = new AppImageFile();
+            //获取登陆用户信息
+            imageFile.setCreateUserid(Math.toIntExact(user.getUserId()));
+            imageFile.setFilePath(url);
+            imageFile.setFileName(imgName);
+            imageFile.setType(suffix);
+            Integer integer = imageFileService.insert(imageFile);
+            return AjaxResult.success(integer);
         }
         catch (Exception e)
         {
@@ -57,13 +68,13 @@ public class AppImageFileController {
     }
     @PostMapping("/save")
     public ResponseResult save(@RequestBody AppImageFile imageFile){
-        ResponseResult result = null;
-        if (imageFileService.insert(imageFile)) {
+        //ResponseResult result = null;
+        /*if (imageFileService.insert(imageFile)) {
             result = ResponseResult.success();
         } else {
             result = ResponseResult.error(ResponseCode.ERROR);
-        }
-        return result;
+        }*/
+        return null;
     }
 
 }

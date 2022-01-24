@@ -1,9 +1,10 @@
 package com.industrial.service;
 
-import java.util.List;
 import com.industrial.domin.AppUser;
 import com.industrial.domin.AppUserAddress;
 import com.industrial.domin.AppUserSalesman;
+
+import java.util.List;
 
 /**
  * 客户管理Service接口

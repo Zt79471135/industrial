@@ -12,4 +12,5 @@ import lombok.Data;
 @Data
 public class ProductDto extends AppProduct {
     private AppProductCategory category;
+    private String unitName;
 }

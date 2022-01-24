@@ -1,27 +1,19 @@
 package com.industrial.domin;
 
-
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.industrial.common.annotation.Excel;
+import java.math.BigDecimal;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
-/**
- * @author zhu
- * @date 2022年01月13日 16:39
- */
-
 /**
  * 商品表
- * @author 79471
+ * @author zhu
+ * @date 2022年01月21日 9:27
  */
 @Data
 @AllArgsConstructor
@@ -31,99 +23,95 @@ public class AppProduct {
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.INPUT)
     private Integer id;
     /**
      * 商品编号
      */
-    @Excel(name = "商品编号", cellType = Excel.ColumnType.NUMERIC, prompt = "商品编号")
     @TableField(value = "`number`")
     private String number;
     /**
      * 商品名称
      */
-    @Excel(name = "商品名称")
     @TableField(value = "`name`")
     private String name;
-
     /**
      * 商品类别
      */
-    @Excel(name = "商品类别")
     @TableField(value = "category_id")
     private Integer categoryId;
 
     /**
      * 库存量
      */
-    @Excel(name = "库存量")
     @TableField(value = "stock")
     private Integer stock;
-
     /**
      * 单价
      */
-    @Excel(name = "单价")
     @TableField(value = "price")
     private BigDecimal price;
-
     /**
      * 售后联系人
      */
-    @Excel(name = "售后联系人")
     @TableField(value = "contacts")
     private String contacts;
-
     /**
      * 售后服务电话
      */
-    @Excel(name = "售后服务电话")
     @TableField(value = "telephone")
     private String telephone;
-
     /**
-     * 单位id
+     * 单位编号
      */
-    @Excel(name = "单位id", type = Excel.Type.IMPORT)
     @TableField(value = "unit_id")
     private String unitId;
-
     /**
-     * 最低价
+     * 对内价格
      */
-    @Excel(name = "最低价")
     @TableField(value = "floor_price")
     private BigDecimal floorPrice;
-
     /**
-     * 0删除1待审核2修改一3审核4修改二
+     * 规格
+     */
+    @TableField(value = "specifica")
+    private String specifica;
+    /**
+     * 维保期
+     */
+    @TableField(value = "maintenance")
+    private String maintenance;
+    /**
+     * 1待审核2失败3上架
      */
     @TableField(value = "`status`")
     private Byte status;
+    /**
+     * 图片参数（数组）
+     */
+    @TableField(value = "picture_param")
+    private String pictureParam;
 
     /**
-     * 主图ID
+     * 图片外键（关联app_image_file表ID）
      */
-    @Excel(name = "主图ID", type = Excel.Type.IMPORT)
+    @TableField(value = "img_id")
+    private Integer imgId;
+
+    /**
+     * 主图URL
+     */
     @TableField(value = "main_img_url")
     private String mainImgUrl;
 
     /**
      * 摘要
      */
-    @Excel(name = "摘要")
     @TableField(value = "summary")
     private String summary;
 
     /**
-     * 图片外键
-     */
-    @Excel(name = "图片外键", type = Excel.Type.IMPORT)
-    @TableField(value = "img_id")
-    private Integer imgId;
-
-    /**
-     * 0为删除
+     * 标志（0：禁用，1：启用)
      */
     @TableField(value = "deleted")
     private Byte deleted;
@@ -131,14 +119,12 @@ public class AppProduct {
     /**
      * 创建用户ID
      */
-    @Excel(name = "创建用户ID", type = Excel.Type.IMPORT)
     @TableField(value = "create_user_id")
     private Integer createUserId;
 
     /**
      * 创建时间
      */
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
     @TableField(value = "create_time")
     private Date createTime;
 
@@ -168,13 +154,19 @@ public class AppProduct {
 
     public static final String COL_FLOOR_PRICE = "floor_price";
 
+    public static final String COL_SPECIFICA = "specifica";
+
+    public static final String COL_MAINTENANCE = "maintenance";
+
     public static final String COL_STATUS = "status";
+
+    public static final String COL_PICTUREPARAM = "PictureParam";
+
+    public static final String COL_IMG_ID = "img_id";
 
     public static final String COL_MAIN_IMG_URL = "main_img_url";
 
     public static final String COL_SUMMARY = "summary";
-
-    public static final String COL_IMG_ID = "img_id";
 
     public static final String COL_DELETED = "deleted";
 
