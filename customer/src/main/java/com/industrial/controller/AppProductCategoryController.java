@@ -66,7 +66,7 @@ public class AppProductCategoryController extends BaseController
         List<AppProductCategory> List = util.importExcel(file.getInputStream());
         String operName = getUsername();
         String message ="";
-        // message = userService.importUser(List, updateSupport, operName);
+        message = appProductCategoryService.importData(List, updateSupport, operName);
         return AjaxResult.success(message);
     }
 
@@ -127,6 +127,16 @@ public class AppProductCategoryController extends BaseController
     }
 
     /**
+     * 状态修改
+     */
+    @Log(title = "商品分类", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeStatus")
+    public AjaxResult changeStatus(@RequestBody AppProductCategory category)
+    {
+        return toAjax(appProductCategoryService.changeStatus(category));
+    }
+
+    /**
      * 修改所属分类
      */
     @PostMapping("/updateType")
@@ -144,14 +154,6 @@ public class AppProductCategoryController extends BaseController
         return toAjax(appProductCategoryService.updateDeleted(deletedVo));
     }
 
-    /**
-     * 状态修改
-     */
-    @Log(title = "商品分类", businessType = BusinessType.UPDATE)
-    @PutMapping("/changeStatus")
-    public AjaxResult changeStatus(@RequestBody AppProductCategory category)
-    {
-        return toAjax(appProductCategoryService.changeStatus(category));
-    }
+
 
 }

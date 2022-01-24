@@ -1,6 +1,7 @@
 package com.industrial.mapper;
 import java.util.List;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.dto.CategoryDto;
 import com.industrial.domin.AppProductCategory;
 import org.apache.ibatis.annotations.Param;
@@ -26,6 +27,14 @@ public interface AppProductCategoryMapper extends BaseMapper<AppProductCategory>
          * @return 商品分类集合
          */
         public List<AppProductCategory> selectAppProductCategoryList(AppProductCategory appProductCategory);
+
+        /**
+         * 通过名称查询数据
+         *
+         * @param keyName 名称
+         * @return 用户对象信息
+         */
+        public AppProductCategory selectDataByName(String keyName);
 
         /**
          * 新增商品分类
@@ -54,10 +63,10 @@ public interface AppProductCategoryMapper extends BaseMapper<AppProductCategory>
         /**
          * 根据ID更新启用状态
          * @param categoryId
-         * @param deleted
+         * @param enabled
          * @return
          */
-        int updateDeletedById(@Param("deleted") Integer deleted,@Param("categoryId") Long categoryId);
+        int updateEnabled(@Param("enabled") Integer enabled,@Param("categoryId") Long categoryId);
 
         /**
          * 删除商品分类

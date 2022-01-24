@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.industrial.common.core.domain.TreeSelect;
 import com.industrial.common.core.domain.entity.SysDept;
+import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.dto.CategoryDto;
 import com.industrial.common.vo.updateTypeVo;
 import com.industrial.common.vo.UpdateDeletedVo;
@@ -72,6 +73,16 @@ public interface IAppProductCategoryService
      * @return 结果
      */
    int changeStatus(AppProductCategory category);
+
+    /**
+     * 导入用户数据
+     *
+     * @param list 数据列表
+     * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
+     * @param operName 操作用户
+     * @return 结果
+     */
+    public String importData(List<AppProductCategory> list, Boolean isUpdateSupport, String operName);
 
     /**
      * 批量删除商品分类

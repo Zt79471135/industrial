@@ -1,117 +1,173 @@
 package com.industrial.domin;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.industrial.common.annotation.Excel;
 import com.industrial.common.annotation.Excels;
+import com.industrial.common.core.domain.entity.SysDept;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import com.industrial.common.core.domain.BaseEntity;
 import com.industrial.common.core.domain.entity.SysDictData;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * 商品分类
  * @author chenjh
  * @date 2022年01月19日  10:22
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@TableName(value = "app_product_category")
-public class AppProductCategory  {
+public class AppProductCategory extends BaseEntity
+{
     private static final long serialVersionUID = 1L;
-    /**
-     * 主键
-     */
-    @TableId(value = "id", type = IdType.INPUT)
-    @Excel(name = "分类序号", cellType = Excel.ColumnType.NUMERIC, prompt = "分类编号")
-    private Integer id;
 
-    /**
-     * 分类名称
-     */
-    @TableField(value = "category_name")
+    /** 主键 */
+    @Excel(name = "序号", cellType = Excel.ColumnType.NUMERIC, prompt = "编号")
+    private Long id;
+
+    /** 分类名称 */
     @Excel(name = "分类名称")
     private String categoryName;
 
-    /**
-     * 所属分类
-     */
-    @TableField(value = "product_type")
-    private Integer productType;
+    /** 所属分类 */
+    //@Excel(name = "所属分类")
+    private Long productType;
 
-    /**
-     * 分类编号
-     */
-    @TableField(value = "category_code")
+    /** 分类编号 */
     @Excel(name = "分类编号")
     private String categoryCode;
 
-    /**
-     * 助记码
-     */
-    @TableField(value = "mnemonic_code")
+    /** 助记码 */
+    @Excel(name = "助记码")
     private String mnemonicCode;
 
-    /**
-     * 外键,关联image表（关联app_image_file表ID）
-     */
-    @TableField(value = "topic_img_id")
-    private Integer topicImgId;
+    /** 外键,关联image表（关联app_image_file表ID） */
+    private Long topicImgId;
 
-    /**
-     * 描述
-     */
-    @TableField(value = "description")
+    /** 描述 */
     @Excel(name = "描述")
     private String description;
 
-    /**
-     * 更新时间
-     */
-    @TableField(value = "update_time")
-    private Date updateTime;
-
-    /**
-     * 删除时间
-     */
-    @TableField(value = "delete_time")
+    /** 删除时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date deleteTime;
 
-    /**
-     * 标志（1：禁用，0：启用)
-     */
-    @TableField(value = "deleted")
+    /** 启用状态（0：启用，1：禁用) */
     @Excel(name = "启用状态", readConverterExp = "0=启用,1=禁用")
-    private Byte deleted;
+    private Integer enabled;
 
-//    @Excels({
-//            @Excel(name = "所属分类", targetAttr = "dictLabel", type = Excel.Type.EXPORT)
-//    })
-    //private SysDictData dictData;
+    /** 标志（0：禁用，1：启用) */
+    private Integer deleted;
 
-    public static final String COL_ID = "id";
+    /** 字典对象 */
+    @Excels({
+            @Excel(name = "所属分类", targetAttr = "dictLabel", type = Excel.Type.EXPORT)
+    })
+    private SysDictData dictData;
 
-    public static final String COL_NAME = "name";
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 
-    public static final String COL_PRODUCT_TYPE = "product_type";
+    public Long getId()
+    {
+        return id;
+    }
+    public void setCategoryName(String categoryName)
+    {
+        this.categoryName = categoryName;
+    }
 
-    public static final String COL_CATEGORY_CODE = "category_code";
+    public String getCategoryName()
+    {
+        return categoryName;
+    }
+    public void setProductType(Long productType)
+    {
+        this.productType = productType;
+    }
 
-    public static final String COL_MNEMONIC_CODE = "mnemonic_code";
+    public Long getProductType()
+    {
+        return productType;
+    }
+    public void setCategoryCode(String categoryCode)
+    {
+        this.categoryCode = categoryCode;
+    }
 
-    public static final String COL_TOPIC_IMG_ID = "topic_img_id";
+    public String getCategoryCode()
+    {
+        return categoryCode;
+    }
+    public void setMnemonicCode(String mnemonicCode)
+    {
+        this.mnemonicCode = mnemonicCode;
+    }
 
-    public static final String COL_DESCRIPTION = "description";
+    public String getMnemonicCode()
+    {
+        return mnemonicCode;
+    }
+    public void setTopicImgId(Long topicImgId)
+    {
+        this.topicImgId = topicImgId;
+    }
 
-    public static final String COL_UPDATE_TIME = "update_time";
+    public Long getTopicImgId()
+    {
+        return topicImgId;
+    }
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 
-    public static final String COL_DELETE_TIME = "delete_time";
+    public String getDescription()
+    {
+        return description;
+    }
+    public void setDeleteTime(Date deleteTime)
+    {
+        this.deleteTime = deleteTime;
+    }
 
-    public static final String COL_DELETED = "deleted";
+    public Date getDeleteTime()
+    {
+        return deleteTime;
+    }
+    public void setEnabled(Integer enabled)
+    {
+        this.enabled = enabled;
+    }
+
+    public Integer getEnabled()
+    {
+        return enabled;
+    }
+    public void setDeleted(Integer deleted)
+    {
+        this.deleted = deleted;
+    }
+
+    public Integer getDeleted()
+    {
+        return deleted;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+                .append("id", getId())
+                .append("categoryName", getCategoryName())
+                .append("productType", getProductType())
+                .append("categoryCode", getCategoryCode())
+                .append("mnemonicCode", getMnemonicCode())
+                .append("topicImgId", getTopicImgId())
+                .append("description", getDescription())
+                .append("updateTime", getUpdateTime())
+                .append("deleteTime", getDeleteTime())
+                .append("enabled", getEnabled())
+                .append("deleted", getDeleted())
+                .toString();
+    }
 }

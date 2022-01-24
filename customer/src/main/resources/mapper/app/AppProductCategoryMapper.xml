@@ -13,20 +13,37 @@
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="update_time" jdbcType="INTEGER" property="updateTime" />
     <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    <result column="enabled" jdbcType="TINYINT" property="enabled" />
     <result column="deleted" jdbcType="TINYINT" property="deleted" />
-
+    <association property="dictData" column="dictCode" javaType="com.industrial.common.core.domain.entity.SysDictData" resultMap="CateDictDataResult" />
+  </resultMap>
+  <resultMap type="com.industrial.common.core.domain.entity.SysDictData" id="CateDictDataResult">
+    <id     property="dictCode"   column="dict_code"   />
+    <result property="dictSort"   column="dict_sort"   />
+    <result property="dictLabel"  column="dict_label"  />
+    <result property="dictValue"  column="dict_value"  />
+    <result property="dictType"   column="dict_type"   />
+    <result property="cssClass"   column="css_class"   />
+    <result property="listClass"  column="list_class"  />
+    <result property="isDefault"  column="is_default"  />
+    <result property="status"     column="status"      />
+    <result property="createBy"   column="create_by"   />
+    <result property="createTime" column="create_time" />
+    <result property="updateBy"   column="update_by"   />
+    <result property="updateTime" column="update_time" />
   </resultMap>
 
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, category_name, product_type, category_code, mnemonic_code, topic_img_id, description,
-    update_time, delete_time, deleted
+    update_time, enabled,delete_time, deleted
   </sql>
 
   <sql id="selectAppProductCategoryVo">
     select id, category_name, product_type, category_code, mnemonic_code, topic_img_id, description, p.update_time,
-           delete_time, deleted
+           p.delete_time,p.enabled, p.deleted,d.dict_label,d.dict_code
     from app_product_category p
+    left join sys_dict_data d on d.dict_value = p.product_type and dict_type = 'dict_cate_type'
   </sql>
 
   <select id="selectAppProductCategoryList"  resultMap="BaseResultMap">
@@ -36,7 +53,7 @@
       <if test="productType != null "> and product_type = #{productType}</if>
       <if test="categoryCode != null  and categoryCode != ''"> and category_code = #{categoryCode}</if>
 
-      <if test="deleted != null "> and deleted = #{deleted}</if>
+      <if test="deleted != null "> and enabled = #{enabled}</if>
     </where>
   </select>
 
@@ -44,6 +61,12 @@
     <include refid="selectAppProductCategoryVo"/>
     where id = #{id}
   </select>
+
+  <select id="selectDataByName" parameterType="String" resultMap="BaseResultMap">
+    <include refid="selectAppProductCategoryVo"/>
+    where p.category_name = #{keyName}
+  </select>
+
   <insert id="insertAppProductCategory" parameterType="com.industrial.domin.AppProductCategory" useGeneratedKeys="true" keyProperty="id">
     insert into app_product_category
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -54,6 +77,7 @@
       <if test="topicImgId != null">topic_img_id,</if>
       <if test="description != null">description,</if>
       <if test="updateTime != null">update_time,</if>
+      <if test="enabled != null">enabled,</if>
       <if test="deleteTime != null">delete_time,</if>
       <if test="deleted != null">deleted,</if>
     </trim>
@@ -66,6 +90,7 @@
       <if test="description != null">#{description},</if>
       <if test="updateTime != null">#{updateTime},</if>
       <if test="deleteTime != null">#{deleteTime},</if>
+      <if test="enabled != null">#{enabled},</if>
       <if test="deleted != null">#{deleted},</if>
     </trim>
   </insert>
@@ -81,6 +106,7 @@
       <if test="description != null">description = #{description},</if>
       <if test="updateTime != null">update_time = #{updateTime},</if>
       <if test="deleteTime != null">delete_time = #{deleteTime},</if>
+      <if test="enabled != null">enabled = #{enabled},</if>
       <if test="deleted != null">deleted = #{deleted},</if>
     </trim>
     where id = #{id}
@@ -92,9 +118,9 @@
     WHERE p.id = #{categoryId}
   </update>
 
-  <update id="updateDeletedById">
+  <update id="updateEnabled">
     UPDATE app_product_category p
-    SET p.deleted = #{deleted}
+    SET p.enabled = #{enabled}
     WHERE p.id = #{categoryId}
   </update>
 
