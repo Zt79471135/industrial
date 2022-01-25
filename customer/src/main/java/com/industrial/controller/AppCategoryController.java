@@ -3,7 +3,9 @@ package com.industrial.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.industrial.common.constant.UserConstants;
 import com.industrial.common.core.domain.entity.SysDept;
+import com.industrial.common.utils.StringUtils;
 import com.industrial.domin.AppCategory;
 import com.industrial.service.IAppCategoryService;
 import com.industrial.common.vo.UpdateDeletedVo;
@@ -118,6 +120,10 @@ public class AppCategoryController extends BaseController
     @PostMapping("/add")
     public AjaxResult add(@RequestBody AppCategory appCategory)
     {
+        if (UserConstants.NOT_UNIQUE.equals(appCategoryService.checkDeptNameUnique(appCategory)))
+        {
+            return AjaxResult.error("新增分类'" + appCategory.getCategoryName() + "'失败，分类名称已存在");
+        }
         return toAjax(appCategoryService.insertAppCategory(appCategory));
     }
 
@@ -129,6 +135,19 @@ public class AppCategoryController extends BaseController
     @PutMapping("/update")
     public AjaxResult edit(@RequestBody AppCategory appCategory)
     {
+        if (UserConstants.NOT_UNIQUE.equals(appCategoryService.checkDeptNameUnique(appCategory)))
+        {
+            return AjaxResult.error("修改分类'" + appCategory.getCategoryName() + "'失败，分类名称已存在");
+        }
+        else if (appCategory.getParentId().equals(appCategory.getId()))
+        {
+            return AjaxResult.error("修改分类'" + appCategory.getCategoryName() + "'失败，上级分类不能是自己");
+        }
+        else if (StringUtils.equals(UserConstants.DEPT_DISABLE, appCategory.getEnabled().toString())
+                && appCategoryService.selectNormalChildrenDeptById(appCategory.getId()) > 0)
+        {
+            return AjaxResult.error("该分类包含未停用的子分类！");
+        }
         return toAjax(appCategoryService.updateAppCategory(appCategory));
     }
 
@@ -165,7 +184,7 @@ public class AppCategoryController extends BaseController
      */
     //@PreAuthorize("@ss.hasPermi('category:remove')")
     @Log(title = "商品分类", businessType = BusinessType.DELETE)
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/remove/{id}")
     public AjaxResult categoryRemove(@PathVariable Long id)
     {
         if (appCategoryService.hasChildByDeptId(id))
@@ -180,7 +199,7 @@ public class AppCategoryController extends BaseController
     }
 
     /**
-     * 获取部门下拉树列表
+     * 获取分类下拉树列表
      */
     @GetMapping("/treeselect")
     public AjaxResult treeselect(AppCategory appCategory)

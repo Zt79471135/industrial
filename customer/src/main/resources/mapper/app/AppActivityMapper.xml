@@ -4,32 +4,46 @@
   <resultMap id="BaseResultMap" type="com.industrial.domin.AppActivity">
     <!--@mbg.generated-->
     <!--@Table app_activity-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="activity_name" jdbcType="VARCHAR" property="activityName" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="activity_type" jdbcType="INTEGER" property="activityType" />
-    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
-    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"    />
-    <result column="activity_status" jdbcType="INTEGER" property="activityStatus" />
-    <result column="expected_cost" jdbcType="DECIMAL" property="expectedCost" />
-    <result column="expected_income" jdbcType="DECIMAL" property="expectedIncome" />
-    <result column="head_user" jdbcType="VARCHAR" property="headUser" />
-    <result column="topic_img_id" jdbcType="INTEGER" property="topicImgId" />
-    <result column="head_img_id" jdbcType="INTEGER" property="headImgId" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="enabled" jdbcType="TINYINT"  property="enabled"  />
-    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result property="id"    column="id"    />
+    <result property="activityName"    column="activity_name"    />
+    <result property="description"    column="description"    />
+    <result property="activityAddress"    column="activity_address"    />
+    <result property="activityType"    column="activity_type"    />
+    <result property="beginTime"    column="begin_time"    />
+    <result property="endTime"    column="end_time"    />
+    <result property="createTime"    column="create_time"    />
+    <result property="activityStatus"    column="activity_status"    />
+    <result property="expectedCost"    column="expected_cost"    />
+    <result property="expectedIncome"    column="expected_income"    />
+    <result property="headUser"    column="head_user"    />
+    <result property="topicImgId"    column="topic_img_id"    />
+    <result property="headImgId"    column="head_img_id"    />
+    <result property="pictureParam"    column="picture_param"    />
+    <result property="updateTime"    column="update_time"    />
+    <result property="conclusionPerson"    column="conclusion_person"    />
+    <result property="enabled"    column="enabled"    />
+    <result property="deleted"    column="deleted"    />
+    <result property="conclusionTime"    column="conclusion_time"    />
+    <result property="actualCost"    column="actual_cost"    />
+    <result property="realIncome"    column="real_income"    />
+    <result property="costRate"    column="cost_rate"    />
+    <result property="returnRate"    column="return_rate"    />
+    <result property="summaryDesc"    column="summary_desc"    />
+    <result property="attachParam"    column="attach_param"    />
+    <result property="invalidReason"    column="invalid_reason"    />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, activity_name, description, activity_type, begin_time, end_time, activity_status, 
-    expected_cost, expected_income, head_user, topic_img_id, head_img_id, update_time, create_time,
-    deleted,enabled
+    id, activity_name, description, activity_address, activity_type, begin_time, end_time, create_time, activity_status,
+    expected_cost, expected_income, head_user, topic_img_id, head_img_id, picture_param, update_time, conclusion_person,
+    enabled, deleted, conclusion_time, actual_cost, real_income, cost_rate, return_rate, summary_desc, attach_param,
+    invalid_reason
   </sql>
   <sql id="selectAppActivityVo">
-    select id, activity_name, description, activity_type, begin_time, end_time, create_time,activity_status, expected_cost,
-           expected_income, head_user, topic_img_id, head_img_id, update_time, enabled, deleted
+    select id, activity_name, description, activity_address, activity_type, begin_time, end_time, create_time,
+           activity_status, expected_cost, expected_income, head_user, topic_img_id, head_img_id, picture_param,
+           update_time, conclusion_person, enabled, deleted, conclusion_time, actual_cost, real_income, cost_rate,
+           return_rate, summary_desc, attach_param, invalid_reason
     from app_activity
   </sql>
 
@@ -44,7 +58,7 @@
       <if test="activityStatus != null "> and activity_status = #{activityStatus}</if>
       <if test="headUser != null "> and head_user = #{headUser}</if>
       <if test="enabled != null "> and enabled = #{enabled}</if>
-
+       and deleted = 0
     </where>
   </select>
 
@@ -58,36 +72,58 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="activityName != null and activityName != ''">activity_name,</if>
       <if test="description != null and description != ''">description,</if>
+      <if test="activityAddress != null and activityAddress != ''">activity_address,</if>
       <if test="activityType != null">activity_type,</if>
       <if test="beginTime != null">begin_time,</if>
-      <if test="createTime != null">create_time,</if>
       <if test="endTime != null">end_time,</if>
+      <if test="createTime != null">create_time,</if>
       <if test="activityStatus != null">activity_status,</if>
       <if test="expectedCost != null">expected_cost,</if>
       <if test="expectedIncome != null">expected_income,</if>
       <if test="headUser != null">head_user,</if>
       <if test="topicImgId != null">topic_img_id,</if>
       <if test="headImgId != null">head_img_id,</if>
+      <if test="pictureParam != null">picture_param,</if>
       <if test="updateTime != null">update_time,</if>
+      <if test="conclusionPerson != null">conclusion_person,</if>
       <if test="enabled != null">enabled,</if>
       <if test="deleted != null">deleted,</if>
+      <if test="conclusionTime != null">conclusion_time,</if>
+      <if test="actualCost != null">actual_cost,</if>
+      <if test="realIncome != null">real_income,</if>
+      <if test="costRate != null">cost_rate,</if>
+      <if test="returnRate != null">return_rate,</if>
+      <if test="summaryDesc != null">summary_desc,</if>
+      <if test="attachParam != null">attach_param,</if>
+      <if test="invalidReason != null">invalid_reason,</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="activityName != null and activityName != ''">#{activityName},</if>
       <if test="description != null and description != ''">#{description},</if>
+      <if test="activityAddress != null and activityAddress != ''">#{activityAddress},</if>
       <if test="activityType != null">#{activityType},</if>
       <if test="beginTime != null">#{beginTime},</if>
       <if test="endTime != null">#{endTime},</if>
-      <if test="createTime != null">create_time,</if>
+      <if test="createTime != null">#{createTime},</if>
       <if test="activityStatus != null">#{activityStatus},</if>
       <if test="expectedCost != null">#{expectedCost},</if>
       <if test="expectedIncome != null">#{expectedIncome},</if>
       <if test="headUser != null">#{headUser},</if>
       <if test="topicImgId != null">#{topicImgId},</if>
       <if test="headImgId != null">#{headImgId},</if>
+      <if test="pictureParam != null">#{pictureParam},</if>
       <if test="updateTime != null">#{updateTime},</if>
+      <if test="conclusionPerson != null">#{conclusionPerson},</if>
       <if test="enabled != null">#{enabled},</if>
       <if test="deleted != null">#{deleted},</if>
+      <if test="conclusionTime != null">#{conclusionTime},</if>
+      <if test="actualCost != null">#{actualCost},</if>
+      <if test="realIncome != null">#{realIncome},</if>
+      <if test="costRate != null">#{costRate},</if>
+      <if test="returnRate != null">#{returnRate},</if>
+      <if test="summaryDesc != null">#{summaryDesc},</if>
+      <if test="attachParam != null">#{attachParam},</if>
+      <if test="invalidReason != null">#{invalidReason},</if>
     </trim>
   </insert>
 
@@ -96,6 +132,7 @@
     <trim prefix="SET" suffixOverrides=",">
       <if test="activityName != null and activityName != ''">activity_name = #{activityName},</if>
       <if test="description != null and description != ''">description = #{description},</if>
+      <if test="activityAddress != null and activityAddress != ''">activity_address = #{activityAddress},</if>
       <if test="activityType != null">activity_type = #{activityType},</if>
       <if test="beginTime != null">begin_time = #{beginTime},</if>
       <if test="endTime != null">end_time = #{endTime},</if>
@@ -106,9 +143,19 @@
       <if test="headUser != null">head_user = #{headUser},</if>
       <if test="topicImgId != null">topic_img_id = #{topicImgId},</if>
       <if test="headImgId != null">head_img_id = #{headImgId},</if>
+      <if test="pictureParam != null">picture_param = #{pictureParam},</if>
       <if test="updateTime != null">update_time = #{updateTime},</if>
+      <if test="conclusionPerson != null">conclusion_person = #{conclusionPerson},</if>
       <if test="enabled != null">enabled = #{enabled},</if>
       <if test="deleted != null">deleted = #{deleted},</if>
+      <if test="conclusionTime != null">conclusion_time = #{conclusionTime},</if>
+      <if test="actualCost != null">actual_cost = #{actualCost},</if>
+      <if test="realIncome != null">real_income = #{realIncome},</if>
+      <if test="costRate != null">cost_rate = #{costRate},</if>
+      <if test="returnRate != null">return_rate = #{returnRate},</if>
+      <if test="summaryDesc != null">summary_desc = #{summaryDesc},</if>
+      <if test="attachParam != null">attach_param = #{attachParam},</if>
+      <if test="invalidReason != null">invalid_reason = #{invalidReason},</if>
     </trim>
     where id = #{id}
   </update>

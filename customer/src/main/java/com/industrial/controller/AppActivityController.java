@@ -1,9 +1,12 @@
 package com.industrial.controller;
 
+import com.industrial.common.constant.UserConstants;
 import com.industrial.common.core.domain.ResponseCode;
 import com.industrial.common.core.domain.ResponseResult;
 import com.industrial.common.dto.ActivityDto;
+import com.industrial.common.utils.StringUtils;
 import com.industrial.common.vo.ActivityVo;
+import com.industrial.domin.AppCategory;
 import com.industrial.service.AppActivityService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -29,11 +32,11 @@ import com.industrial.common.core.page.TableDataInfo;
 import javax.annotation.Resource;
 
 /**
- * @author zhu
- * @date 2022年01月14日 11:49
+ * @author chenjh
+ * @date 2022年01月19日
  */
 @RestController
-@RequestMapping("activity")
+@RequestMapping("/activity")
 public class AppActivityController extends BaseController {
     @Resource
     private AppActivityService activityService;
@@ -54,10 +57,10 @@ public class AppActivityController extends BaseController {
     /**
      * 根据ID查询活动详情
      */
-    @GetMapping("/details")
-    public ResponseResult<ActivityDto> details(@RequestParam Integer activityId) {
+    @GetMapping("/details/{id}")
+    public ResponseResult<ActivityDto> details(@PathVariable("id") Integer id) {
         ResponseResult<ActivityDto> result = null;
-        ActivityDto activityDto = activityService.selectActivityById(activityId);
+        ActivityDto activityDto = activityService.selectActivityById(id);
         result = ResponseResult.success(activityDto);
         return result;
     }
@@ -76,10 +79,22 @@ public class AppActivityController extends BaseController {
         return result;
     }
     /**
+     * 修改活动
+     */
+    //@PreAuthorize("@ss.hasPermi('category:edit')")
+    @Log(title = "活动", businessType = BusinessType.UPDATE)
+    @PutMapping("/update")
+    public AjaxResult edit(@RequestBody AppActivity appActivity)
+    {
+
+        return toAjax(activityService.updateAppActivity(appActivity));
+    }
+
+    /**
      * 删除活动
      */
-    @PostMapping("/remove")
-    public ResponseResult<ActivityDto> remove(@RequestBody Integer activityId) {
+    @PostMapping("/remove/{id}")
+    public ResponseResult<ActivityDto> remove(@PathVariable Integer activityId) {
         ResponseResult<ActivityDto> result = null;
         if (activityService.deleteActivityById(activityId)) {
             result = ResponseResult.success();

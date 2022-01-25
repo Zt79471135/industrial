@@ -125,4 +125,21 @@ public interface AppCategoryMapper
      * @return 用户对象信息
      */
     public AppCategory selectDataByName(String keyName);
+
+    /**
+     * 校验名称是否唯一
+     *
+     * @param deptName 分类名称
+     * @param parentId 父分类ID
+     * @return 结果
+     */
+    public SysDept checkDeptNameUnique(@Param("deptName") String deptName, @Param("parentId") Long parentId);
+
+    /**
+     * 根据ID查询所有子分类（正常状态）
+     *
+     * @param deptId 分类ID
+     * @return 子分类数
+     */
+    public int selectNormalChildrenDeptById(Long deptId);
 }

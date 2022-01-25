@@ -96,6 +96,24 @@ public class AppCategoryServiceImpl implements IAppCategoryService
     }
 
     /**
+     * 校验名称是否唯一
+     *
+     * @param dept 部门信息
+     * @return 结果
+     */
+    @Override
+    public String checkDeptNameUnique(AppCategory appCategory)
+    {
+        Long deptId = StringUtils.isNull(appCategory.getId()) ? -1L : appCategory.getId();
+        SysDept info = appCategoryMapper.checkDeptNameUnique(appCategory.getCategoryName(), appCategory.getParentId());
+        if (StringUtils.isNotNull(info) && info.getDeptId().longValue() != deptId.longValue())
+        {
+            return UserConstants.NOT_UNIQUE;
+        }
+        return UserConstants.UNIQUE;
+    }
+
+    /**
      * 新增商品分类
      *
      * @param appCategory 商品分类
@@ -405,6 +423,18 @@ public class AppCategoryServiceImpl implements IAppCategoryService
     private boolean hasChild(List<AppCategory> list, AppCategory t)
     {
         return getChildList(list, t).size() > 0;
+    }
+
+    /**
+     * 根据ID查询所有子部门（正常状态）
+     *
+     * @param deptId 部门ID
+     * @return 子部门数
+     */
+    @Override
+    public int selectNormalChildrenDeptById(Long deptId)
+    {
+        return appCategoryMapper.selectNormalChildrenDeptById(deptId);
     }
 
 }

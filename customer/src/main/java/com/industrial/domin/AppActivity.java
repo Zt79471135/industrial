@@ -121,7 +121,7 @@ public class AppActivity {
     private Long conclusionPerson;
 
     /** 标志（0：启用，1：禁用) */
-    @Excel(name = "标志", readConverterExp = "标志（0：启用，1：禁用)")
+    @Excel(name = "标志", readConverterExp = "0=启用，1=禁用)")
     private Integer enabled;
 
     /** 总结时间 */
@@ -168,6 +168,7 @@ public class AppActivity {
      * 0表删除
      */
     @TableField(value = "deleted")
+
     private Byte deleted;
 
     public static final String COL_ID = "id";

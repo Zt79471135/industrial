@@ -29,8 +29,8 @@ public class AppCategory extends BaseEntity
     @Excel(name = "序号", cellType = Excel.ColumnType.NUMERIC, prompt = "编号")
     private Long id;
 
-    /** 父部门id */
-    @Excel(name = "父部门id")
+    /** 父分类id */
+    @Excel(name = "父分类id")
     private Long parentId;
 
     /** 分类名称 */
@@ -66,10 +66,10 @@ public class AppCategory extends BaseEntity
     /** 删除时间 */
     private Long deleteTime;
 
-    /** 父部门名称 */
+    /** 父分类名称 */
     private String parentName;
 
-    /** 子部门 */
+    /** 子分类 */
     private List<AppCategory> children = new ArrayList<AppCategory>();
 
     public String getParentName()

@@ -32,6 +32,118 @@
     specifica, maintenance, `status`, PictureParam, img_id, main_img_url, summary, deleted, 
     create_user_id, create_time, update_time
   </sql>
+  <sql id="selectAppProductVo">
+    select id, number, name, category_id, stock, price, contacts, telephone, unit_id, floor_price, specifica,
+           maintenance, status, picture_param, img_id, main_img_url, summary, deleted, create_user_id,
+           create_time, enabled, update_time
+    from app_product
+  </sql>
+
+  <select id="selectAppProductList" parameterType="com.industrial.domin.AppProduct" resultMap="BaseResultMap">
+    <include refid="selectAppProductVo"/>
+    <where>
+      <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+      <if test="categoryId != null "> and category_id = #{categoryId}</if>
+      <if test="contacts != null  and contacts != ''"> and contacts = #{contacts}</if>
+      <if test="status != null "> and status = #{status}</if>
+      <if test="enabled != null "> and enabled = #{enabled}</if>
+    </where>
+  </select>
+
+  <select id="selectAppProductById" parameterType="Long" resultMap="BaseResultMap">
+    <include refid="selectAppProductVo"/>
+    where id = #{id}
+  </select>
+
+  <insert id="insertAppProduct" parameterType="com.industrial.domin.AppProduct" useGeneratedKeys="true" keyProperty="id">
+    insert into app_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="number != null and number != ''">number,</if>
+      <if test="name != null and name != ''">name,</if>
+      <if test="categoryId != null">category_id,</if>
+      <if test="stock != null">stock,</if>
+      <if test="price != null">price,</if>
+      <if test="contacts != null">contacts,</if>
+      <if test="telephone != null">telephone,</if>
+      <if test="unitId != null and unitId != ''">unit_id,</if>
+      <if test="floorPrice != null">floor_price,</if>
+      <if test="specifica != null and specifica != ''">specifica,</if>
+      <if test="maintenance != null and maintenance != ''">maintenance,</if>
+      <if test="status != null">status,</if>
+      <if test="pictureParam != null">picture_param,</if>
+      <if test="imgId != null">img_id,</if>
+      <if test="mainImgUrl != null">main_img_url,</if>
+      <if test="summary != null">summary,</if>
+      <if test="deleted != null">deleted,</if>
+      <if test="createUserId != null">create_user_id,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="enabled != null">enabled,</if>
+      <if test="updateTime != null">update_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="number != null and number != ''">#{number},</if>
+      <if test="name != null and name != ''">#{name},</if>
+      <if test="categoryId != null">#{categoryId},</if>
+      <if test="stock != null">#{stock},</if>
+      <if test="price != null">#{price},</if>
+      <if test="contacts != null">#{contacts},</if>
+      <if test="telephone != null">#{telephone},</if>
+      <if test="unitId != null and unitId != ''">#{unitId},</if>
+      <if test="floorPrice != null">#{floorPrice},</if>
+      <if test="specifica != null and specifica != ''">#{specifica},</if>
+      <if test="maintenance != null and maintenance != ''">#{maintenance},</if>
+      <if test="status != null">#{status},</if>
+      <if test="pictureParam != null">#{pictureParam},</if>
+      <if test="imgId != null">#{imgId},</if>
+      <if test="mainImgUrl != null">#{mainImgUrl},</if>
+      <if test="summary != null">#{summary},</if>
+      <if test="deleted != null">#{deleted},</if>
+      <if test="createUserId != null">#{createUserId},</if>
+      <if test="createTime != null">#{createTime},</if>
+      <if test="enabled != null">#{enabled},</if>
+      <if test="updateTime != null">#{updateTime},</if>
+    </trim>
+  </insert>
+
+  <update id="updateAppProduct" parameterType="com.industrial.domin.AppProduct">
+    update app_product
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="number != null and number != ''">number = #{number},</if>
+      <if test="name != null and name != ''">name = #{name},</if>
+      <if test="categoryId != null">category_id = #{categoryId},</if>
+      <if test="stock != null">stock = #{stock},</if>
+      <if test="price != null">price = #{price},</if>
+      <if test="contacts != null">contacts = #{contacts},</if>
+      <if test="telephone != null">telephone = #{telephone},</if>
+      <if test="unitId != null and unitId != ''">unit_id = #{unitId},</if>
+      <if test="floorPrice != null">floor_price = #{floorPrice},</if>
+      <if test="specifica != null and specifica != ''">specifica = #{specifica},</if>
+      <if test="maintenance != null and maintenance != ''">maintenance = #{maintenance},</if>
+      <if test="status != null">status = #{status},</if>
+      <if test="pictureParam != null">picture_param = #{pictureParam},</if>
+      <if test="imgId != null">img_id = #{imgId},</if>
+      <if test="mainImgUrl != null">main_img_url = #{mainImgUrl},</if>
+      <if test="summary != null">summary = #{summary},</if>
+      <if test="deleted != null">deleted = #{deleted},</if>
+      <if test="createUserId != null">create_user_id = #{createUserId},</if>
+      <if test="createTime != null">create_time = #{createTime},</if>
+      <if test="enabled != null">enabled = #{enabled},</if>
+      <if test="updateTime != null">update_time = #{updateTime},</if>
+    </trim>
+    where id = #{id}
+  </update>
+
+  <delete id="deleteAppProductById" parameterType="Long">
+    delete from app_product where id = #{id}
+  </delete>
+
+  <delete id="deleteAppProductByIds" parameterType="String">
+    delete from app_product where id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
   <update id="updateStockByProductId">
     UPDATE app_product p
     SET p.stock = #{stock}

@@ -93,6 +93,18 @@ public class AppActivityServiceImpl implements AppActivityService {
         }
     }
 
+    /**
+     * 修改活动
+     *
+     * @param appActivity 活动
+     * @return 结果
+     */
+    @Override
+    public int updateAppActivity(AppActivity appActivity)
+    {
+        return activityMapper.updateAppActivity(appActivity);
+    }
+
     @Override
     public boolean deleteActivityById(Integer activityId) {
         return activityMapper.deleteById(activityId) == 1;

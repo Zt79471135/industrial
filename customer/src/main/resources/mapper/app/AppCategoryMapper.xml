@@ -47,12 +47,21 @@
   </select>
 
   <select id="checkDataExist" parameterType="Long" resultType="int">
-    select count(1) from app_product where category_id = #{deptId} and deleted = '0'
+    select count(1) from app_product where category_id = #{deptId} and deleted = 0
   </select>
 
   <select id="hasChildByDeptId" parameterType="Long" resultType="int">
     select count(1) from app_category
-    where deleted = '0' and parent_id = #{deptId} limit 1
+    where deleted = 0 and parent_id = #{deptId} limit 1
+  </select>
+
+  <select id="checkDeptNameUnique" resultMap="AppCategoryResult">
+    <include refid="selectAppCategoryVo"/>
+    where category_name=#{deptName} and parent_id = #{parentId} limit 1
+  </select>
+
+  <select id="selectNormalChildrenDeptById" parameterType="Long" resultType="int">
+    select count(*) from app_category where status = 0 and deleted = 0 and find_in_set(#{deptId}, ancestors)
   </select>
 
   <update id="updateDeptChildren" parameterType="java.util.List">
@@ -115,10 +124,10 @@
       <if test="categoryName != null and categoryName != ''">category_name = #{categoryName},</if>
       <if test="description != null">description = #{description},</if>
       <if test="categoryCode != null">category_code = #{categoryCode},</if>
-      <if test="updateTime != null">update_time = #{updateTime},</if>
       <if test="mnemonicCode != null">mnemonic_code = #{mnemonicCode},</if>
       <if test="deleted != null">deleted = #{deleted},</if>
       <if test="enabled != null">enabled = #{enabled},</if>
+      update_time = sysdate()
     </trim>
     where id = #{id}
   </update>

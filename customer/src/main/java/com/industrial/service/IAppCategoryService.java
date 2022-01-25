@@ -119,7 +119,7 @@ public interface IAppCategoryService
     /**
      * 构建前端所需要树结构
      *
-     * @param depts 部门列表
+     * @param depts 分类列表
      * @return 树结构列表
      */
     public List<AppCategory> buildDeptTree(List<AppCategory> depts);
@@ -127,9 +127,25 @@ public interface IAppCategoryService
     /**
      * 构建前端所需要下拉树结构
      *
-     * @param depts 部门列表
+     * @param depts 分类列表
      * @return 下拉树结构列表
      */
     public List<TreeSelect> buildDeptTreeSelect(List<AppCategory> depts);
+
+    /**
+     * 校验名称是否唯一
+     *
+     * @param dept 分类信息
+     * @return 结果
+     */
+    public String checkDeptNameUnique(AppCategory dept);
+
+    /**
+     * 根据ID查询所有子分类（正常状态）
+     *
+     * @param deptId 部门ID
+     * @return 子部门数
+     */
+    public int selectNormalChildrenDeptById(Long deptId);
 
 }

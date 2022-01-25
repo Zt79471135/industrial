@@ -35,6 +35,14 @@ public interface AppActivityService {
     boolean insertActivity(ActivityVo activityVo);
 
     /**
+     * 修改活动
+     *
+     * @param activityVo 活动
+     * @return 结果
+     */
+    public int updateAppActivity(AppActivity activityVo);
+
+    /**
      * 根据活动ID删除活动
      * @param activityId
      * @return
