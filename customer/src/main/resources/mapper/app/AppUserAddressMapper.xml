@@ -18,10 +18,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
         <result property="deleteTime"    column="delete_time"    />
         <result property="deleted"    column="deleted"    />
+        <result property="addrTypeName"    column="addrTypeName"    />
+        <result property="sexName"    column="sexName"    />
+        <result property="isdefault"    column="isdefault"    />
     </resultMap>
 
     <sql id="selectAppUserAddressVo">
-        select id, user_id, name, uid, sex, mobile, phone, addr_type, address, detail, update_time, delete_time, deleted from app_user_address
+        select id, user_id, name, uid, sex, mobile, phone, addr_type, address, detail, update_time, delete_time, deleted,isdefault from app_user_address
+    </sql>
+
+    <sql id="selectAppUserAddressVo1">
+        select id, user_id, name, uid, sex, mobile, phone, addr_type, address, detail, update_time, delete_time, deleted,isdefault
+        ,IF(sex=0,'男',IF(sex=2,'保密','女')) as sexName,IF(addr_type=0,'公司地址','个人地址') as addrTypeName from app_user_address
     </sql>
 
     <select id="selectAppUserAddressList" parameterType="com.industrial.domin.AppUserAddress" resultMap="AppUserAddressResult">
@@ -38,10 +46,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
             <if test="deleteTime != null "> and delete_time = #{deleteTime}</if>
             <if test="deleted != null "> and deleted = #{deleted}</if>
+            <if test="isdefault != null "> and isdefault = #{isdefault}</if>
         </where>
     </select>
     <select id="selectAppUserAddressByUserId" parameterType="Long" resultMap="AppUserAddressResult">
-        <include refid="selectAppUserAddressVo"/>
+        <include refid="selectAppUserAddressVo1"/>
         <where>
             <if test="userId != null "> and user_id = #{id}</if>
         </where>
@@ -58,29 +67,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userId != null">user_id,</if>
             <if test="name != null and name != ''">name,</if>
             <if test="uid != null and uid != ''">uid,</if>
-            <if test="sex != null  and sex != ''">  sex = #{sex}</if>
+            <if test="sex != null  and sex != ''">  sex,</if>
             <if test="mobile != null and mobile != ''">mobile,</if>
-            <if test="phone != null  and phone != ''">  phone = #{phone}</if>
+            <if test="phone != null  and phone != ''">  phone,</if>
             <if test="addrType != null">addr_type,</if>
             <if test="address != null and address != ''">address,</if>
             <if test="detail != null and detail != ''">detail,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="deleteTime != null">delete_time,</if>
             <if test="deleted != null">deleted,</if>
+            <if test="isdefault != null">isdefault,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">#{userId},</if>
             <if test="name != null and name != ''">#{name},</if>
             <if test="uid != null and uid != ''">#{uid},</if>
-            <if test="sex != null  and sex != ''">  sex = #{sex}</if>
+            <if test="sex != null  and sex != ''">  #{sex},</if>
             <if test="mobile != null and mobile != ''">#{mobile},</if>
-            <if test="phone != null  and phone != ''">phone = #{phone}</if>
+            <if test="phone != null  and phone != ''">#{phone},</if>
             <if test="addrType != null">#{addrType},</if>
             <if test="address != null and address != ''">#{address},</if>
             <if test="detail != null and detail != ''">#{detail},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="deleteTime != null">#{deleteTime},</if>
             <if test="deleted != null">#{deleted},</if>
+            <if test="isdefault != null">#{isdefault},</if>
          </trim>
     </insert>
 
@@ -99,6 +110,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="deleteTime != null">delete_time = #{deleteTime},</if>
             <if test="deleted != null">deleted = #{deleted},</if>
+            <if test="isdefault != null">isdefault = #{isdefault},</if>
         </trim>
         where id = #{id}
     </update>

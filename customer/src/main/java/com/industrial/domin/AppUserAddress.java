@@ -59,6 +59,11 @@ public class AppUserAddress extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "删除时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date deleteTime;
+    private String addrTypeName;
+    private String sexName;
+
+    @Excel(name = "默认选择")
+    private Integer isdefault;
 
     /** 0表示删除,1表示启用 */
     @Excel(name = "0表示删除,1表示启用")
@@ -170,6 +175,22 @@ public class AppUserAddress extends BaseEntity
         return deleted;
     }
 
+    public String getAddrTypeName() {
+        return addrTypeName;
+    }
+
+    public void setAddrTypeName(String addrTypeName) {
+        this.addrTypeName = addrTypeName;
+    }
+
+    public String getSexName() {
+        return sexName;
+    }
+
+    public void setSexName(String sexName) {
+        this.sexName = sexName;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
@@ -186,6 +207,17 @@ public class AppUserAddress extends BaseEntity
             .append("updateTime", getUpdateTime())
             .append("deleteTime", getDeleteTime())
             .append("deleted", getDeleted())
+            .append("addrTypeName", getAddrTypeName())
+            .append("sexName", getSexName())
+            .append("isdefault", getIsdefault())
             .toString();
+    }
+
+    public Integer getIsdefault() {
+        return isdefault;
+    }
+
+    public void setIsdefault(Integer isdefault) {
+        this.isdefault = isdefault;
     }
 }

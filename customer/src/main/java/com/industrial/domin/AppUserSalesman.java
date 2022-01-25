@@ -53,6 +53,9 @@ public class AppUserSalesman extends BaseEntity
     @Excel(name = "删除时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date deleteTime;
 
+    @Excel(name = "默认选择")
+    private Integer isdefault;
+
     /** 0表示删除,1表示启用 */
     @Excel(name = "0表示删除,1表示启用")
     private Integer deleted;
@@ -161,6 +164,15 @@ public class AppUserSalesman extends BaseEntity
             .append("updateTime", getUpdateTime())
             .append("deleteTime", getDeleteTime())
             .append("deleted", getDeleted())
+            .append("isdefault", getIsdefault())
             .toString();
+    }
+
+    public Integer getIsdefault() {
+        return isdefault;
+    }
+
+    public void setIsdefault(Integer isdefault) {
+        this.isdefault = isdefault;
     }
 }

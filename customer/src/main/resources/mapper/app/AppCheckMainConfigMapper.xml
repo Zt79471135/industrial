@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.industrial.mapper.AppCheckMainConfigMapper">
+    
+    <resultMap type="com.industrial.domin.AppCheckMainConfig" id="AppCheckMainConfigResult">
+        <result property="id"    column="id"    />
+        <result property="checkType"    column="check_type"    />
+        <result property="checkStatus"    column="check_status"    />
+        <result property="addTime"    column="add_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectAppCheckMainConfigVo">
+        select id, check_type, check_status, add_time, update_time from app_checkmainconfig
+    </sql>
+
+    <select id="selectAppAppCheckMainConfigList" parameterType="com.industrial.domin.AppCheckMainConfig" resultMap="AppCheckMainConfigResult">
+        <include refid="selectAppCheckMainConfigVo"/>
+        <where>  
+            <if test="checkType != null "> and check_type = #{checkType}</if>
+            <if test="checkStatus != null "> and check_status = #{checkStatus}</if>
+            <if test="addTime != null "> and add_time = #{addTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectAppCheckMainConfigById" parameterType="Long" resultMap="AppCheckMainConfigResult">
+        <include refid="selectAppCheckMainConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAppCheckMainConfig" parameterType="com.industrial.domin.AppCheckMainConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into app_checkmainconfig
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="checkType != null">check_type,</if>
+            <if test="checkStatus != null">check_status,</if>
+            <if test="addTime != null">add_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="checkType != null">#{checkType},</if>
+            <if test="checkStatus != null">#{checkStatus},</if>
+            <if test="addTime != null">#{addTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAppCheckMainConfig" parameterType="com.industrial.domin.AppCheckMainConfig">
+        update app_checkmainconfig
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="checkType != null">check_type = #{checkType},</if>
+            <if test="checkStatus != null">check_status = #{checkStatus},</if>
+            <if test="addTime != null">add_time = #{addTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAppCheckMainConfigById" parameterType="Long">
+        delete from app_checkmainconfig where id = #{id}
+    </delete>
+
+    <delete id="deleteAppCheckMainConfigByIds" parameterType="String">
+        delete from app_checkmainconfig where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

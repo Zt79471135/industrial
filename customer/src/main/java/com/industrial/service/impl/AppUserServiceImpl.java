@@ -109,6 +109,14 @@ public class AppUserServiceImpl implements IAppUserService
     @Transactional(rollbackFor = Exception.class)
     public int addOrEditAppUserAll(AppUser appUser, List<AppUserAddress> customList, List<AppUserSalesman> saleManList) {
         try{
+            appUser.setClientCode("C-"+UUID.randomUUID().toString());
+            for (AppUserAddress item:customList) {
+                if(item.getIsdefault()==0){
+                    appUser.setNickname(item.getName());
+                    appUser.setPhoneNum(item.getMobile());
+                    break;
+                }
+            }
             if(appUser.getId()!=null&&appUser.getId()>0){
                 if(appUserMapper.updateAppUser(appUser)<=0){ throw new Exception("appUserMapper插入失败");}
             }else{
@@ -118,10 +126,12 @@ public class AppUserServiceImpl implements IAppUserService
             appUserSalesmanMapper.deleteAppUserSalesmanByUserId(appUser.getId());
             for (AppUserAddress item:customList) {
                 item.setUid("CT-"+UUID.randomUUID().toString());
+                item.setUserId(appUser.getId());
                 if(appUserAddressMapper.insertAppUserAddress(item)<=0){ throw new Exception("appUserAddressMapper插入失败");}
             }
             for (AppUserSalesman item:saleManList) {
                 item.setSaleCode("Sale-"+UUID.randomUUID().toString());
+                item.setUserId(appUser.getId());
                 if(appUserSalesmanMapper.insertAppUserSalesman(item)<=0){ throw new Exception("appUserSalesmanMapper插入失败");}
             }
             return 1;
