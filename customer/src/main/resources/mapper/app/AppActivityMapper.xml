@@ -10,6 +10,7 @@
     <result column="activity_type" jdbcType="INTEGER" property="activityType" />
     <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"    />
     <result column="activity_status" jdbcType="INTEGER" property="activityStatus" />
     <result column="expected_cost" jdbcType="DECIMAL" property="expectedCost" />
     <result column="expected_income" jdbcType="DECIMAL" property="expectedIncome" />
@@ -17,12 +18,109 @@
     <result column="topic_img_id" jdbcType="INTEGER" property="topicImgId" />
     <result column="head_img_id" jdbcType="INTEGER" property="headImgId" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="enabled" jdbcType="TINYINT"  property="enabled"  />
     <result column="deleted" jdbcType="TINYINT" property="deleted" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, activity_name, description, activity_type, begin_time, end_time, activity_status, 
-    expected_cost, expected_income, head_user, topic_img_id, head_img_id, update_time, 
-    deleted
+    expected_cost, expected_income, head_user, topic_img_id, head_img_id, update_time, create_time,
+    deleted,enabled
   </sql>
+  <sql id="selectAppActivityVo">
+    select id, activity_name, description, activity_type, begin_time, end_time, create_time,activity_status, expected_cost,
+           expected_income, head_user, topic_img_id, head_img_id, update_time, enabled, deleted
+    from app_activity
+  </sql>
+
+  <select id="selectAppActivityList" parameterType="com.industrial.domin.AppActivity" resultMap="BaseResultMap">
+    <include refid="selectAppActivityVo"/>
+    <where>
+      <if test="activityName != null  and activityName != ''"> and activity_name like concat('%', #{activityName}, '%')</if>
+      <if test="activityType != null "> and activity_type = #{activityType}</if>
+      <if test="createTime != null "> and create_time = #{createTime}</if>
+      <if test="beginTime != null "> and begin_time = #{beginTime}</if>
+      <if test="endTime != null "> and end_time = #{endTime}</if>
+      <if test="activityStatus != null "> and activity_status = #{activityStatus}</if>
+      <if test="headUser != null "> and head_user = #{headUser}</if>
+      <if test="enabled != null "> and enabled = #{enabled}</if>
+
+    </where>
+  </select>
+
+  <select id="selectAppActivityById" parameterType="Long" resultMap="BaseResultMap">
+    <include refid="selectAppActivityVo"/>
+    where id = #{id}
+  </select>
+
+  <insert id="insertAppActivity" parameterType="com.industrial.domin.AppActivity" useGeneratedKeys="true" keyProperty="id">
+    insert into app_activity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="activityName != null and activityName != ''">activity_name,</if>
+      <if test="description != null and description != ''">description,</if>
+      <if test="activityType != null">activity_type,</if>
+      <if test="beginTime != null">begin_time,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="endTime != null">end_time,</if>
+      <if test="activityStatus != null">activity_status,</if>
+      <if test="expectedCost != null">expected_cost,</if>
+      <if test="expectedIncome != null">expected_income,</if>
+      <if test="headUser != null">head_user,</if>
+      <if test="topicImgId != null">topic_img_id,</if>
+      <if test="headImgId != null">head_img_id,</if>
+      <if test="updateTime != null">update_time,</if>
+      <if test="enabled != null">enabled,</if>
+      <if test="deleted != null">deleted,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="activityName != null and activityName != ''">#{activityName},</if>
+      <if test="description != null and description != ''">#{description},</if>
+      <if test="activityType != null">#{activityType},</if>
+      <if test="beginTime != null">#{beginTime},</if>
+      <if test="endTime != null">#{endTime},</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="activityStatus != null">#{activityStatus},</if>
+      <if test="expectedCost != null">#{expectedCost},</if>
+      <if test="expectedIncome != null">#{expectedIncome},</if>
+      <if test="headUser != null">#{headUser},</if>
+      <if test="topicImgId != null">#{topicImgId},</if>
+      <if test="headImgId != null">#{headImgId},</if>
+      <if test="updateTime != null">#{updateTime},</if>
+      <if test="enabled != null">#{enabled},</if>
+      <if test="deleted != null">#{deleted},</if>
+    </trim>
+  </insert>
+
+  <update id="updateAppActivity" parameterType="com.industrial.domin.AppActivity">
+    update app_activity
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="activityName != null and activityName != ''">activity_name = #{activityName},</if>
+      <if test="description != null and description != ''">description = #{description},</if>
+      <if test="activityType != null">activity_type = #{activityType},</if>
+      <if test="beginTime != null">begin_time = #{beginTime},</if>
+      <if test="endTime != null">end_time = #{endTime},</if>
+      <if test="createTime != null">create_time = #{createTime},</if>
+      <if test="activityStatus != null">activity_status = #{activityStatus},</if>
+      <if test="expectedCost != null">expected_cost = #{expectedCost},</if>
+      <if test="expectedIncome != null">expected_income = #{expectedIncome},</if>
+      <if test="headUser != null">head_user = #{headUser},</if>
+      <if test="topicImgId != null">topic_img_id = #{topicImgId},</if>
+      <if test="headImgId != null">head_img_id = #{headImgId},</if>
+      <if test="updateTime != null">update_time = #{updateTime},</if>
+      <if test="enabled != null">enabled = #{enabled},</if>
+      <if test="deleted != null">deleted = #{deleted},</if>
+    </trim>
+    where id = #{id}
+  </update>
+
+  <delete id="deleteAppActivityById" parameterType="Long">
+    delete from app_activity where id = #{id}
+  </delete>
+
+  <delete id="deleteAppActivityByIds" parameterType="String">
+    delete from app_activity where id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
 </mapper>

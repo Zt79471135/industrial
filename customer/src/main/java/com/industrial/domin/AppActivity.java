@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.math.BigDecimal;
 import java.util.Date;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.industrial.common.annotation.Excel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * 活动表
- * @author zhu
- * @date 2022年01月14日 16:47
+ * @author
+ * @date 2022年01月24日
  */
 @Data
 @AllArgsConstructor
@@ -33,14 +33,14 @@ public class AppActivity {
     /**
      * 专题名称
      */
-    @Excel(name = "专题名称")
+    @Excel(name = "活动名称")
     @TableField(value = "activity_name")
     private String activityName;
 
     /**
      * 名称描述
      */
-    @Excel(name = "名称描述")
+    @Excel(name = "活动描述")
     @TableField(value = "description")
     private String description;
 
@@ -50,6 +50,13 @@ public class AppActivity {
     @Excel(name = "活动类型")
     @TableField(value = "activity_type")
     private Integer activityType;
+
+    /**
+     * 创建时间
+     */
+    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Excel.Type.EXPORT)
+    @TableField(value = "create_time")
+    private Date createTime;
 
     /**
      * 开始时间
@@ -104,6 +111,51 @@ public class AppActivity {
      */
     @TableField(value = "head_img_id")
     private Integer headImgId;
+
+    /** 附件参数 */
+    @Excel(name = "附件参数")
+    private String pictureParam;
+
+    /** 总结人员 */
+    @Excel(name = "总结人员")
+    private Long conclusionPerson;
+
+    /** 标志（0：启用，1：禁用) */
+    @Excel(name = "标志", readConverterExp = "标志（0：启用，1：禁用)")
+    private Integer enabled;
+
+    /** 总结时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "总结时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date conclusionTime;
+
+    /** 实际成本 */
+    @Excel(name = "实际成本")
+    private BigDecimal actualCost;
+
+    /** 实际收入 */
+    @Excel(name = "实际收入")
+    private BigDecimal realIncome;
+
+    /** 实际成本率 */
+    @Excel(name = "实际成本率")
+    private String costRate;
+
+    /** 实际回报率 */
+    @Excel(name = "实际回报率")
+    private String returnRate;
+
+    /** 总结描述 */
+    @Excel(name = "总结描述")
+    private String summaryDesc;
+
+    /** 总结附件 */
+    @Excel(name = "总结附件")
+    private String attachParam;
+
+    /** 订单终至作废原因 */
+    @Excel(name = "订单终至作废原因")
+    private String invalidReason;
 
     /**
      * 更新时间

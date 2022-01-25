@@ -19,8 +19,6 @@ import com.industrial.common.utils.poi.ExcelUtil;
 import com.industrial.common.core.page.TableDataInfo;
 import com.industrial.common.vo.updateTypeVo;
 import com.industrial.common.vo.UpdateDeletedVo;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -30,7 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @date 2022-01-19
  */
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/category2")
 public class AppProductCategoryController extends BaseController
 {
     @Autowired

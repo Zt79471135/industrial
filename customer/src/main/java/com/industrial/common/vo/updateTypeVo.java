@@ -1,6 +1,6 @@
 package com.industrial.common.vo;
 import lombok.Data;
-import com.industrial.domin.AppProductCategory;
+import com.industrial.domin.AppCategory;
 /**
  * 描述:
  * 日期：2022-01-20

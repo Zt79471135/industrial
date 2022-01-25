@@ -13,8 +13,7 @@ import com.industrial.service.AppActivityService;
 import com.industrial.system.mapper.SysUserMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +31,26 @@ public class AppActivityServiceImpl implements AppActivityService {
     private AppActivityUserMapper activityUserMapper;
     @Resource
     private SysUserMapper sysUserMapper;
+
+
+    /**
+     * 查询活动列表
+     *
+     * @param appActivity 活动
+     * @return 活动
+     */
+    @Override
+    public List<AppActivity> selectAppActivityList(AppActivity appActivity)
+    {
+        return activityMapper.selectAppActivityList(appActivity);
+    }
+
+    /**
+     * 查询活动
+     *
+     * @param activityId 活动主键
+     * @return 活动
+     */
     @Override
     public ActivityDto selectActivityById(Integer activityId) {
         AppActivity appActivity = activityMapper.selectById(activityId);
@@ -56,18 +75,16 @@ public class AppActivityServiceImpl implements AppActivityService {
             throw new ServiceException("活动详情为空");
         }
     }
-    @Transactional(rollbackFor = ServiceException.class)
+
     @Override
     public boolean insertActivity(ActivityVo activityVo) {
         AppActivity activity = new AppActivity();
         List<Integer> integerList = new ArrayList<>();
         BeanUtils.copyProperties(activityVo, activity);
         if (activityMapper.insert(activity) == 1) {
-            AppActivityUser activityUser = new AppActivityUser();
-            activityUser.setActivityId(activity.getId());
             List<Integer> userIdList = activityVo.getUserIdList();
             integerList = userIdList.stream().map(userId -> {
-                activityUser.setUserId(userId);
+                AppActivityUser activityUser = new AppActivityUser();
                 return activityUserMapper.insert(activityUser);
             }).collect(Collectors.toList());
             return integerList.size() == userIdList.size();
