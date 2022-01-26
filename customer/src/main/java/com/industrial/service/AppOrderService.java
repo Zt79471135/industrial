@@ -26,10 +26,11 @@ public interface AppOrderService {
     boolean insert(OrderVo orderVo);
 
     /**
-     * 创建跟进任务
-     * @param follow
+     * 更改订单状态
+     *
+     * @param orderId
+     * @param id
      * @return
      */
-    boolean insertFollow(FollowVo follow);
-
+    boolean updateStatus(Integer orderId, int id);
 }

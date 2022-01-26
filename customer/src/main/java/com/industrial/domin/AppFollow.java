@@ -11,7 +11,11 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author zhu
- * @date 2022年01月20日 15:45
+ * @date 2022年01月24日 17:16
+ */
+
+/**
+ * 订单跟进记录表
  */
 @Data
 @AllArgsConstructor
@@ -55,6 +59,12 @@ public class AppFollow {
     private Date reminderTime;
 
     /**
+     * 0表初始,1表标记,2表通知
+     */
+    @TableField(value = "notified")
+    private Byte notified;
+
+    /**
      * 0表删除
      */
     @TableField(value = "deleted")
@@ -71,6 +81,8 @@ public class AppFollow {
     public static final String COL_REMINDER_TYPE = "reminder_type";
 
     public static final String COL_REMINDER_TIME = "reminder_time";
+
+    public static final String COL_NOTIFIED = "notified";
 
     public static final String COL_DELETED = "deleted";
 }

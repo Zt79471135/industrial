@@ -5,7 +5,7 @@ import com.industrial.domin.AppFollow;
 
 /**
  * @author zhu
- * @date 2022年01月20日 15:45
+ * @date 2022年01月24日 17:16
  */
 public interface AppFollowMapper extends BaseMapper<AppFollow> {
 }

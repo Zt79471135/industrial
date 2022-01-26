@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 审核设置子对象 app_subcheckconfig
- * 
+ *
  * @author li.shenkang
  * @date 2022-01-24
  */
@@ -40,57 +40,57 @@ public class AppSubCheckConfig extends BaseEntity
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Date addTime;
 
-    public void setId(Long id) 
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setConfigId(Long configId) 
+    public void setConfigId(Long configId)
     {
         this.configId = configId;
     }
 
-    public Long getConfigId() 
+    public Long getConfigId()
     {
         return configId;
     }
-    public void setCtype(Integer ctype) 
+    public void setCtype(Integer ctype)
     {
         this.ctype = ctype;
     }
 
-    public Integer getCtype() 
+    public Integer getCtype()
     {
         return ctype;
     }
-    public void setClevel(Integer clevel) 
+    public void setClevel(Integer clevel)
     {
         this.clevel = clevel;
     }
 
-    public Integer getClevel() 
+    public Integer getClevel()
     {
         return clevel;
     }
-    public void setAdminList(String adminList) 
+    public void setAdminList(String adminList)
     {
         this.adminList = adminList;
     }
 
-    public String getAdminList() 
+    public String getAdminList()
     {
         return adminList;
     }
-    public void setAddTime(Date addTime) 
+    public void setAddTime(Date addTime)
     {
         this.addTime = addTime;
     }
 
-    public Date getAddTime() 
+    public Date getAddTime()
     {
         return addTime;
     }
@@ -98,13 +98,13 @@ public class AppSubCheckConfig extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("configId", getConfigId())
-            .append("ctype", getCtype())
-            .append("clevel", getClevel())
-            .append("adminList", getAdminList())
-            .append("addTime", getAddTime())
-            .append("updateTime", getUpdateTime())
-            .toString();
+                .append("id", getId())
+                .append("configId", getConfigId())
+                .append("ctype", getCtype())
+                .append("clevel", getClevel())
+                .append("adminList", getAdminList())
+                .append("addTime", getAddTime())
+                .append("updateTime", getUpdateTime())
+                .toString();
     }
 }

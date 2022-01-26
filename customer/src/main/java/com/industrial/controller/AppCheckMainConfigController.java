@@ -40,6 +40,7 @@ public class AppCheckMainConfigController extends BaseController
 {
     @Autowired
     private IAppCheckMainConfigService appCheckMainConfigService;
+    @Autowired
     private IAppSubCheckConfigService appSubCheckConfigService;
 
     /**
@@ -55,9 +56,9 @@ public class AppCheckMainConfigController extends BaseController
     }
 
     @GetMapping("/all")
-    public TableDataInfo listall(AppCheckMainConfig appCheckmainconfig)
+    public TableDataInfo listall()
     {
-        List<AppCheckMainConfig> mainList = appCheckMainConfigService.selectAppCheckMainConfigList(appCheckmainconfig);
+        List<AppCheckMainConfig> mainList = appCheckMainConfigService.selectAppCheckMainConfigList(null);
         List<AppSubCheckConfig> sublist=appSubCheckConfigService.selectAppSubCheckConfigList(null);
         List<CheckConfigDto> list=new ArrayList<CheckConfigDto>();
         for (AppCheckMainConfig item:mainList) {
@@ -119,6 +120,13 @@ public class AppCheckMainConfigController extends BaseController
     public AjaxResult edit(@RequestBody CheckConfigDto checkConfigDto)
     {
         return toAjax(appCheckMainConfigService.updateCheckConfigDto(checkConfigDto));
+    }
+
+    @Log(title = "修改审批状态", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeStatus")
+    public AjaxResult changeStatus(@RequestBody AppCheckMainConfig appCheckmainconfig)
+    {
+        return toAjax(appCheckMainConfigService.updateAppCheckMainConfig(appCheckmainconfig));
     }
 
     /**

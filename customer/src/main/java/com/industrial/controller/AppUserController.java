@@ -3,6 +3,7 @@ package com.industrial.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.dto.AppUserDto;
 import com.industrial.domin.AppUserAddress;
 import com.industrial.domin.AppUserSalesman;
@@ -19,6 +20,7 @@ import com.industrial.domin.AppUser;
 import com.industrial.service.IAppUserService;
 import com.industrial.common.utils.poi.ExcelUtil;
 import com.industrial.common.core.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 客户管理Controller
@@ -57,7 +59,7 @@ public class AppUserController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, AppUser appUser)
     {
-        List<AppUser> list = appUserService.selectAppUserList(appUser);
+        List<AppUser> list = appUserService.selectAppUserListForExcel(appUser);
         ExcelUtil<AppUser> util = new ExcelUtil<AppUser>(AppUser.class);
         util.exportExcel(response, list, "客户管理数据");
     }
@@ -118,4 +120,24 @@ public class AppUserController extends BaseController
     {
         return toAjax(appUserService.deleteAppUserByIds(ids));
     }
+
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<AppUser> util = new ExcelUtil<AppUser>(AppUser.class);
+        util.importTemplateExcel(response, "用户数据");
+    }
+
+    @Log(title = "客户管理", businessType = BusinessType.IMPORT)
+//    @PreAuthorize("@ss.hasPermi('system:user:import')")
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<AppUser> util = new ExcelUtil<AppUser>(AppUser.class);
+        List<AppUser> userList = util.importExcel(file.getInputStream());
+        String operName = getUsername();
+        String message = appUserService.importUser(userList, updateSupport, operName);
+        return AjaxResult.success(message);
+    }
+
 }

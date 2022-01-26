@@ -63,4 +63,8 @@ public interface IAppUserService
     public int deleteAppUserById(Long id);
 
     int addOrEditAppUserAll(AppUser appUser, List<AppUserAddress> customList, List<AppUserSalesman> saleManList);
+
+    List<AppUser> selectAppUserListForExcel(AppUser appUser);
+
+    String importUser(List<AppUser> userList, boolean updateSupport, String operName);
 }

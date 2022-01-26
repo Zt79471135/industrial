@@ -10,10 +10,12 @@
     <result column="follow_time" jdbcType="TIMESTAMP" property="followTime" />
     <result column="reminder_type" jdbcType="TINYINT" property="reminderType" />
     <result column="reminder_time" jdbcType="TIMESTAMP" property="reminderTime" />
+    <result column="notified" jdbcType="TINYINT" property="notified" />
     <result column="deleted" jdbcType="TINYINT" property="deleted" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, follow_order, follow_user, follow_time, reminder_type, reminder_time, deleted
+    id, follow_order, follow_user, follow_time, reminder_type, reminder_time, notified, 
+    deleted
   </sql>
 </mapper>

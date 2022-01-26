@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 审核设置主对象 app_checkmainconfig
- * 
+ *
  * @author lishenkang
  * @date 2022-01-24
  */
@@ -32,39 +32,39 @@ public class AppCheckMainConfig extends BaseEntity
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Date addTime;
 
-    public void setId(Long id) 
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setCheckType(Integer checkType) 
+    public void setCheckType(Integer checkType)
     {
         this.checkType = checkType;
     }
 
-    public Integer getCheckType() 
+    public Integer getCheckType()
     {
         return checkType;
     }
-    public void setCheckStatus(Integer checkStatus) 
+    public void setCheckStatus(Integer checkStatus)
     {
         this.checkStatus = checkStatus;
     }
 
-    public Integer getCheckStatus() 
+    public Integer getCheckStatus()
     {
         return checkStatus;
     }
-    public void setAddTime(Date addTime) 
+    public void setAddTime(Date addTime)
     {
         this.addTime = addTime;
     }
 
-    public Date getAddTime() 
+    public Date getAddTime()
     {
         return addTime;
     }
@@ -72,11 +72,11 @@ public class AppCheckMainConfig extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("checkType", getCheckType())
-            .append("checkStatus", getCheckStatus())
-            .append("addTime", getAddTime())
-            .append("updateTime", getUpdateTime())
-            .toString();
+                .append("id", getId())
+                .append("checkType", getCheckType())
+                .append("checkStatus", getCheckStatus())
+                .append("addTime", getAddTime())
+                .append("updateTime", getUpdateTime())
+                .toString();
     }
 }

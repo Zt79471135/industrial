@@ -62,4 +62,5 @@ public interface IAppCheckMainConfigService
     public int deleteAppCheckMainConfigById(Long id);
 
     int updateCheckConfigDto(CheckConfigDto checkConfigDto);
+
 }

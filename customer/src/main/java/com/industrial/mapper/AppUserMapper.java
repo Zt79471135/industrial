@@ -58,4 +58,6 @@ public interface AppUserMapper
      * @return 结果
      */
     public int deleteAppUserByIds(Long[] ids);
+
+    List<AppUser> selectAppUserListForExcel(AppUser appUser);
 }
