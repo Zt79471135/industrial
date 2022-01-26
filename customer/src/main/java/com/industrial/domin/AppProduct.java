@@ -82,7 +82,7 @@ public class AppProduct {
     @TableField(value = "maintenance")
     private String maintenance;
     /**
-     * 状态：0禁用，1保存商品，2待审核商品，3上架
+     * 状态：1保存商品，2待审核商品，3上架
      */
     @TableField(value = "`status`")
     private Byte status;
