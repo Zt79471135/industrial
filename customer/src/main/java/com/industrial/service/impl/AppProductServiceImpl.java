@@ -181,7 +181,7 @@ public class AppProductServiceImpl implements AppProductService {
     public List<ProductDto> selectProductByCategoryId(Integer categoryId, String productName, int status) {
         QueryWrapper<com.industrial.domin.AppProduct> qw = new QueryWrapper<>();
         if (categoryId != null || !"".equals(productName)) {
-            if (categoryId != null) {
+            if (categoryId != null&&categoryId>0) {
                 qw.lambda().eq(com.industrial.domin.AppProduct::getCategoryId, categoryId);
             }
             if (!"".equals(productName)) {

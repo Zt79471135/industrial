@@ -5,6 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.industrial.mapper.AppSubCheckConfigMapper">
     
     <resultMap type="com.industrial.domin.AppSubCheckConfig" id="AppSubCheckConfigResult">
+        <result property="Id"    column="id"    />
         <result property="configId"    column="config_id"    />
         <result property="ctype"    column="ctype"    />
         <result property="clevel"    column="clevel"    />
@@ -13,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectAppSubCheckConfigVo">
-        select  config_id, ctype, clevel, add_time, update_time from app_sub_check_config
+        select  id,config_id, ctype, clevel, add_time, update_time from app_sub_check_config
     </sql>
 
     <select id="selectAppSubCheckConfigList" parameterType="com.industrial.domin.AppSubCheckConfig" resultMap="AppSubCheckConfigResult">
@@ -59,11 +60,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="addTime != null">add_time = #{addTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
-        where config_id = #{config_id}
+        where id = #{id}
     </update>
 
     <delete id="deleteAppSubCheckConfigById" parameterType="Long">
-        delete from app_sub_check_config where config_id = #{id}
+        delete from app_sub_check_config where id = #{id}
     </delete>
 
     <delete id="deleteAppSubCheckConfigByConfigId" parameterType="Long">
@@ -71,7 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteAppSubCheckConfigByIds" parameterType="String">
-        delete from app_sub_check_config where config_id in
+        delete from app_sub_check_config where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
