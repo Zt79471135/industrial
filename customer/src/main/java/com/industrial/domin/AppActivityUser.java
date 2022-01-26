@@ -37,6 +37,10 @@ public class AppActivityUser {
     @TableField(value = "user_id")
     private Integer userId;
 
+    /** 参与人员名称 */
+    @TableField(value = "user_name")
+    private String userName;
+
     /**
      * 更新时间
      */

@@ -10,7 +10,7 @@ import lombok.Data;
 public class CheckVo {
     /**
      * 审核人
-     * 审核结果
+     * 审核结果 false 禁用 true 启用
      * 审核的物品ID
      */
     private Integer checkId;

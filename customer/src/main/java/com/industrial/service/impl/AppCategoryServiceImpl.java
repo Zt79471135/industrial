@@ -124,7 +124,7 @@ public class AppCategoryServiceImpl implements IAppCategoryService
     {
         AppCategory info = appCategoryMapper.selectAppCategoryById(appCategory.getParentId());
         // 如果父节点不为正常状态,则不允许新增子节点
-        if (!UserConstants.DEPT_NORMAL.equals(info.getEnabled()))
+        if (info.getEnabled() == 1)
         {
             throw new ServiceException("商品分类停用，不允许新增");
         }
@@ -151,7 +151,7 @@ public class AppCategoryServiceImpl implements IAppCategoryService
             updateDeptChildren(appCategory.getId(), newAncestors, oldAncestors);
         }
         int result = appCategoryMapper.updateAppCategory(appCategory);
-        if (UserConstants.DEPT_NORMAL.equals(appCategory.getEnabled()) && StringUtils.isNotEmpty(appCategory.getAncestors())
+        if (appCategory.getEnabled()==0 && StringUtils.isNotEmpty(appCategory.getAncestors())
                 && !StringUtils.equals("0", appCategory.getAncestors()))
         {
             // 如果该部门是启用状态，则启用该部门的所有上级部门

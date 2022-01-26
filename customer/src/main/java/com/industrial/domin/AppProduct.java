@@ -82,7 +82,7 @@ public class AppProduct {
     @TableField(value = "maintenance")
     private String maintenance;
     /**
-     * 1待审核2失败3上架
+     * 状态：1保存商品，2待审核商品，3上架
      */
     @TableField(value = "`status`")
     private Byte status;
@@ -110,8 +110,11 @@ public class AppProduct {
     @TableField(value = "summary")
     private String summary;
 
+    @TableField(value = "enabled")
+    private Integer enabled;
+
     /**
-     * 标志（0：禁用，1：启用)
+     * 标志（1：删除，0：在用)
      */
     @TableField(value = "deleted")
     private Byte deleted;

@@ -26,6 +26,8 @@
   <select id="selectAppCategoryList" parameterType="com.industrial.domin.AppCategory" resultMap="AppCategoryResult">
     <include refid="selectAppCategoryVo"/>
     <where>
+      <if test="id != null "> and id = #{id}</if>
+      <if test="parentId != null "> and parent_id = #{parentId}</if>
       <if test="categoryName != null  and categoryName != ''"> and category_name like concat('%', #{categoryName}, '%')</if>
       <if test="categoryCode != null  and categoryCode != ''"> and category_code = #{categoryCode}</if>
       <if test="enabled != null "> and enabled = #{enabled}</if>
