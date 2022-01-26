@@ -33,8 +33,6 @@ public class AppOrderServiceImpl implements AppOrderService {
     private AppOrderUserMapper orderUserMapper;
     @Resource
     private AppOrderProductMapper orderProductMapper;
-    @Resource
-    private AppFollowMapper followMapper;
 
     @Override
     public OrderDto selectById(Integer orderId) {
@@ -81,13 +79,19 @@ public class AppOrderServiceImpl implements AppOrderService {
         }
     }
 
+    /**
+     * 通过订单ID修改订单状态
+     * @param orderId
+     * @param id
+     * @return
+     */
     @Override
-    public boolean insertFollow(FollowVo follow) {
-        AppFollow appFollow = new AppFollow();
-        BeanUtils.copyProperties(follow, appFollow);
-        long aheadTime = follow.getFollowTime().getTime() - follow.getAheadTime();
-        Date date = new Date(aheadTime);
-        appFollow.setReminderTime(date);
-        return followMapper.insert(appFollow) == 1;
+    public boolean updateStatus(Integer orderId, int id) {
+        AppOrder order = new AppOrder();
+        order.setId(orderId);
+        order.setStatus((byte)id);
+        return orderMapper.updateById(order)==1;
     }
+
+
 }
