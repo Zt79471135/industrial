@@ -1,7 +1,10 @@
 package com.industrial.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.industrial.domin.AppCheckMainConfig;
+import com.industrial.domin.AppCheckUser;
 
 /**
  * 审核设置主Mapper接口
@@ -9,7 +12,7 @@ import com.industrial.domin.AppCheckMainConfig;
  * @author lishenkang
  * @date 2022-01-24
  */
-public interface AppCheckMainConfigMapper
+public interface AppCheckMainConfigMapper extends BaseMapper<AppCheckUser>
 {
     /**
      * 查询审核设置主

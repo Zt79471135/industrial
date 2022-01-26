@@ -36,19 +36,7 @@ public class AppCheckServiceImpl implements AppCheckService {
      */
     @Override
     public boolean updateStatus(CheckVo checkVo) {
-        QueryWrapper<AppCheckMainConfig> qw = new QueryWrapper<>();
-        int type = checkVo.getType();
-        qw.lambda().eq(AppCheckMainConfig::getCheckType, (byte) type);
-        qw.lambda().eq(AppCheckMainConfig::getCheckStatus, OPEN_STATUS);
-        AppCheckMainConfig checkMainConfig = checkMainConfigMapper.selectOne(qw);
-        if (checkMainConfig == null) {
-            return true;
-        }else {
-            /**
-             * 根据类型查询审核层级
-             */
 
-        }
         return false;
     }
 }

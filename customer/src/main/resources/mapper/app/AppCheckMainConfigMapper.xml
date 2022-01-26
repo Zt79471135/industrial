@@ -3,7 +3,13 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.industrial.mapper.AppCheckMainConfigMapper">
-    
+    <resultMap id="BaseResultMap" type="com.industrial.domin.AppCheckMainConfig">
+        <result property="id"    column="id"    />
+        <result property="checkType"    column="check_type"    />
+        <result property="checkStatus"    column="check_status"    />
+        <result property="addTime"    column="add_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
     <resultMap type="com.industrial.domin.AppCheckMainConfig" id="AppCheckMainConfigResult">
         <result property="id"    column="id"    />
         <result property="checkType"    column="check_type"    />
