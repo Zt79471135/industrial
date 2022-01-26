@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.industrial.mapper.AppOrderLogMapper">
+    
+    <resultMap type="com.industrial.domin.AppOrderLog" id="AppOrderLogResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="sysRemark"    column="sys_remark"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="level"    column="level"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectAppOrderLogVo">
+        select id, user_id, remark, sys_remark, order_no, level, status, create_time, update_time from app_order_log
+    </sql>
+
+    <select id="selectAppOrderLogList" parameterType="com.industrial.domin.AppOrderLog" resultMap="AppOrderLogResult">
+        <include refid="selectAppOrderLogVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="sysRemark != null  and sysRemark != ''"> and sys_remark = #{sysRemark}</if>
+            <if test="orderNo != null "> and order_no = #{orderNo}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectAppOrderLogById" parameterType="Long" resultMap="AppOrderLogResult">
+        <include refid="selectAppOrderLogVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAppOrderLog" parameterType="com.industrial.domin.AppOrderLog">
+        insert into app_order_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="sysRemark != null">sys_remark,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="level != null">level,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="sysRemark != null">#{sysRemark},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="level != null">#{level},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAppOrderLog" parameterType="com.industrial.domin.AppOrderLog">
+        update app_order_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="sysRemark != null">sys_remark = #{sysRemark},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAppOrderLogById" parameterType="Long">
+        delete from app_order_log where id = #{id}
+    </delete>
+
+    <delete id="deleteAppOrderLogByIds" parameterType="String">
+        delete from app_order_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
