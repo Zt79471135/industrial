@@ -32,7 +32,7 @@ public class AppProductServiceImpl implements AppProductService {
     @Resource
     private DictDataMapper dictDataMapper;
     @Resource
-    private AppProductCategoryMapper productCategoryMapper;
+    private AppCategoryMapper categoryMapper;
     @Resource
     private AppImageFileMapper imageFileMapper;
     @Resource
@@ -60,7 +60,7 @@ public class AppProductServiceImpl implements AppProductService {
         product.setStatus((byte) status);
         product.setId(productId);
         QueryWrapper<com.industrial.domin.AppProduct> qw = new QueryWrapper<>();
-        qw.lambda().eq(com.industrial.domin.AppProduct::getDeleted, 1);
+        qw.lambda().eq(com.industrial.domin.AppProduct::getDeleted, 0);
         return productMapper.update(product, qw) == 1;
     }
 
@@ -191,11 +191,14 @@ public class AppProductServiceImpl implements AppProductService {
         String sql = "and (status = " + status + " or status =" + 0;
         List<com.industrial.domin.AppProduct> productList = productMapper.selectList(qw);
         if (productList.size() == 0) {
-            throw new ServiceException("无此状态的商品");
+            //throw new ServiceException("无此状态的商品");
+            List<ProductDto> productDtoList = productList.stream().map(this::apply).collect(Collectors.toList());
+            return productDtoList;
         } else {
             List<ProductDto> productDtoList = productList.stream().map(this::apply).collect(Collectors.toList());
             return productDtoList;
         }
+
 
     }
     @Override
@@ -326,7 +329,7 @@ public class AppProductServiceImpl implements AppProductService {
         /**
          *查询商品分类
          */
-        AppProductCategory productCategory = productCategoryMapper.selectById(product.getCategoryId());
+        AppCategory category = categoryMapper.selectAppCategoryById((long)product.getCategoryId());
         /**
          * 查询商品单位
          */
@@ -336,14 +339,14 @@ public class AppProductServiceImpl implements AppProductService {
         DictData dictData = dictDataMapper.selectOne(queryWrapper);
         String dictLabel = dictData.getDictLabel();
         productDto.setUnitName(dictLabel);
-        productDto.setCategory(productCategory);
+        productDto.setCategory(category);
         BeanUtils.copyProperties(product, productDto);
         return productDto;
     }
 
     private ProductExcel getProductExcel(com.industrial.domin.AppProduct product) {
         ProductExcel productExcel = new ProductExcel();
-        String categoryName = productCategoryMapper.selectById(product.getCategoryId()).getCategoryName();
+        String categoryName = categoryMapper.selectAppCategoryById((long)product.getCategoryId()).getCategoryName();
         productExcel.setCategoryName(categoryName);
         String userName = userMapper.selectById(product.getCreateUserId()).getUserName();
         productExcel.setContactsUserName(userName);
@@ -356,9 +359,9 @@ public class AppProductServiceImpl implements AppProductService {
         productExcel.setStock(product.getStock());
         productExcel.setSpecifica(product.getSpecifica());
         if (product.getStatus() == 0) {
-            productExcel.setStatus("禁用");
-        } else {
             productExcel.setStatus("启用");
+        } else {
+            productExcel.setStatus("禁用");
         }
         return productExcel;
     }

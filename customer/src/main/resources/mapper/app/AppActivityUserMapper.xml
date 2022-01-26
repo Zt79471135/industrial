@@ -7,11 +7,12 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="activity_id" jdbcType="INTEGER" property="activityId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="INTEGER" property="userName" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="deleted" jdbcType="TINYINT" property="deleted" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, activity_id, user_id, update_time, deleted
+    id, activity_id, user_id,user_name, update_time, deleted
   </sql>
 </mapper>

@@ -31,7 +31,20 @@
     <result property="summaryDesc"    column="summary_desc"    />
     <result property="attachParam"    column="attach_param"    />
     <result property="invalidReason"    column="invalid_reason"    />
+    <association property="activityUser" column="activity_id" javaType="com.industrial.domin.AppActivityUser" resultMap="ActUserResult" />
   </resultMap>
+
+  <resultMap id="ActivityUserResultMap" type="com.industrial.domin.AppActivityUser">
+    <!--@mbg.generated-->
+    <!--@Table app_activity_user-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="INTEGER" property="userName" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+  </resultMap>
+
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, activity_name, description, activity_address, activity_type, begin_time, end_time, create_time, activity_status,

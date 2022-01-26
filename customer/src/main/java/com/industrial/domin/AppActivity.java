@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.industrial.common.annotation.Excel;
+import com.industrial.common.core.domain.entity.SysDictData;
+import com.industrial.domin.AppActivityUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,6 +45,11 @@ public class AppActivity {
     @Excel(name = "活动描述")
     @TableField(value = "description")
     private String description;
+
+    /** 活动地址 */
+    @Excel(name = "活动地址")
+    @TableField(value = "activity_address")
+    private String activityAddress;
 
     /**
      * 活动类型
@@ -96,7 +103,6 @@ public class AppActivity {
     /**
      * 负责人员
      */
-    @Excel(name = "负责人员", type = Excel.Type.IMPORT)
     @TableField(value = "head_user")
     private Integer headUser;
 
@@ -114,47 +120,53 @@ public class AppActivity {
 
     /** 附件参数 */
     @Excel(name = "附件参数")
+    @TableField(value = "picture_param")
     private String pictureParam;
 
     /** 总结人员 */
     @Excel(name = "总结人员")
+    @TableField(value = "conclusion_person")
     private Long conclusionPerson;
-
-    /** 标志（0：启用，1：禁用) */
-    @Excel(name = "标志", readConverterExp = "0=启用，1=禁用)")
-    private Integer enabled;
 
     /** 总结时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "总结时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @TableField(value = "conclusion_time")
     private Date conclusionTime;
 
     /** 实际成本 */
     @Excel(name = "实际成本")
+    @TableField(value = "actual_cost")
     private BigDecimal actualCost;
 
     /** 实际收入 */
     @Excel(name = "实际收入")
+    @TableField(value = "real_income")
     private BigDecimal realIncome;
 
     /** 实际成本率 */
     @Excel(name = "实际成本率")
+    @TableField(value = "cost_rate")
     private String costRate;
 
     /** 实际回报率 */
     @Excel(name = "实际回报率")
+    @TableField(value = "return_rate")
     private String returnRate;
 
     /** 总结描述 */
     @Excel(name = "总结描述")
+    @TableField(value = "summary_desc")
     private String summaryDesc;
 
     /** 总结附件 */
     @Excel(name = "总结附件")
+    @TableField(value = "attach_param")
     private String attachParam;
 
     /** 订单终至作废原因 */
     @Excel(name = "订单终至作废原因")
+    @TableField(value = "invalid_reason")
     private String invalidReason;
 
     /**
@@ -164,12 +176,21 @@ public class AppActivity {
     @TableField(value = "update_time")
     private Date updateTime;
 
+
+    /** 标志（0：启用，1：禁用) */
+    @TableField(value = "enabled")
+    @Excel(name = "启用状态", readConverterExp = "0=启用，1=禁用)")
+    private Integer enabled;
+
     /**
-     * 0表删除
+     * 删除标志（0代表存在 ，1代表删除）
      */
     @TableField(value = "deleted")
-
+    @Excel(name = "标志", readConverterExp = "0=存在，1=删除")
     private Byte deleted;
+
+    //订单与参与用户
+    public AppActivityUser activityUser;
 
     public static final String COL_ID = "id";
 

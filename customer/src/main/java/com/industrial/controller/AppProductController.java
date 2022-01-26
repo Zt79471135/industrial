@@ -28,10 +28,10 @@ import java.util.List;
 public class AppProductController extends BaseController {
     @Resource
     private AppProductService productService;
-    public static final Byte FORBIDDEN_STATUS = 0;
-    public static final Byte SAVE_STATUS = 1;
-    public static final Byte APPROVAL_STATUS = 2;
-    public static final Byte PUTAWAY_STATUS = 3;
+    public static final Byte FORBIDDEN_STATUS = 0; //0审核失败，
+    public static final Byte SAVE_STATUS = 1;  //保存商品
+    public static final Byte APPROVAL_STATUS = 2; //待审核商品
+    public static final Byte PUTAWAY_STATUS = 3;//上架
     /**
      * 根据ID查询商品详情
      */
@@ -48,8 +48,11 @@ public class AppProductController extends BaseController {
      * status = 3 已经上架的商品
      */
     @GetMapping("/classify")
-    public ResponseResult<List<ProductDto>> classify(@RequestParam() Integer categoryId,@RequestParam() String productName) {
+    public ResponseResult<List<ProductDto>> classify(AppProduct product) {
         ResponseResult<List<ProductDto>> result = null;
+        Integer categoryId = product.getCategoryId();
+        String productName = product.getName();
+
         startPage();
         List<ProductDto> productDto = productService.selectProductByCategoryId(categoryId, productName, 3);
 
