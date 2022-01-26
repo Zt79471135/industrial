@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.industrial.mapper.AppProductPriceMapper">
+  <resultMap id="BaseResultMap" type="com.industrial.domin.AppProductPrice">
+    <!--@mbg.generated-->
+    <!--@Table app_product_price-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="selling_price" jdbcType="DECIMAL" property="sellingPrice" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="discount" jdbcType="INTEGER" property="discount" />
+    <result column="total_prices" jdbcType="DECIMAL" property="totalPrices" />
+    <result column="gift" jdbcType="VARCHAR" property="gift" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, product_id, selling_price, amount, discount, total_prices, gift, remark
+  </sql>
+</mapper>

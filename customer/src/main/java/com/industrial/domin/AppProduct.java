@@ -11,30 +11,37 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 商品表
  * @author zhu
- * @date 2022年01月21日 9:27
+ * @date 2022年01月26日 16:42
+ */
+
+/**
+ * 商品表
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "app_product")
 public class AppProduct {
+    public static final String COL_PICTUREPARAM = "PictureParam";
     /**
      * 主键
      */
     @TableId(value = "id", type = IdType.INPUT)
     private Integer id;
+
     /**
      * 商品编号
      */
     @TableField(value = "`number`")
     private String number;
+
     /**
      * 商品名称
      */
     @TableField(value = "`name`")
     private String name;
+
     /**
      * 商品类别
      */
@@ -46,46 +53,55 @@ public class AppProduct {
      */
     @TableField(value = "stock")
     private Integer stock;
+
     /**
      * 单价
      */
     @TableField(value = "price")
     private BigDecimal price;
+
     /**
      * 售后联系人
      */
     @TableField(value = "contacts")
     private String contacts;
+
     /**
      * 售后服务电话
      */
     @TableField(value = "telephone")
     private String telephone;
+
     /**
      * 单位编号
      */
     @TableField(value = "unit_id")
     private String unitId;
+
     /**
      * 对内价格
      */
     @TableField(value = "floor_price")
     private BigDecimal floorPrice;
+
     /**
      * 规格
      */
     @TableField(value = "specifica")
     private String specifica;
+
     /**
      * 维保期
      */
     @TableField(value = "maintenance")
     private String maintenance;
+
     /**
-     * 状态：1保存商品，2待审核商品，3上架
+     * 状态：1保存商品，2待审核商品，3上架,4下架
      */
     @TableField(value = "`status`")
     private Byte status;
+
     /**
      * 图片参数（数组）
      */
@@ -105,19 +121,10 @@ public class AppProduct {
     private String mainImgUrl;
 
     /**
-     * 摘要
+     * 商品详情
      */
     @TableField(value = "summary")
     private String summary;
-
-    @TableField(value = "enabled")
-    private Integer enabled;
-
-    /**
-     * 标志（1：删除，0：在用)
-     */
-    @TableField(value = "deleted")
-    private Byte deleted;
 
     /**
      * 创建用户ID
@@ -136,6 +143,18 @@ public class AppProduct {
      */
     @TableField(value = "update_time")
     private Date updateTime;
+
+    /**
+     * 启用状态（0：启用，1：禁用)
+     */
+    @TableField(value = "enabled")
+    private Byte enabled;
+
+    /**
+     * 删除标志（0代表存在 ，1代表删除）
+     */
+    @TableField(value = "deleted")
+    private Byte deleted;
 
     public static final String COL_ID = "id";
 
@@ -163,7 +182,7 @@ public class AppProduct {
 
     public static final String COL_STATUS = "status";
 
-    public static final String COL_PICTUREPARAM = "PictureParam";
+    public static final String COL_PICTURE_PARAM = "picture_param";
 
     public static final String COL_IMG_ID = "img_id";
 
@@ -171,11 +190,13 @@ public class AppProduct {
 
     public static final String COL_SUMMARY = "summary";
 
-    public static final String COL_DELETED = "deleted";
-
     public static final String COL_CREATE_USER_ID = "create_user_id";
 
     public static final String COL_CREATE_TIME = "create_time";
 
     public static final String COL_UPDATE_TIME = "update_time";
+
+    public static final String COL_ENABLED = "enabled";
+
+    public static final String COL_DELETED = "deleted";
 }

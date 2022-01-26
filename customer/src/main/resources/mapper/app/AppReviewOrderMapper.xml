@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.industrial.mapper.AppReviewOrderMapper">
+  <resultMap id="BaseResultMap" type="com.industrial.domin.AppReviewOrder">
+    <!--@mbg.generated-->
+    <!--@Table app_review_order-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="review_id" jdbcType="INTEGER" property="reviewId" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, review_id, order_id
+  </sql>
+</mapper>

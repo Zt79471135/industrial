@@ -11,6 +11,7 @@ import com.industrial.common.utils.poi.ExcelUtil;
 import com.industrial.common.vo.CheckVo;
 import com.industrial.common.vo.ProductVo;
 import com.industrial.domin.AppProduct;
+import com.industrial.service.AppProductPriceService;
 import com.industrial.service.AppProductService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,10 +29,13 @@ import java.util.List;
 public class AppProductController extends BaseController {
     @Resource
     private AppProductService productService;
-    public static final Byte FORBIDDEN_STATUS = 0; //0审核失败，
-    public static final Byte SAVE_STATUS = 1;  //保存商品
-    public static final Byte APPROVAL_STATUS = 2; //待审核商品
-    public static final Byte PUTAWAY_STATUS = 3;//上架
+    @Resource
+    private AppProductPriceService productPriceService;
+    public static final Byte SAVE_STATUS = 1;
+    public static final Byte APPROVAL_STATUS = 2;
+    public static final Byte PUTAWAY_STATUS = 3;
+    public static final Byte SOLD_OUT_STATUS = 4;
+
     /**
      * 根据ID查询商品详情
      */
@@ -48,11 +52,8 @@ public class AppProductController extends BaseController {
      * status = 3 已经上架的商品
      */
     @GetMapping("/classify")
-    public ResponseResult<List<ProductDto>> classify(AppProduct product) {
+    public ResponseResult<List<ProductDto>> classify(@RequestParam() Integer categoryId,@RequestParam() String productName) {
         ResponseResult<List<ProductDto>> result = null;
-        Integer categoryId = product.getCategoryId();
-        String productName = product.getName();
-
         startPage();
         List<ProductDto> productDto = productService.selectProductByCategoryId(categoryId, productName, 3);
 
@@ -134,13 +135,9 @@ public class AppProductController extends BaseController {
      * @return
      */
     @PostMapping("/enable")
-    public ResponseResult enable(@RequestParam CheckVo checkVo) {
+    public ResponseResult enable(@RequestParam Integer productId , @RequestParam Integer enable ) {
         ResponseResult result = null;
-        int status = FORBIDDEN_STATUS;
-        if (checkVo.getCheck()) {
-            status = PUTAWAY_STATUS;
-        }
-        if (productService.changeStatus(status, checkVo.getId())) {
+        if (productService.changeEnabled(productId,enable)) {
             result = ResponseResult.success();
         } else {
             result = ResponseResult.error(ResponseCode.ERROR);
@@ -175,6 +172,34 @@ public class AppProductController extends BaseController {
     public ResponseResult putaway(List<Integer> ids) {
         ResponseResult result = null;
         if (productService.putaway(ids, (byte) APPROVAL_STATUS)) {
+            result = ResponseResult.success();
+        } else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
+    /**
+     * 商品批量下架
+     * status = 4
+     * @return
+     */
+    @PostMapping("soldOut")
+    public ResponseResult soldOut(List<Integer> ids) {
+        ResponseResult result = null;
+        if (productService.soldOut(ids, (byte) SOLD_OUT_STATUS)) {
+            result = ResponseResult.success();
+        } else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
+    /**
+     * 商品报价
+     */
+    @PostMapping("prices")
+    public ResponseResult prices() {
+        ResponseResult result = null;
+        if (productPriceService.selectList()) {
             result = ResponseResult.success();
         } else {
             result = ResponseResult.error(ResponseCode.ERROR);

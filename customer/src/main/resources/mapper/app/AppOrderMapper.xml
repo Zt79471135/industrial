@@ -17,7 +17,7 @@
     <result column="payment_mode" jdbcType="INTEGER" property="paymentMode" />
     <result column="cust_contractor" jdbcType="INTEGER" property="custContractor" />
     <result column="our_contractor" jdbcType="INTEGER" property="ourContractor" />
-    <result column="attribu_person" jdbcType="VARCHAR" property="attribuPerson" />
+    <result column="attribu_person" jdbcType="INTEGER" property="attribuPerson" />
     <result column="file_param" jdbcType="VARCHAR" property="fileParam" />
     <result column="note_info" jdbcType="VARCHAR" property="noteInfo" />
     <result column="user_manager" jdbcType="INTEGER" property="userManager" />

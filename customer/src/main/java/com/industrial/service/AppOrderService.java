@@ -3,7 +3,10 @@ package com.industrial.service;
 import com.industrial.common.dto.OrderDto;
 import com.industrial.common.vo.FollowVo;
 import com.industrial.common.vo.OrderVo;
+import com.industrial.common.vo.ShiftVo;
 import com.industrial.domin.AppFollow;
+
+import java.util.List;
 
 /**
  * @author zhu
@@ -34,5 +37,18 @@ public interface AppOrderService {
      */
     boolean updateStatus(Integer orderId, int id);
 
-    String checkOrder(long userId,String orderNo);
+    /**
+     * 订单转交
+     * @param shiftVo
+     * @return
+     */
+    boolean updateAffiliate(ShiftVo shiftVo);
+
+    /**
+     * 添加协作人员
+     * @param ids
+     * @param orderId
+     * @return
+     */
+    boolean addTeam(List<Integer> ids, Integer orderId);
 }

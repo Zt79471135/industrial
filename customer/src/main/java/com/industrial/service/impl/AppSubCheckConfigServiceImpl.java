@@ -8,6 +8,8 @@ import com.industrial.mapper.AppSubCheckConfigMapper;
 import com.industrial.domin.AppSubCheckConfig;
 import com.industrial.service.IAppSubCheckConfigService;
 
+import javax.annotation.Resource;
+
 /**
  * 审核设置子Service业务层处理
  * 
@@ -17,7 +19,7 @@ import com.industrial.service.IAppSubCheckConfigService;
 @Service
 public class AppSubCheckConfigServiceImpl implements IAppSubCheckConfigService 
 {
-    @Autowired
+    @Resource
     private AppSubCheckConfigMapper appSubCheckConfigMapper;
 
     /**

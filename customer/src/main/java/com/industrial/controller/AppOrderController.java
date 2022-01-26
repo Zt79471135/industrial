@@ -8,13 +8,16 @@ import com.industrial.common.dto.OrderDto;
 import com.industrial.common.vo.CheckVo;
 import com.industrial.common.vo.FollowVo;
 import com.industrial.common.vo.OrderVo;
+import com.industrial.common.vo.ShiftVo;
 import com.industrial.domin.AppFollow;
 import com.industrial.domin.AppOrder;
+import com.industrial.service.AppCheckService;
 import com.industrial.service.AppOrderService;
 import com.industrial.service.IAppFollowService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author zhu
@@ -27,8 +30,8 @@ public class AppOrderController extends BaseController {
     private AppOrderService orderService;
     @Resource
     private IAppFollowService followService;
-//    @Resource
-//    private AppCheckService checkService;
+    @Resource
+    private AppCheckService checkService;
     public static final Integer  CHECK_STATUS_SUCCESS = 3;
     /**
      * 用户下单
@@ -80,23 +83,40 @@ public class AppOrderController extends BaseController {
         }
         return result;
     }
-
     /**
-     * 订单审核
+     * 订单派发,工单新建
      */
-//    @PostMapping("check")
-//    public ResponseResult<String> check(@RequestBody CheckVo checkVo) {
-//        ResponseResult<String> result = null;
-//        if (checkService.updateStatus(checkVo)) {
-//            if (orderService.updateStatus(checkVo.getId(),CHECK_STATUS_SUCCESS)) {
-//                result = ResponseResult.success();
-//            } else {
-//                result = ResponseResult.error(ResponseCode.ERROR);
-//            }
-//
-//        } else {
-//            result = ResponseResult.error(ResponseCode.ERROR);
-//        }
-//        return result;
-//    }
+    @PostMapping("add")
+    public ResponseResult<String> add(){
+        return null;
+    }
+    /**
+     * 转移订单
+     */
+    @PostMapping
+    public ResponseResult<String> shift(@RequestParam ShiftVo shiftVo){
+        ResponseResult<String> result = null;
+        shiftVo.setFromId(Math.toIntExact(getUserId()));
+        shiftVo.setFromName(getUsername());
+        if (orderService.updateAffiliate(shiftVo)){
+            result = ResponseResult.success();
+        }else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
+    /**
+     * 添加协作人员
+     */
+    @PostMapping("add/team")
+    public ResponseResult<String> addTeam(@RequestBody List<Integer> ids,@RequestParam Integer orderId){
+        ResponseResult<String> result = null;
+        if (orderService.addTeam(ids,orderId)){
+            result = ResponseResult.success();
+        }else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
+
 }

@@ -17,21 +17,21 @@
     <result column="specifica" jdbcType="VARCHAR" property="specifica" />
     <result column="maintenance" jdbcType="VARCHAR" property="maintenance" />
     <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="PictureParam" jdbcType="VARCHAR" property="pictureparam" />
+    <result column="picture_param" jdbcType="VARCHAR" property="pictureParam" />
     <result column="img_id" jdbcType="INTEGER" property="imgId" />
     <result column="main_img_url" jdbcType="VARCHAR" property="mainImgUrl" />
     <result column="summary" jdbcType="VARCHAR" property="summary" />
-    <result column="enabled" jdbcType="TINYINT" property="enabled" />
-    <result column="deleted" jdbcType="TINYINT" property="deleted" />
     <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="enabled" jdbcType="TINYINT" property="enabled" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, `number`, `name`, category_id, stock, price, contacts, telephone, unit_id, floor_price, 
-    specifica, maintenance, `status`, PictureParam, img_id, main_img_url, summary, deleted, enabled,
-    create_user_id, create_time, update_time
+    specifica, maintenance, `status`, picture_param, img_id, main_img_url, summary, create_user_id, 
+    create_time, update_time, enabled, deleted
   </sql>
   <sql id="selectAppProductVo">
     select id, number, name, category_id, stock, price, contacts, telephone, unit_id, floor_price, specifica,
@@ -41,7 +41,7 @@
   </sql>
 
   <select id="selectAppProductList" parameterType="com.industrial.domin.AppProduct" resultMap="BaseResultMap">
-    <include refid="selectAppProductVo"/>
+    <include refid="selectAppProductVo" />
     <where>
       <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
       <if test="categoryId != null "> and category_id = #{categoryId}</if>
@@ -52,9 +52,59 @@
   </select>
 
   <select id="selectAppProductById" parameterType="Long" resultMap="BaseResultMap">
-    <include refid="selectAppProductVo"/>
+    <include refid="selectAppProductVo" />
     where id = #{id}
   </select>
+
+  <insert id="insertAppProduct" keyProperty="id" parameterType="com.industrial.domin.AppProduct" useGeneratedKeys="true">
+    insert into app_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="number != null and number != ''">number,</if>
+      <if test="name != null and name != ''">name,</if>
+      <if test="categoryId != null">category_id,</if>
+      <if test="stock != null">stock,</if>
+      <if test="price != null">price,</if>
+      <if test="contacts != null">contacts,</if>
+      <if test="telephone != null">telephone,</if>
+      <if test="unitId != null and unitId != ''">unit_id,</if>
+      <if test="floorPrice != null">floor_price,</if>
+      <if test="specifica != null and specifica != ''">specifica,</if>
+      <if test="maintenance != null and maintenance != ''">maintenance,</if>
+      <if test="status != null">status,</if>
+      <if test="pictureParam != null">picture_param,</if>
+      <if test="imgId != null">img_id,</if>
+      <if test="mainImgUrl != null">main_img_url,</if>
+      <if test="summary != null">summary,</if>
+      <if test="deleted != null">deleted,</if>
+      <if test="createUserId != null">create_user_id,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="enabled != null">enabled,</if>
+      <if test="updateTime != null">update_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="number != null and number != ''">#{number},</if>
+      <if test="name != null and name != ''">#{name},</if>
+      <if test="categoryId != null">#{categoryId},</if>
+      <if test="stock != null">#{stock},</if>
+      <if test="price != null">#{price},</if>
+      <if test="contacts != null">#{contacts},</if>
+      <if test="telephone != null">#{telephone},</if>
+      <if test="unitId != null and unitId != ''">#{unitId},</if>
+      <if test="floorPrice != null">#{floorPrice},</if>
+      <if test="specifica != null and specifica != ''">#{specifica},</if>
+      <if test="maintenance != null and maintenance != ''">#{maintenance},</if>
+      <if test="status != null">#{status},</if>
+      <if test="pictureParam != null">#{pictureParam},</if>
+      <if test="imgId != null">#{imgId},</if>
+      <if test="mainImgUrl != null">#{mainImgUrl},</if>
+      <if test="summary != null">#{summary},</if>
+      <if test="deleted != null">#{deleted},</if>
+      <if test="createUserId != null">#{createUserId},</if>
+      <if test="createTime != null">#{createTime},</if>
+      <if test="enabled != null">#{enabled},</if>
+      <if test="updateTime != null">#{updateTime},</if>
+    </trim>
+  </insert>
 
   <update id="updateAppProduct" parameterType="com.industrial.domin.AppProduct">
     update app_product
@@ -90,7 +140,7 @@
 
   <delete id="deleteAppProductByIds" parameterType="String">
     delete from app_product where id in
-    <foreach item="id" collection="array" open="(" separator="," close=")">
+    <foreach close=")" collection="array" item="id" open="(" separator=",">
       #{id}
     </foreach>
   </delete>

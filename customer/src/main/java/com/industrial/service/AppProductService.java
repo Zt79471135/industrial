@@ -2,8 +2,10 @@ package com.industrial.service;
 
 import com.industrial.common.dto.ProductDto;
 import com.industrial.common.pojo.ProductExcel;
+import com.industrial.common.vo.CheckVo;
 import com.industrial.common.vo.ProductVo;
 import com.industrial.domin.AppProduct;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -54,7 +56,13 @@ public interface AppProductService {
      * @return
      */
     boolean update(ProductVo productVo);
-
+    /**
+     * 商品下架
+     * @param ids
+     * @param soldOutStatus
+     * @return
+     */
+    boolean soldOut(List<Integer> ids, byte soldOutStatus);
     /**
      * 根据分类查询
      * @param categoryId
@@ -88,6 +96,11 @@ public interface AppProductService {
      */
     String importData(List<AppProduct> productList, Boolean isUpdateSupport, String operName);
 
-
-
+    /**
+     * 商品启用与禁用
+     * @param productId
+     * @param enable
+     * @return
+     */
+    boolean changeEnabled(Integer productId,int enable);
 }

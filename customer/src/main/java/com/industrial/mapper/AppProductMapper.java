@@ -5,7 +5,7 @@ import com.industrial.domin.AppProduct;import org.apache.ibatis.annotations.Para
 
 /**
  * @author zhu
- * @date 2022年01月21日 9:27
+ * @date 2022年01月26日 16:42
  */
 public interface AppProductMapper extends BaseMapper<AppProduct> {
     /**

@@ -105,7 +105,7 @@ public class AppOrder {
      * 归属人员
      */
     @TableField(value = "attribu_person")
-    private String attribuPerson;
+    private Integer attribuPerson;
 
     /**
      * 附件

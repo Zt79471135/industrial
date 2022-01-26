@@ -116,6 +116,7 @@ public class AppProductServiceImpl implements AppProductService {
     public boolean insert(ProductVo productVo) {
         com.industrial.domin.AppProduct product = new com.industrial.domin.AppProduct();
         BeanUtils.copyProperties(productVo, product);
+        product.setStatus((byte) 2);
         List<Integer> imgIds = productVo.getImgIds();
         if (imgIds.size() > 0) {
             Integer integer = imgIds.get(0);
@@ -169,6 +170,22 @@ public class AppProductServiceImpl implements AppProductService {
 
     }
 
+    @Override
+    public boolean soldOut(List<Integer> ids, byte status) {
+        int size = ids.size();
+        if (size > 0) {
+            List<Integer> integerList = ids.stream().map(id -> {
+                if (!changeStatus(status, id)) {
+                    throw new ServiceException();
+                }
+                return 1;
+            }).collect(Collectors.toList());
+            return integerList.size() == size;
+        } else {
+            throw new ServiceException();
+        }
+    }
+
     /**
      * 根据分类id或者商品名称查询
      *
@@ -201,6 +218,7 @@ public class AppProductServiceImpl implements AppProductService {
 
 
     }
+
     @Override
     public boolean putaway(List<Integer> ids, byte status) {
         int size = ids.size();
@@ -216,6 +234,7 @@ public class AppProductServiceImpl implements AppProductService {
             throw new ServiceException();
         }
     }
+
     @Override
     public List<ProductExcel> selectProductExcelList(ProductVo productVo) {
         Integer id = productVo.getId();
@@ -254,17 +273,15 @@ public class AppProductServiceImpl implements AppProductService {
     /**
      * 导入用户数据
      *
-     * @param productList 用户数据列表
+     * @param productList     用户数据列表
      * @param productList
      * @param isUpdateSupport 是否更新支持，如果已存在，则进行更新数据
-     * @param operName 操作用户
+     * @param operName        操作用户
      * @return 结果
      */
     @Override
-    public String importData(List<AppProduct> productList, Boolean isUpdateSupport, String operName)
-    {
-        if (StringUtils.isNull(productList) || productList.size() == 0)
-        {
+    public String importData(List<AppProduct> productList, Boolean isUpdateSupport, String operName) {
+        if (StringUtils.isNull(productList) || productList.size() == 0) {
             throw new ServiceException("导入数据不能为空！");
         }
         int successNum = 0;
@@ -272,8 +289,7 @@ public class AppProductServiceImpl implements AppProductService {
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
         List<ProductExcel> existList = selectProductExcelList(null);
-        for (AppProduct product : productList)
-        {
+        for (AppProduct product : productList) {
             try {
 
                 boolean userFlag = false;
@@ -295,23 +311,27 @@ public class AppProductServiceImpl implements AppProductService {
                     failureNum++;
                     failureMsg.append("<br/>" + failureNum + "、数据 " + product.getName() + " 已存在");
                 }
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 failureNum++;
                 String msg = "<br/>" + failureNum + "、账号 " + product.getName() + " 导入失败：";
                 failureMsg.append(msg + e.getMessage());
             }
         }
-        if (failureNum > 0)
-        {
+        if (failureNum > 0) {
             failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
             throw new ServiceException(failureMsg.toString());
-        }
-        else
-        {
+        } else {
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();
+    }
+
+    @Override
+    public boolean changeEnabled(Integer productId, int enable) {
+        AppProduct product = new AppProduct();
+        product.setId(productId);
+        product.setEnabled((byte) enable);
+        return productMapper.updateById(product) == 1;
     }
 
     private void updateProductExcelList(AppProduct product) {
