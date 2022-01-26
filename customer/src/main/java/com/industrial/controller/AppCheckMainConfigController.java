@@ -2,11 +2,14 @@ package com.industrial.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import com.industrial.common.core.domain.ResponseResult;
 import com.industrial.common.dto.CheckConfigDto;
+import com.industrial.domin.AppCheckUser;
 import com.industrial.domin.AppSubCheckConfig;
+import com.industrial.mapper.AppCheckUserMapper;
 import com.industrial.service.IAppSubCheckConfigService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,6 +45,8 @@ public class AppCheckMainConfigController extends BaseController
     private IAppCheckMainConfigService appCheckMainConfigService;
     @Autowired
     private IAppSubCheckConfigService appSubCheckConfigService;
+    @Resource
+    private AppCheckUserMapper appCheckUserService;
 
     /**
      * 查询审核设置主列表
@@ -60,6 +65,7 @@ public class AppCheckMainConfigController extends BaseController
     {
         List<AppCheckMainConfig> mainList = appCheckMainConfigService.selectAppCheckMainConfigList(null);
         List<AppSubCheckConfig> sublist=appSubCheckConfigService.selectAppSubCheckConfigList(null);
+        List<AppCheckUser> userlist=appCheckUserService.selectList(null);
         List<CheckConfigDto> list=new ArrayList<CheckConfigDto>();
         for (AppCheckMainConfig item:mainList) {
             CheckConfigDto model=new CheckConfigDto();
@@ -68,7 +74,14 @@ public class AppCheckMainConfigController extends BaseController
                 if(item.getId()==subItem.getConfigId()){
                     if(model.subList.isEmpty()){
                         model.subList=new ArrayList<>();
+                        for (AppCheckUser user:userlist) {
+                            if(user.getCheckId().intValue()==subItem.getId()){
+                                subItem.setAdminList(subItem.getAdminList()+user.getUserId()+",");
+                            }
+                        }
                     }
+                    subItem.setAdminList(subItem.getAdminList().length()>0?
+                            subItem.getAdminList().substring(0,subItem.getAdminList().length()-1):subItem.getAdminList());
                     model.subList.add(subItem);
                 }
             }

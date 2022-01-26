@@ -6,10 +6,14 @@
     <!--@Table app_check_user-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="check_id" jdbcType="INTEGER" property="checkId" />
+    <result column="main_id" jdbcType="INTEGER" property="mainId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, check_id, user_id
+    id, check_id,main_id, user_id
   </sql>
+  <delete id="deleteByMainId" parameterType="Long">
+    delete from app_check_user where main_id = #{id}
+  </delete>
 </mapper>

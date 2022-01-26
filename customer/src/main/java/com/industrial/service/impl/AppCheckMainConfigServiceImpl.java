@@ -5,15 +5,13 @@ import java.util.List;
 import com.industrial.common.dto.CheckConfigDto;
 import com.industrial.common.utils.DateUtils;
 import com.industrial.common.utils.uuid.UUID;
-import com.industrial.domin.AppSubCheckConfig;
-import com.industrial.domin.AppUserAddress;
-import com.industrial.domin.AppUserSalesman;
+import com.industrial.domin.*;
+import com.industrial.mapper.AppCheckUserMapper;
 import com.industrial.mapper.AppSubCheckConfigMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.industrial.mapper.AppCheckMainConfigMapper;
-import com.industrial.domin.AppCheckMainConfig;
 import com.industrial.service.IAppCheckMainConfigService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -31,6 +29,8 @@ public class AppCheckMainConfigServiceImpl implements IAppCheckMainConfigService
     private AppCheckMainConfigMapper appCheckMainConfigMapper;
     @Autowired
     private AppSubCheckConfigMapper appSubCheckConfigMapper;
+    @Autowired
+    private AppCheckUserMapper appCheckUserMapper;
 
     /**
      * 查询审核设置主
@@ -112,9 +112,18 @@ public class AppCheckMainConfigServiceImpl implements IAppCheckMainConfigService
             AppCheckMainConfig model=new AppCheckMainConfig();
             BeanUtils.copyProperties(checkConfigDto,model);
             if(appCheckMainConfigMapper.updateAppCheckMainConfig(model)<=0){ throw new Exception("appCheckMainConfigMapper插入失败");}
+            if(appCheckUserMapper.deleteByMainId(model.getId())<=0){ throw new Exception("appCheckUserMapper删除失败");}
             if(appSubCheckConfigMapper.deleteAppSubCheckConfigByConfigId(model.getId())<=0){ throw new Exception("aappSubCheckConfigMapper删除失败");}
             for (AppSubCheckConfig item:checkConfigDto.subList) {
                 if(appSubCheckConfigMapper.insertAppSubCheckConfig(item)<=0){ throw new Exception("appSubCheckConfigMapper插入失败");}
+                for (String str:item.getAdminList().split(",")) {
+                    AppCheckUser temp=new AppCheckUser();
+                    temp.setCheckId(item.getId().intValue());
+                    temp.setMainId(model.getId().intValue());
+                    temp.setUserId(Integer.getInteger(str));
+                    if(appCheckUserMapper.insert(temp)<=0){ throw new Exception("appCheckUserMapper插入失败");}
+
+                }
             }
             return 1;
         }catch (Exception ex){

@@ -33,4 +33,6 @@ public interface AppOrderService {
      * @return
      */
     boolean updateStatus(Integer orderId, int id);
+
+    boolean checkOrder(long userId,long orderId);
 }

@@ -39,6 +39,7 @@ public class AppOrderServiceImpl implements AppOrderService {
         AppOrder order = orderMapper.selectById(orderId);
         OrderDto orderDto = new OrderDto();
         BeanUtils.copyProperties(order, orderDto);
+
         return orderDto;
     }
 
@@ -91,6 +92,13 @@ public class AppOrderServiceImpl implements AppOrderService {
         order.setId(orderId);
         order.setStatus((byte)id);
         return orderMapper.updateById(order)==1;
+    }
+
+    @Transactional(rollbackFor = ServiceException.class)
+    @Override
+    public boolean checkOrder(long userId,long orderId) {
+        return  false;
+
     }
 
 

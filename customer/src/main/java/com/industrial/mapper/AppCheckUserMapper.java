@@ -8,4 +8,5 @@ import com.industrial.domin.AppCheckUser;
  * @date 2022年01月26日 10:45
  */
 public interface AppCheckUserMapper extends BaseMapper<AppCheckUser> {
+    Integer deleteByMainId(Long id);
 }

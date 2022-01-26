@@ -1,42 +1,96 @@
 package com.industrial.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.industrial.common.vo.CheckVo;
-import com.industrial.domin.AppCheckMainConfig;
-import com.industrial.mapper.AppCheckMainConfigMapper;
-import com.industrial.mapper.AppCheckMapper;
-import com.industrial.mapper.AppSubCheckConfigMapper;
-import com.industrial.service.AppCheckService;
+import java.util.List;
+import com.industrial.common.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
+import com.industrial.mapper.AppCheckMapper;
+import com.industrial.domin.AppCheck;
+import com.industrial.service.IAppCheckService;
 
 /**
- * @author zhu
- * @date 2022年01月26日 9:25
+ * systemService业务层处理
+ * 
+ * @author lishenkang
+ * @date 2022-01-26
  */
 @Service
-public class AppCheckServiceImpl implements AppCheckService {
-    @Resource
-    private AppCheckMapper checkMapper;
-    @Resource
-    private AppCheckMainConfigMapper checkMainConfigMapper;
-    @Resource
-    private AppSubCheckConfigMapper checkConfigMapper;
-    /**
-     * 审批开启的状态
-     */
-    public static final Byte OPEN_STATUS = 0;
+public class AppCheckServiceImpl implements IAppCheckService 
+{
+    @Autowired
+    private AppCheckMapper appCheckMapper;
 
     /**
-     * 审核
-     *
-     * @param checkVo
-     * @return
+     * 查询system
+     * 
+     * @param id system主键
+     * @return system
      */
     @Override
-    public boolean updateStatus(CheckVo checkVo) {
+    public AppCheck selectAppCheckById(Long id)
+    {
+        return appCheckMapper.selectAppCheckById(id);
+    }
 
-        return false;
+    /**
+     * 查询system列表
+     * 
+     * @param appCheck system
+     * @return system
+     */
+    @Override
+    public List<AppCheck> selectAppCheckList(AppCheck appCheck)
+    {
+        return appCheckMapper.selectAppCheckList(appCheck);
+    }
+
+    /**
+     * 新增system
+     * 
+     * @param appCheck system
+     * @return 结果
+     */
+    @Override
+    public int insertAppCheck(AppCheck appCheck)
+    {
+        appCheck.setCreateTime(DateUtils.getNowDate());
+        return appCheckMapper.insertAppCheck(appCheck);
+    }
+
+    /**
+     * 修改system
+     * 
+     * @param appCheck system
+     * @return 结果
+     */
+    @Override
+    public int updateAppCheck(AppCheck appCheck)
+    {
+        appCheck.setUpdateTime(DateUtils.getNowDate());
+        return appCheckMapper.updateAppCheck(appCheck);
+    }
+
+    /**
+     * 批量删除system
+     * 
+     * @param ids 需要删除的system主键
+     * @return 结果
+     */
+    @Override
+    public int deleteAppCheckByIds(Long[] ids)
+    {
+        return appCheckMapper.deleteAppCheckByIds(ids);
+    }
+
+    /**
+     * 删除system信息
+     * 
+     * @param id system主键
+     * @return 结果
+     */
+    @Override
+    public int deleteAppCheckById(Long id)
+    {
+        return appCheckMapper.deleteAppCheckById(id);
     }
 }

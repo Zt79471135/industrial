@@ -32,8 +32,6 @@ public class AppSubCheckConfig extends BaseEntity
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Integer clevel;
 
-    /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String adminList;
 
     /** $column.columnComment */

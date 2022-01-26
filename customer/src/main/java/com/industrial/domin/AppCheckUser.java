@@ -35,9 +35,14 @@ public class AppCheckUser {
     @TableField(value = "user_id")
     private Integer userId;
 
+    @TableField(value = "main_id")
+    private Integer mainId;
+
     public static final String COL_ID = "id";
 
     public static final String COL_CHECK_ID = "check_id";
+
+    public static final String COL_MAIN_ID = "main_id";
 
     public static final String COL_USER_ID = "user_id";
 }

@@ -1,68 +1,123 @@
 package com.industrial.domin;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.util.Date;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.industrial.common.annotation.Excel;
+import com.industrial.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * @author zhu
- * @date 2022年01月26日 9:20
+ * system对象 app_check
+ * 
+ * @author lishenkang
+ * @date 2022-01-26
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@TableName(value = "app_check")
-public class AppCheck {
-    /**
-     * 审核表主键
-     */
-    @TableId(value = "id", type = IdType.INPUT)
-    private Integer id;
+public class AppCheck extends BaseEntity
+{
+    private static final long serialVersionUID = 1L;
 
-    /**
-     * 审核人ID
-     */
-    @TableField(value = "user_id")
-    private Integer userId;
+    /** 审核表主键 */
+    private Long id;
 
-    /**
-     * 待审核ID
-     */
-    @TableField(value = "audit_id")
-    private Integer auditId;
+    /** 审核人ID */
+    @Excel(name = "审核人ID")
+    private String userId;
 
-    /**
-     * 状态
-     */
-    @TableField(value = "`status`")
-    private Byte status;
+    /** 待审核ID */
+    @Excel(name = "待审核ID")
+    private Long auditId;
 
-    /**
-     * 创建时间
-     */
-    @TableField(value = "create_time")
-    private Date createTime;
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private Long auditLevel;
 
-    /**
-     * 0表删除
-     */
-    @TableField(value = "deleted")
-    private Byte deleted;
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private String orderId;
 
-    public static final String COL_ID = "id";
+    /** 状态 */
+    @Excel(name = "状态")
+    private Integer status;
 
-    public static final String COL_USER_ID = "user_id";
+    /** 0表删除 */
+    @Excel(name = "0表删除")
+    private Integer deleted;
 
-    public static final String COL_AUDIT_ID = "audit_id";
+    public void setId(Long id) 
+    {
+        this.id = id;
+    }
 
-    public static final String COL_STATUS = "status";
+    public Long getId() 
+    {
+        return id;
+    }
+    public void setUserId(String userId) 
+    {
+        this.userId = userId;
+    }
 
-    public static final String COL_CREATE_TIME = "create_time";
+    public String getUserId() 
+    {
+        return userId;
+    }
+    public void setAuditId(Long auditId) 
+    {
+        this.auditId = auditId;
+    }
 
-    public static final String COL_DELETED = "deleted";
+    public Long getAuditId() 
+    {
+        return auditId;
+    }
+    public void setAuditLevel(Long auditLevel) 
+    {
+        this.auditLevel = auditLevel;
+    }
+
+    public Long getAuditLevel() 
+    {
+        return auditLevel;
+    }
+    public void setOrderId(String orderId) 
+    {
+        this.orderId = orderId;
+    }
+
+    public String getOrderId() 
+    {
+        return orderId;
+    }
+    public void setStatus(Integer status) 
+    {
+        this.status = status;
+    }
+
+    public Integer getStatus() 
+    {
+        return status;
+    }
+    public void setDeleted(Integer deleted) 
+    {
+        this.deleted = deleted;
+    }
+
+    public Integer getDeleted() 
+    {
+        return deleted;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+            .append("id", getId())
+            .append("userId", getUserId())
+            .append("auditId", getAuditId())
+            .append("auditLevel", getAuditLevel())
+            .append("orderId", getOrderId())
+            .append("status", getStatus())
+            .append("createTime", getCreateTime())
+            .append("updateTime", getUpdateTime())
+            .append("deleted", getDeleted())
+            .toString();
+    }
 }

@@ -10,7 +10,6 @@ import com.industrial.common.vo.FollowVo;
 import com.industrial.common.vo.OrderVo;
 import com.industrial.domin.AppFollow;
 import com.industrial.domin.AppOrder;
-import com.industrial.service.AppCheckService;
 import com.industrial.service.AppOrderService;
 import com.industrial.service.IAppFollowService;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +27,8 @@ public class AppOrderController extends BaseController {
     private AppOrderService orderService;
     @Resource
     private IAppFollowService followService;
-    @Resource
-    private AppCheckService checkService;
+//    @Resource
+//    private AppCheckService checkService;
     public static final Integer  CHECK_STATUS_SUCCESS = 3;
     /**
      * 用户下单
@@ -85,19 +84,19 @@ public class AppOrderController extends BaseController {
     /**
      * 订单审核
      */
-    @PostMapping("check")
-    public ResponseResult<String> check(@RequestBody CheckVo checkVo) {
-        ResponseResult<String> result = null;
-        if (checkService.updateStatus(checkVo)) {
-            if (orderService.updateStatus(checkVo.getId(),CHECK_STATUS_SUCCESS)) {
-                result = ResponseResult.success();
-            } else {
-                result = ResponseResult.error(ResponseCode.ERROR);
-            }
-
-        } else {
-            result = ResponseResult.error(ResponseCode.ERROR);
-        }
-        return result;
-    }
+//    @PostMapping("check")
+//    public ResponseResult<String> check(@RequestBody CheckVo checkVo) {
+//        ResponseResult<String> result = null;
+//        if (checkService.updateStatus(checkVo)) {
+//            if (orderService.updateStatus(checkVo.getId(),CHECK_STATUS_SUCCESS)) {
+//                result = ResponseResult.success();
+//            } else {
+//                result = ResponseResult.error(ResponseCode.ERROR);
+//            }
+//
+//        } else {
+//            result = ResponseResult.error(ResponseCode.ERROR);
+//        }
+//        return result;
+//    }
 }
