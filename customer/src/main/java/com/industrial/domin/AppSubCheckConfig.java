@@ -1,78 +1,110 @@
 package com.industrial.domin;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.industrial.common.annotation.Excel;
+import com.industrial.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * @author zhu
- * @date 2022年01月26日 10:58
+ * 审核设置子对象 app_subcheckconfig
+ *
+ * @author li.shenkang
+ * @date 2022-01-24
  */
-
-/**
- * 审核设置子表
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@TableName(value = "app_sub_check_config")
-public class AppSubCheckConfig {
+public class AppSubCheckConfig extends BaseEntity
+{
     private static final long serialVersionUID = 1L;
-    @TableId(value = "id", type = IdType.INPUT)
-    private Integer id;
 
-    /**
-     * 主审批配置表id
-     */
-    @TableField(value = "config_id")
-    private Integer configId;
+    /** $column.columnComment */
+    private Long id;
 
-    /**
-     * 审批类型
-     */
-    @TableField(value = "ctype")
-    private Byte ctype;
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private Long configId;
 
-    /**
-     * 第几层审批
-     */
-    @TableField(value = "clevel")
-    private Byte clevel;
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private Integer ctype;
 
-    /**
-     * 人员列表
-     */
-    @TableField(value = "admin_list")
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private Integer clevel;
+
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String adminList;
 
-    /**
-     * 添加时间
-     */
-    @TableField(value = "add_time")
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Date addTime;
 
-    /**
-     * 修改时间
-     */
-    @TableField(value = "update_time")
-    private Date updateTime;
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 
-    public static final String COL_ID = "id";
+    public Long getId()
+    {
+        return id;
+    }
+    public void setConfigId(Long configId)
+    {
+        this.configId = configId;
+    }
 
-    public static final String COL_CONFIG_ID = "config_id";
+    public Long getConfigId()
+    {
+        return configId;
+    }
+    public void setCtype(Integer ctype)
+    {
+        this.ctype = ctype;
+    }
 
-    public static final String COL_CTYPE = "ctype";
+    public Integer getCtype()
+    {
+        return ctype;
+    }
+    public void setClevel(Integer clevel)
+    {
+        this.clevel = clevel;
+    }
 
-    public static final String COL_CLEVEL = "clevel";
+    public Integer getClevel()
+    {
+        return clevel;
+    }
+    public void setAdminList(String adminList)
+    {
+        this.adminList = adminList;
+    }
 
-    public static final String COL_ADMIN_LIST = "admin_list";
+    public String getAdminList()
+    {
+        return adminList;
+    }
+    public void setAddTime(Date addTime)
+    {
+        this.addTime = addTime;
+    }
 
-    public static final String COL_ADD_TIME = "add_time";
+    public Date getAddTime()
+    {
+        return addTime;
+    }
 
-    public static final String COL_UPDATE_TIME = "update_time";
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("id", getId())
+                .append("configId", getConfigId())
+                .append("ctype", getCtype())
+                .append("clevel", getClevel())
+                .append("adminList", getAdminList())
+                .append("addTime", getAddTime())
+                .append("updateTime", getUpdateTime())
+                .toString();
+    }
 }

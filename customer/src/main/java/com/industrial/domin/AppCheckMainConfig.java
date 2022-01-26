@@ -1,62 +1,82 @@
 package com.industrial.domin;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.industrial.common.annotation.Excel;
+import com.industrial.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * @author zhu
- * @date 2022年01月26日 9:59
+ * 审核设置主对象 app_checkmainconfig
+ *
+ * @author lishenkang
+ * @date 2022-01-24
  */
-
-/**
- * 审核设置主表
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@TableName(value = "app_check_main_config")
-public class AppCheckMainConfig {
+public class AppCheckMainConfig extends BaseEntity
+{
     private static final long serialVersionUID = 1L;
-    @TableId(value = "id", type = IdType.INPUT)
-    private Integer id;
 
-    /**
-     * 审批类型
-     */
-    @TableField(value = "check_type")
-    private Byte checkType;
+    /** $column.columnComment */
+    private Long id;
 
-    /**
-     * 审批状态
-     */
-    @TableField(value = "check_status")
-    private Byte checkStatus;
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private Integer checkType;
 
-    /**
-     * 添加时间
-     */
-    @TableField(value = "add_time")
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private Integer checkStatus;
+
+    /** $column.columnComment */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Date addTime;
 
-    /**
-     * 更行时间
-     */
-    @TableField(value = "update_time")
-    private Date updateTime;
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 
-    public static final String COL_ID = "id";
+    public Long getId()
+    {
+        return id;
+    }
+    public void setCheckType(Integer checkType)
+    {
+        this.checkType = checkType;
+    }
 
-    public static final String COL_CHECK_TYPE = "check_type";
+    public Integer getCheckType()
+    {
+        return checkType;
+    }
+    public void setCheckStatus(Integer checkStatus)
+    {
+        this.checkStatus = checkStatus;
+    }
 
-    public static final String COL_CHECK_STATUS = "check_status";
+    public Integer getCheckStatus()
+    {
+        return checkStatus;
+    }
+    public void setAddTime(Date addTime)
+    {
+        this.addTime = addTime;
+    }
 
-    public static final String COL_ADD_TIME = "add_time";
+    public Date getAddTime()
+    {
+        return addTime;
+    }
 
-    public static final String COL_UPDATE_TIME = "update_time";
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("id", getId())
+                .append("checkType", getCheckType())
+                .append("checkStatus", getCheckStatus())
+                .append("addTime", getAddTime())
+                .append("updateTime", getUpdateTime())
+                .toString();
+    }
 }
