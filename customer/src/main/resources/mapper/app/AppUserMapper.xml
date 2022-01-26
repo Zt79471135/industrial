@@ -27,6 +27,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
         <result property="extend"    column="extend"    />
         <result property="deleted"    column="deleted"    />
+        <result property="custTypeName"    column="custTypeName"    />
+        <result property="companyTypeName"    column="companyTypeName"    />
     </resultMap>
 
     <sql id="selectAppUserVo">
@@ -36,6 +38,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectAppUserList" parameterType="com.industrial.domin.AppUser" resultMap="AppUserResult">
         select au.id, au.openid, au.company, au.client_code, au.brief, au.registrant, au.registrat_time,aua.name as nickname, au.mobile, au.cust_type, au.company_type, au.invoice_up, au.credit_code, au.bank, au.bank_account,aua.mobile as phone_num, au.addr_area,au.address,au.addr_code, au.update_time, au.extend, au.deleted from app_user au
        Left JOIN app_user_address aua ON aua.user_id=au.id and aua.isdefault=0
+        <where>
+            <if test="openid != null  and openid != ''"> and au.openid = #{openid}</if>
+            <if test="company != null  and company != ''"> and au.company = #{company}</if>
+            <if test="clientCode != null  and clientCode != ''"> and au.client_code = #{clientCode}</if>
+            <if test="brief != null  and brief != ''"> and au.brief = #{brief}</if>
+            <if test="registrant != null  and registrant != ''"> and au.registrant = #{registrant}</if>
+            <if test="registratTime != null "> and au.registrat_time = #{registratTime}</if>
+            <if test="nickname != null  and nickname != ''"> and aua.name like concat('%', #{nickname}, '%')</if>
+            <if test="mobile != null  and mobile != ''"> and aua.mobile = #{mobile}</if>
+            <if test="custType != null "> and au.cust_type = #{custType}</if>
+            <if test="companyType != null "> and au.company_type = #{companyType}</if>
+            <if test="invoiceUp != null  and invoiceUp != ''"> and au.invoice_up = #{invoiceUp}</if>
+            <if test="creditCode != null  and creditCode != ''"> and au.credit_code = #{creditCode}</if>
+            <if test="bank != null  and bank != ''"> and au.bank = #{bank}</if>
+            <if test="bankAccount != null  and bankAccount != ''"> and au.bank_account = #{bankAccount}</if>
+            <if test="phoneNum != null  and phoneNum != ''"> and aua.mobile = #{phoneNum}</if>
+            <if test="addrArea != null  and addrArea != ''"> and au.addr_area = #{addrArea}</if>
+            <if test="address != null  and address != ''"> and au.address = #{address}</if>
+            <if test="addrCode != null  and addrCode != ''"> and au.addr_code = #{addrCode}</if>
+            <if test="extend != null  and extend != ''"> and au.extend = #{extend}</if>
+            <if test="deleted != null "> and au.deleted = #{deleted}</if>
+            <if test="1 == 1"> and au.isdeleted = 0 </if>
+        </where>
+    </select>
+
+    <select id="selectAppUserListForExcel" parameterType="com.industrial.domin.AppUser" resultMap="AppUserResult">
+        select au.id, au.openid, au.company, au.client_code, au.brief, au.registrant, au.registrat_time,aua.name as nickname, au.mobile, au.cust_type, au.company_type, au.invoice_up, au.credit_code, au.bank, au.bank_account,aua.mobile as phone_num, au.addr_area,au.address,au.addr_code, au.update_time, au.extend, au.deleted ,sdd1.dict_label as custTypeName,sdd2.dict_label as companyTypeName from app_user au
+        Left JOIN app_user_address aua ON aua.user_id=au.id and aua.isdefault=0
+        Left JOIN sys_dict_data sdd1 ON au.cust_type=sdd1.dict_value and sdd1.dict_type='dict_cust_type'
+        Left JOIN sys_dict_data sdd2 ON au.company_type=sdd2.dict_value and sdd2.dict_type='dict_company_type'
         <where>
             <if test="openid != null  and openid != ''"> and au.openid = #{openid}</if>
             <if test="company != null  and company != ''"> and au.company = #{company}</if>

@@ -58,4 +58,5 @@ public interface AppCheckMainConfigMapper
      * @return 结果
      */
     public int deleteAppCheckMainConfigByIds(Long[] ids);
+
 }

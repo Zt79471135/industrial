@@ -21,7 +21,6 @@ public class AppUser extends BaseEntity
     private Long id;
 
     /** openID */
-    @Excel(name = "openID")
     private String openid;
 
     /** 客户名称 */
@@ -53,12 +52,16 @@ public class AppUser extends BaseEntity
     @Excel(name = "联系电话")
     private String mobile;
 
-    /** 客户类型 */
     @Excel(name = "客户类型")
+    private String custTypeName;
+    @Excel(name = "公司类型")
+    private String companyTypeName;
+    /** 客户类型 */
+
     private Integer custType;
 
     /** 公司类型 */
-    @Excel(name = "公司类型")
+
     private Integer companyType;
 
     /** 发票抬头 */
@@ -98,6 +101,7 @@ public class AppUser extends BaseEntity
     private Integer deleted;
 
     private String addrCode;
+
 
 
     public void setId(Long id) 
@@ -296,6 +300,8 @@ public class AppUser extends BaseEntity
             .append("extend", getExtend())
             .append("deleted", getDeleted())
             .append("addrCode", getAddrCode())
+                .append("CustTypeName", getCustTypeName())
+                .append("CompanyTypeName", getCompanyTypeName())
             .toString();
     }
 
@@ -313,5 +319,21 @@ public class AppUser extends BaseEntity
 
     public void setAddrArea(String addrArea) {
         this.addrArea = addrArea;
+    }
+
+    public String getCustTypeName() {
+        return custTypeName;
+    }
+
+    public void setCustTypeName(String custTypeName) {
+        this.custTypeName = custTypeName;
+    }
+
+    public String getCompanyTypeName() {
+        return companyTypeName;
+    }
+
+    public void setCompanyTypeName(String companyTypeName) {
+        this.companyTypeName = companyTypeName;
     }
 }

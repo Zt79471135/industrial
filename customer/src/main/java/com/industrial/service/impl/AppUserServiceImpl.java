@@ -1,7 +1,16 @@
 package com.industrial.service.impl;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import com.industrial.common.core.domain.entity.SysDictData;
+import com.industrial.common.core.domain.entity.SysUser;
+import com.industrial.common.exception.ServiceException;
 import com.industrial.common.utils.DateUtils;
+import com.industrial.common.utils.SecurityUtils;
+import com.industrial.common.utils.StringUtils;
+import com.industrial.common.utils.bean.BeanValidators;
 import com.industrial.common.utils.uuid.UUID;
 import com.industrial.domin.AppUser;
 import com.industrial.domin.AppUserAddress;
@@ -10,7 +19,11 @@ import com.industrial.mapper.AppUserAddressMapper;
 import com.industrial.mapper.AppUserMapper;
 import com.industrial.mapper.AppUserSalesmanMapper;
 import com.industrial.service.IAppUserService;
+import com.industrial.system.mapper.SysDictDataMapper;
+import com.industrial.system.service.impl.SysUserServiceImpl;
 import io.lettuce.core.api.async.RedisTransactionalAsyncCommands;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,12 +38,15 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 @Service
 public class AppUserServiceImpl implements IAppUserService
 {
+    private static final Logger log = LoggerFactory.getLogger(AppUserServiceImpl.class);
     @Autowired
     private AppUserMapper appUserMapper;
     @Autowired
     private AppUserAddressMapper appUserAddressMapper;
     @Autowired
     private AppUserSalesmanMapper appUserSalesmanMapper;
+    @Autowired
+    private SysDictDataMapper sysDictDataMapper;
 
     /**
      * 查询客户管理
@@ -140,5 +156,76 @@ public class AppUserServiceImpl implements IAppUserService
             return 0;
         }
 
+    }
+
+    @Override
+    public List<AppUser> selectAppUserListForExcel(AppUser appUser) {
+        return appUserMapper.selectAppUserListForExcel(appUser);
+    }
+
+    @Override
+    public String importUser(List<AppUser> userList, boolean updateSupport, String operName) {
+        if (StringUtils.isNull(userList) || userList.size() == 0)
+        {
+            throw new ServiceException("导入客户数据不能为空！");
+        }
+        int successNum = 0;
+        int failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
+        List<AppUser> allList=appUserMapper.selectAppUserList(null);
+        List<SysDictData> custList=sysDictDataMapper.selectDictDataByType("dict_cust_type");
+        List<SysDictData> companyList=sysDictDataMapper.selectDictDataByType("dict_company_type");
+        for (AppUser user : userList)
+        {
+            try
+            {
+                // 验证是否存在这个用户
+                List<AppUser> u=allList.stream().filter(item->item.getCompany()==user.getCompany()).collect(Collectors.toList());
+                List<SysDictData> tempCustType=custList.stream().filter(item->item.getDictLabel()==user.getCustTypeName()).collect(Collectors.toList());
+                List<SysDictData> tempCompanyType=companyList.stream().filter(item->item.getDictLabel()==user.getCompanyTypeName()).collect(Collectors.toList());
+                user.setCustType(Integer.getInteger(!tempCustType.isEmpty()&&tempCustType.size()>0?tempCustType.get(0).getDictValue():"0"));
+                user.setCompanyType(Integer.getInteger(!tempCompanyType.isEmpty()&&tempCompanyType.size()>0?tempCompanyType.get(0).getDictValue():"0"));
+                if (StringUtils.isNull(u)||u.size()<=0)
+                {
+//                    BeanValidators.validateWithException(validator, user);
+//                    user.setPassword(SecurityUtils.encryptPassword(password));
+//                    user.setCreateBy(operName);
+                    this.insertAppUser(user);
+                    successNum++;
+                    successMsg.append("<br/>" + successNum + "、账号 " + user.getCompany() + " 导入成功");
+                }
+                else if (true)
+                {
+//                    BeanValidators.validateWithException(validator, user);
+//                    user.setUpdateBy(operName);
+                    this.updateAppUser(user);
+                    successNum++;
+                    successMsg.append("<br/>" + successNum + "、账号 " + user.getCompany() + " 更新成功");
+                }
+                else
+                {
+                    failureNum++;
+                    failureMsg.append("<br/>" + failureNum + "、账号 " + user.getCompany() + " 已存在");
+                }
+            }
+            catch (Exception e)
+            {
+                failureNum++;
+                String msg = "<br/>" + failureNum + "、客户" + user.getCompany() + " 导入失败：";
+                failureMsg.append(msg + e.getMessage());
+                log.error(msg, e);
+            }
+        }
+        if (failureNum > 0)
+        {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new ServiceException(failureMsg.toString());
+        }
+        else
+        {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+        return successMsg.toString();
     }
 }

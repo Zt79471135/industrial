@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectAppSubCheckConfigVo">
-        select id, config_id, ctype, clevel, admin_list, add_time, update_time from app_subcheckconfig
+        select id, config_id, ctype, clevel, admin_list, add_time, update_time from app_sub_check_config
     </sql>
 
     <select id="selectAppSubCheckConfigList" parameterType="com.industrial.domin.AppSubCheckConfig" resultMap="AppSubCheckConfigResult">
@@ -27,6 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="adminList != null  and adminList != ''"> and admin_list = #{adminList}</if>
             <if test="addTime != null "> and add_time = #{addTime}</if>
         </where>
+        order by clevel ASC
     </select>
     
     <select id="selectAppSubCheckConfigById" parameterType="Long" resultMap="AppSubCheckConfigResult">
@@ -35,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertAppSubCheckConfig" parameterType="com.industrial.domin.AppSubCheckConfig" useGeneratedKeys="true" keyProperty="id">
-        insert into app_subcheckconfig
+        insert into app_sub_check_config
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="configId != null">config_id,</if>
             <if test="ctype != null">ctype,</if>
@@ -55,7 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateAppSubCheckConfig" parameterType="com.industrial.domin.AppSubCheckConfig">
-        update app_subcheckconfig
+        update app_sub_check_config
         <trim prefix="SET" suffixOverrides=",">
             <if test="configId != null">config_id = #{configId},</if>
             <if test="ctype != null">ctype = #{ctype},</if>
@@ -68,15 +69,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteAppSubCheckConfigById" parameterType="Long">
-        delete from app_subcheckconfig where id = #{id}
+        delete from app_sub_check_config where id = #{id}
     </delete>
 
     <delete id="deleteAppSubCheckConfigByConfigId" parameterType="Long">
-        delete from app_subcheckconfig where config_id = #{id}
+        delete from app_sub_check_config where config_id = #{id}
     </delete>
 
     <delete id="deleteAppSubCheckConfigByIds" parameterType="String">
-        delete from app_subcheckconfig where id in 
+        delete from app_sub_check_config where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

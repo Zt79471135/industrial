@@ -122,4 +122,5 @@ public class AppCheckMainConfigServiceImpl implements IAppCheckMainConfigService
             return 0;
         }
     }
+
 }
