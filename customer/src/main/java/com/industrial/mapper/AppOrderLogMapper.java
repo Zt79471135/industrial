@@ -2,6 +2,7 @@ package com.industrial.mapper;
 
 import java.util.List;
 import com.industrial.domin.AppOrderLog;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * logMapper接口
@@ -58,4 +59,6 @@ public interface AppOrderLogMapper
      * @return 结果
      */
     public int deleteAppOrderLogByIds(Long[] ids);
+
+    List<AppOrderLog> selectOrderLogListForCheck(@Param("clevel")Integer clevel, @Param("orderNo") String orderNo);
 }
