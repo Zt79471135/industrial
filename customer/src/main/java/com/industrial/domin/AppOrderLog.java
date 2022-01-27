@@ -70,7 +70,7 @@ public class AppOrderLog extends BaseEntity
         this.orderNo = orderNo;
     }
 
-    public Long getOrderNo() 
+    public String getOrderNo()
     {
         return orderNo;
     }
