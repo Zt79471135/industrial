@@ -125,13 +125,13 @@ public class AppCategoryController extends BaseController
             return AjaxResult.error("新增分类'" + appCategory.getCategoryName() + "'失败，分类名称已存在");
         }
         // 4位随机数
-        long round = Math.round((Math.random() + 1) * 1000);
+        long round = Math.round((Math.random() + 1) * 100);
         Long ParentId = appCategory.getParentId();
         if (ParentId == null)
         {
             appCategory.setParentId(Long.parseLong("0"));
         }
-         //
+         //分类编号
         appCategory.setCategoryCode(ChineseCharacterUtil.convertHanzi2Pinyin(appCategory.getCategoryName()+round,false));
         return toAjax(appCategoryService.insertAppCategory(appCategory));
     }
@@ -157,6 +157,10 @@ public class AppCategoryController extends BaseController
         {
             return AjaxResult.error("该分类包含未停用的子分类！");
         }
+        // 4位随机数
+        long round = Math.round((Math.random() + 1) * 100);
+        //分类编号
+        appCategory.setCategoryCode(ChineseCharacterUtil.convertHanzi2Pinyin(appCategory.getCategoryName()+round,false));
         return toAjax(appCategoryService.updateAppCategory(appCategory));
     }
 
