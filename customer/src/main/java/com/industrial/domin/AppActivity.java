@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.industrial.common.annotation.Excel;
 import com.industrial.common.core.domain.entity.SysDictData;
@@ -28,7 +29,6 @@ public class AppActivity {
     /**
      * 主键ID
      */
-    @Excel(name = "活动编号", cellType = Excel.ColumnType.NUMERIC, prompt = "活动编号")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
@@ -82,7 +82,7 @@ public class AppActivity {
     /**
      * 活动状态
      */
-    @Excel(name = "活动状态", readConverterExp = "0=正常,1=停用")
+    @Excel(name = "活动状态", readConverterExp = "1=未开始,2=进行中,3=已锁定,4=已结束,5=已终止")
     @TableField(value = "activity_status")
     private Integer activityStatus;
 
@@ -119,7 +119,6 @@ public class AppActivity {
     private Integer headImgId;
 
     /** 附件参数 */
-    @Excel(name = "附件参数")
     @TableField(value = "picture_param")
     private String pictureParam;
 
@@ -160,7 +159,6 @@ public class AppActivity {
     private String summaryDesc;
 
     /** 总结附件 */
-    @Excel(name = "总结附件")
     @TableField(value = "attach_param")
     private String attachParam;
 
@@ -179,18 +177,15 @@ public class AppActivity {
 
     /** 标志（0：启用，1：禁用) */
     @TableField(value = "enabled")
-    @Excel(name = "启用状态", readConverterExp = "0=启用，1=禁用)")
+    @Excel(name = "启用状态", readConverterExp = "0=启用,1=禁用)")
     private Integer enabled;
 
     /**
      * 删除标志（0代表存在 ，1代表删除）
      */
     @TableField(value = "deleted")
-    @Excel(name = "标志", readConverterExp = "0=存在，1=删除")
+    @Excel(name = "标志", readConverterExp = "0=存在,1=删除")
     private Byte deleted;
-
-    //订单与参与用户
-    public AppActivityUser activityUser;
 
     public static final String COL_ID = "id";
 

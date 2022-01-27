@@ -47,5 +47,5 @@ public interface AppActivityService {
      * @param activityId
      * @return
      */
-    boolean deleteActivityById(Integer activityId);
+    boolean deleteActivityById(Integer  activityId);
 }

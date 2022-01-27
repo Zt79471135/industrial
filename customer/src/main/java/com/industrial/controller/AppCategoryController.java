@@ -2,7 +2,7 @@ package com.industrial.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-
+import com.industrial.common.ChineseCharacterUtil;
 import com.industrial.common.constant.UserConstants;
 import com.industrial.common.core.domain.entity.SysDept;
 import com.industrial.common.utils.StringUtils;
@@ -124,6 +124,15 @@ public class AppCategoryController extends BaseController
         {
             return AjaxResult.error("新增分类'" + appCategory.getCategoryName() + "'失败，分类名称已存在");
         }
+        // 4位随机数
+        long round = Math.round((Math.random() + 1) * 1000);
+        Long ParentId = appCategory.getParentId();
+        if (ParentId == null)
+        {
+            appCategory.setParentId(Long.parseLong("0"));
+        }
+         //
+        appCategory.setCategoryCode(ChineseCharacterUtil.convertHanzi2Pinyin(appCategory.getCategoryName()+round,false));
         return toAjax(appCategoryService.insertAppCategory(appCategory));
     }
 
