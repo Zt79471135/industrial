@@ -14,5 +14,7 @@ public class ActivityVo extends AppActivity {
     /**
      * 参与人员ID
      */
-    private List<Integer> userIdList;
+    //public List<Integer> userIdList;
+    public Integer[] userIds;
+    //public String[] userNames;
 }

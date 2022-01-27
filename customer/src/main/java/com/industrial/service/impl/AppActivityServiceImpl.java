@@ -11,6 +11,7 @@ import com.industrial.mapper.AppActivityMapper;
 import com.industrial.mapper.AppActivityUserMapper;
 import com.industrial.service.AppActivityService;
 import com.industrial.system.mapper.SysUserMapper;
+import com.industrial.system.service.ISysUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class AppActivityServiceImpl implements AppActivityService {
     @Resource
     private SysUserMapper sysUserMapper;
 
+    @Autowired
+    private ISysUserService userService;
 
     /**
      * 查询活动列表
@@ -55,39 +58,40 @@ public class AppActivityServiceImpl implements AppActivityService {
     public ActivityDto selectActivityById(Integer activityId) {
         AppActivity appActivity = activityMapper.selectById(activityId);
         if (appActivity != null) {
-            SysUser user = sysUserMapper.selectUserById(Long.valueOf(appActivity.getHeadUser()));
+           // SysUser user = sysUserMapper.selectUserById(Long.valueOf(appActivity.getHeadUser()));
             QueryWrapper<AppActivityUser> qw = new QueryWrapper<>();
             qw.lambda().eq(AppActivityUser::getActivityId, activityId);
             List<AppActivityUser> activityUserList = activityUserMapper.selectList(qw);
-            List<SysUser> userList = activityUserList.stream().map(appActivityUser ->
-                    {
-                        SysUser sysUser = sysUserMapper.selectUserById(Long.valueOf(appActivityUser.getUserId()));
 
-                        return sysUser;
-                    }
-            ).collect(Collectors.toList());
             ActivityDto activityDto = new ActivityDto();
             BeanUtils.copyProperties(appActivity, activityDto);
-            activityDto.setUserList(userList);
-            activityDto.setUser(user);
+            activityDto.setActivityUserList(activityUserList);
+
             return activityDto;
         } else {
             throw new ServiceException("活动详情为空");
         }
     }
-
+    //添加活动信息和参与用户
     @Override
     public boolean insertActivity(ActivityVo activityVo) {
         AppActivity activity = new AppActivity();
         List<Integer> integerList = new ArrayList<>();
         BeanUtils.copyProperties(activityVo, activity);
-        if (activityMapper.insert(activity) == 1) {
-            List<Integer> userIdList = activityVo.getUserIdList();
-            integerList = userIdList.stream().map(userId -> {
-                AppActivityUser activityUser = new AppActivityUser();
-                return activityUserMapper.insert(activityUser);
-            }).collect(Collectors.toList());
-            return integerList.size() == userIdList.size();
+        int ret = activityMapper.insert(activity);
+        if (ret > 0) {
+
+            AppActivityUser activityUser = new AppActivityUser();
+            activityUser.setActivityId(ret);
+            Integer[] ids = activityVo.getUserIds();
+
+            for (Integer userId : ids) {
+                activityUser.setUserId(userId);
+                SysUser sysUser= userService.selectUserById(Long.parseLong(userId.toString()));
+                activityUser.setUserName(sysUser.getUserName());
+                activityUserMapper.insert(activityUser);
+            }
+            return true;
         } else {
             throw new ServiceException();
         }

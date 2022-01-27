@@ -58,7 +58,7 @@ public class AppImageFileController extends BaseController {
             imageFile.setFileName(imgName);
             imageFile.setType(suffix);
             Integer integer = imageFileService.insert(imageFile);
-            return AjaxResult.success(integer);
+            return AjaxResult.success(imageFile);
         }
         catch (Exception e)
         {

@@ -98,7 +98,7 @@ public class AppCategoryServiceImpl implements IAppCategoryService
     /**
      * 校验名称是否唯一
      *
-     * @param dept 部门信息
+     * @param appCategory 部门信息
      * @return 结果
      */
     @Override
@@ -123,12 +123,17 @@ public class AppCategoryServiceImpl implements IAppCategoryService
     public int insertAppCategory(AppCategory appCategory)
     {
         AppCategory info = appCategoryMapper.selectAppCategoryById(appCategory.getParentId());
-        // 如果父节点不为正常状态,则不允许新增子节点
-        if (info.getEnabled() == 1)
-        {
-            throw new ServiceException("商品分类停用，不允许新增");
+        if (info != null) {
+            // 如果父节点不为正常状态,则不允许新增子节点
+            if (info.getEnabled() == 1) {
+                throw new ServiceException("商品分类停用，不允许新增");
+            }
+            appCategory.setAncestors(info.getAncestors() + "," + appCategory.getParentId());
         }
-        appCategory.setAncestors(info.getAncestors() + "," + appCategory.getParentId());
+        else
+        {
+            appCategory.setAncestors(appCategory.getParentId().toString());
+        }
         return appCategoryMapper.insertAppCategory(appCategory);
     }
 
