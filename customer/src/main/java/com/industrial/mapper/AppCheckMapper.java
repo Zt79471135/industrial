@@ -58,4 +58,6 @@ public interface AppCheckMapper
      * @return 结果
      */
     public int deleteAppCheckByIds(Long[] ids);
+
+    public AppCheck selectAppCheckByOrderNo(String orderNo);
 }

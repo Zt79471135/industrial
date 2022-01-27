@@ -3,6 +3,7 @@ package com.industrial.mapper;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.industrial.common.dto.CheckDto;
 import com.industrial.domin.AppCheckMainConfig;
 import com.industrial.domin.AppCheckUser;
 
@@ -62,4 +63,5 @@ public interface AppCheckMainConfigMapper extends BaseMapper<AppCheckUser>
      */
     public int deleteAppCheckMainConfigByIds(Long[] ids);
 
+    public List<CheckDto> selectAppCheckMainSubList(CheckDto dto);
 }

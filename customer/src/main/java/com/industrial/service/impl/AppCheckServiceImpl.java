@@ -2,6 +2,8 @@ package com.industrial.service.impl;
 
 import java.util.List;
 import com.industrial.common.utils.DateUtils;
+import com.industrial.domin.AppOrderLog;
+import com.industrial.mapper.AppOrderLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.industrial.mapper.AppCheckMapper;
@@ -19,6 +21,8 @@ public class AppCheckServiceImpl implements IAppCheckService
 {
     @Autowired
     private AppCheckMapper appCheckMapper;
+    @Autowired
+    private AppOrderLogMapper orderLogMapper;
 
     /**
      * 查询system
@@ -92,5 +96,9 @@ public class AppCheckServiceImpl implements IAppCheckService
     public int deleteAppCheckById(Long id)
     {
         return appCheckMapper.deleteAppCheckById(id);
+    }
+
+    public AppCheck selectAppCheckByOrderNo(String orderNo) {
+        return appCheckMapper.selectAppCheckByOrderNo(orderNo);
     }
 }

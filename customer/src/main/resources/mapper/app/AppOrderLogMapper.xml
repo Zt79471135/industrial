@@ -68,7 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userId != null">user_id = #{userId},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="sysRemark != null">sys_remark = #{sysRemark},</if>
-            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="orderNo != null''">order_no = #{orderNo},</if>
             <if test="level != null">level = #{level},</if>
             <if test="status != null">status = #{status},</if>
             <if test="createTime != null">create_time = #{createTime},</if>

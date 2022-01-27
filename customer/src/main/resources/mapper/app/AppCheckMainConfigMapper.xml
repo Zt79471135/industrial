@@ -18,6 +18,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 
+    <resultMap type="com.industrial.common.dto.CheckDto" id="AppCheckMainSubConfigResult">
+        <result property="id"    column="id"    />
+        <result property="checkType"    column="check_type"    />
+        <result property="checkStatus"    column="check_status"    />
+        <result property="addTime"    column="add_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="cid"    column="cid"    />
+        <result property="clevel"    column="clevel"    />
+        <result property="ctype"    column="ctype"    />
+        <result property="subAddTime"    column="subAddTime"    />
+        <result property="subUpdateTime"    column="subUpdateTime"    />
+    </resultMap>
+
     <sql id="selectAppCheckMainConfigVo">
         select id, check_type, check_status, add_time, update_time from app_check_main_config
     </sql>
@@ -28,6 +41,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="checkType != null "> and check_type = #{checkType}</if>
             <if test="checkStatus != null "> and check_status = #{checkStatus}</if>
             <if test="addTime != null "> and add_time = #{addTime}</if>
+        </where>
+    </select>
+
+    <select id="selectAppCheckMainSubList" parameterType="com.industrial.common.dto.CheckDto" resultMap="AppCheckMainSubConfigResult">
+        select cmc.id, cmc.check_type, cmc.check_status, cmc.add_time, cmc.update_time,
+        scc.id as cid,scc.ctype,scc.clevel,scc.add_time as subAddTime,scc.update_time as subUpdateTime
+        from app_check_main_config cmc
+        LEFT JOIN app_sub_check_config scc ON scc.config_id=cmc.id
+        <where>
+            <if test="id != null "> and cmc.id = #{id}</if>
+            <if test="cid != null "> and scc.id = #{cid}</if>
+            <if test="checkType != null "> and cmc.check_type = #{checkType}</if>
+            <if test="checkStatus != null "> and cmc.check_status = #{checkStatus}</if>
+            <if test="addTime != null "> and cmc.add_time = #{addTime}</if>
+            <if test="ctype != null "> and scc.ctype = #{ctype}</if>
+            <if test="clevel != null "> and scc.clevel = #{clevel}</if>
         </where>
     </select>
     

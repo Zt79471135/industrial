@@ -34,5 +34,5 @@ public interface AppOrderService {
      */
     boolean updateStatus(Integer orderId, int id);
 
-    boolean checkOrder(long userId,long orderId);
+    String checkOrder(long userId,String orderNo);
 }

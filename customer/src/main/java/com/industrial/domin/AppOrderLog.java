@@ -28,7 +28,7 @@ public class AppOrderLog extends BaseEntity
 
     /** $column.columnComment */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
-    private Long orderNo;
+    private String orderNo;
 
     /** $column.columnComment */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
@@ -65,7 +65,7 @@ public class AppOrderLog extends BaseEntity
     {
         return sysRemark;
     }
-    public void setOrderNo(Long orderNo) 
+    public void setOrderNo(String orderNo)
     {
         this.orderNo = orderNo;
     }
