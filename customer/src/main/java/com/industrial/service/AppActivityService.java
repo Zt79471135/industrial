@@ -18,7 +18,7 @@ public interface AppActivityService {
      * @param appActivity 活动
      * @return 活动集合
      */
-    public List<AppActivity> selectAppActivityList(AppActivity appActivity);
+    public List<ActivityDto> selectAppActivityList(AppActivity appActivity);
 
     /**
      * 更加ID检索活动
@@ -40,7 +40,7 @@ public interface AppActivityService {
      * @param activityVo 活动
      * @return 结果
      */
-    public int updateAppActivity(AppActivity activityVo);
+    public int updateAppActivity(ActivityVo activityVo);
 
     /**
      * 根据活动ID删除活动

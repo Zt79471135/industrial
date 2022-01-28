@@ -50,7 +50,7 @@ public class AppActivityController extends BaseController {
     public TableDataInfo list(AppActivity appActivity)
     {
         startPage();
-        List<AppActivity> list = activityService.selectAppActivityList(appActivity);
+        List<ActivityDto> list = activityService.selectAppActivityList(appActivity);
         return getDataTable(list);
     }
 
@@ -84,10 +84,10 @@ public class AppActivityController extends BaseController {
     //@PreAuthorize("@ss.hasPermi('category:edit')")
     @Log(title = "活动", businessType = BusinessType.UPDATE)
     @PutMapping("/update")
-    public AjaxResult edit(@RequestBody AppActivity appActivity)
+    public AjaxResult edit(@RequestBody ActivityVo activityVo)
     {
 
-        return toAjax(activityService.updateAppActivity(appActivity));
+        return toAjax(activityService.updateAppActivity(activityVo));
     }
 
     /**

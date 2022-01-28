@@ -3,19 +3,23 @@ package com.industrial.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.dto.ActivityDto;
+import com.industrial.common.dto.ProductDto;
 import com.industrial.common.exception.ServiceException;
 import com.industrial.common.vo.ActivityVo;
-import com.industrial.domin.AppActivity;
-import com.industrial.domin.AppActivityUser;
-import com.industrial.mapper.AppActivityMapper;
-import com.industrial.mapper.AppActivityUserMapper;
+import com.industrial.domin.*;
+import com.industrial.mapper.*;
+import com.industrial.mapper.AppProductFileMapper;
+import com.industrial.mapper.DictDataMapper;
 import com.industrial.service.AppActivityService;
 import com.industrial.system.mapper.SysUserMapper;
 import com.industrial.system.service.ISysUserService;
+import com.industrial.service.IAppActivityUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.Resource;
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,9 +36,24 @@ public class AppActivityServiceImpl implements AppActivityService {
     private AppActivityUserMapper activityUserMapper;
     @Resource
     private SysUserMapper sysUserMapper;
-
     @Autowired
     private ISysUserService userService;
+    @Autowired
+    private IAppActivityUserService appActivityUserService;
+    @Resource
+    private DictDataMapper dictDataMapper;
+
+    @Resource
+    private AppActivityFileMapper activityFileMapper;
+
+    /**
+     * 活动类型
+     */
+    public static final String dict_activity_type = "dict_activity_type";
+    /**
+     * 活动状态
+     */
+    public static final String dict_activity_status = "dict_activity_status";
 
     /**
      * 查询活动列表
@@ -43,9 +62,96 @@ public class AppActivityServiceImpl implements AppActivityService {
      * @return 活动
      */
     @Override
-    public List<AppActivity> selectAppActivityList(AppActivity appActivity)
-    {
-        return activityMapper.selectAppActivityList(appActivity);
+    public List<ActivityDto> selectAppActivityList(AppActivity appActivity) {
+        //return activityMapper.selectAppActivityList(appActivity);
+        Integer activityType = 0;
+        Integer activityStatus = 0;
+        Integer headUser = 0;
+        Date beginTime =appActivity.getBeginTime();
+        Date endTime =appActivity.getEndTime();
+        java.sql.Date begin;
+        java.sql.Date end;
+
+        activityType = appActivity.getActivityType();
+        if (activityType == null) activityType = 0;
+        activityStatus = appActivity.getActivityStatus();
+        if (activityStatus == null) activityStatus = 0;
+        headUser = appActivity.getHeadUser();
+        if (headUser == null) headUser = 0;
+
+
+
+        QueryWrapper<com.industrial.domin.AppActivity> qw = new QueryWrapper<>();
+
+        //活动类型
+        if (activityType != 0) {
+            qw.lambda().eq(com.industrial.domin.AppActivity::getActivityType, activityType);
+        }
+        //活动状态
+        if (activityStatus != 0) {
+            qw.lambda().eq(com.industrial.domin.AppActivity::getActivityStatus, activityStatus);
+        }
+        //负责人员
+        if (headUser != 0) {
+            qw.lambda().eq(com.industrial.domin.AppActivity::getHeadUser, headUser);
+        }
+        //发布时间
+        if (beginTime != null) {
+            begin = new java.sql.Date(beginTime.getTime());
+            qw.lambda().last("AND date_format(create_time,'%y%m%d') &lt;= date_format("+begin+",'%y%m%d')");
+        }
+        if (endTime != null) {
+            begin = new java.sql.Date(endTime.getTime());
+            qw.lambda().last("AND date_format(create_time,'%y%m%d') &gt;= date_format("+endTime+",'%y%m%d')");
+        }
+//            if (!"".equals(productName)) {
+//                qw.lambda().like(com.industrial.domin.AppProduct::getName, productName);
+//            }
+
+        //qw.lambda().eq(AppProduct::getStatus, status);
+        List<com.industrial.domin.AppActivity> activityList = activityMapper.selectList(qw);
+        if (activityList.size() == 0) {
+
+            List<ActivityDto> ActivityDtoList = activityList.stream().map(this::apply).collect(Collectors.toList());
+            return ActivityDtoList;
+        } else {
+            List<ActivityDto> ActivityDtoList = activityList.stream().map(this::apply).collect(Collectors.toList());
+            return ActivityDtoList;
+        }
+    }
+
+    private ActivityDto apply(AppActivity activity) {
+        ActivityDto activityDto = new ActivityDto();
+        QueryWrapper<DictData> queryWrapper = null;
+        QueryWrapper<DictData> queryWrapper_status = null;
+        /**
+         *查询用户
+         */
+        SysUser user = sysUserMapper.selectUserById((long) activity.getHeadUser());
+        /**
+         * 查询活动类型
+         */
+        queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(DictData::getDictType, dict_activity_type);
+        queryWrapper.lambda().eq(DictData::getDictValue, activity.getActivityType());
+        DictData dictData = dictDataMapper.selectOne(queryWrapper);
+        String dictLabel = dictData.getDictLabel();
+        activityDto.setActTypeName(dictLabel);
+
+        /**
+         * 查询活动状态
+         */
+        queryWrapper_status = new QueryWrapper<>();
+        queryWrapper_status.lambda().eq(DictData::getDictType, dict_activity_status);
+        queryWrapper_status.lambda().eq(DictData::getDictValue, activity.getActivityType());
+        DictData dictData_status = dictDataMapper.selectOne(queryWrapper_status);
+        String dictLabel_status = dictData_status.getDictLabel();
+        activityDto.setActStatuName(dictLabel_status);
+
+        //用户实体
+        activityDto.setUser(user);
+        BeanUtils.copyProperties(activity, activityDto);
+        return activityDto;
     }
 
     /**
@@ -78,20 +184,33 @@ public class AppActivityServiceImpl implements AppActivityService {
         AppActivity activity = new AppActivity();
         List<Integer> integerList = new ArrayList<>();
         BeanUtils.copyProperties(activityVo, activity);
-        int ret = activityMapper.insert(activity);
+        int ret = activityMapper.insert(activity);  //添加活动基本信息
         if (ret > 0) {
 
             AppActivityUser activityUser = new AppActivityUser();
             activityUser.setActivityId(ret);
             Integer[] ids = activityVo.getUserIds();
-
+            // 循环添加活动参与用户
             for (Integer userId : ids) {
                 activityUser.setUserId(userId);
-                SysUser sysUser= userService.selectUserById(Long.parseLong(userId.toString()));
+                SysUser sysUser = userService.selectUserById(Long.parseLong(userId.toString()));
                 activityUser.setUserName(sysUser.getUserName());
-                activityUserMapper.insert(activityUser);
+                activityUserMapper.insert(activityUser);  //添加活动参与用户
             }
-            return true;
+            //添加活动附件
+            Integer[] imgIds = activityVo.getIds();
+            List<Integer> imgList = null;
+            if (imgList != null) {
+                AppActivityFile activityFile = new AppActivityFile();
+                activityFile.setActivityId(activity.getId());
+                List<Integer> intList = imgList.stream().map(id -> {
+                    activityFile.setFileId(id);
+                    return activityFileMapper.insert(activityFile);
+                }).collect(Collectors.toList());
+                return imgList.size() == intList.size();
+            } else {
+                return true;
+            }
         } else {
             throw new ServiceException();
         }
@@ -100,13 +219,31 @@ public class AppActivityServiceImpl implements AppActivityService {
     /**
      * 修改活动
      *
-     * @param appActivity 活动
+     * @param activityVo 活动
      * @return 结果
      */
     @Override
-    public int updateAppActivity(AppActivity appActivity)
+    public int updateAppActivity(ActivityVo activityVo)
     {
-        return activityMapper.updateAppActivity(appActivity);
+        int ret = 0;
+        AppActivity activity = new AppActivity();
+        BeanUtils.copyProperties(activityVo, activity);
+        ret = activityMapper.updateAppActivity(activity);
+        List<Integer> integerList = new ArrayList<>();
+        if (ret == 1) {
+            Integer[] ids = activityVo.getUserIds();
+            AppActivityUser activityUser = new AppActivityUser();
+            for (Integer userId : ids) {
+                appActivityUserService.deleteActivityUserById(Long.parseLong(activity.getId().toString()));
+                activityUser.setActivityId(activity.getId());
+                activityUser.setUserId(userId);
+                SysUser sysUser = userService.selectUserById(Long.parseLong(userId.toString()));
+                activityUser.setUserName(sysUser.getUserName());
+                activityUserMapper.insert(activityUser);  //添加活动参与用户
+            }
+        }
+
+        return  ret;
     }
 
     @Override

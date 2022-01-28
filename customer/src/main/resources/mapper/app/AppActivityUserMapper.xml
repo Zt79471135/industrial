@@ -15,4 +15,9 @@
     <!--@mbg.generated-->
     id, activity_id, user_id,user_name, update_time, deleted
   </sql>
+
+  <delete id="deleteActivityUserById" parameterType="Long">
+    delete from app_activity_user where activity_id = #{activityId}
+  </delete>
+
 </mapper>

@@ -17,4 +17,8 @@ public class ActivityVo extends AppActivity {
     //public List<Integer> userIdList;
     public Integer[] userIds;
     //public String[] userNames;
+    /**
+     * 图片外键（关联app_image_file表ID）
+     */
+    private Integer[] ids;
 }
