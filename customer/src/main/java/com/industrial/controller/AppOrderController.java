@@ -125,18 +125,19 @@ public class AppOrderController extends BaseController {
     @PostMapping("reject")
     public ResponseResult<String> reject(@RequestParam String msg, Integer orderId) {
         ResponseResult<String> result = null;
-        if (orderService.rejectOrder(msg,orderId,TO_AUDIT, getLoginUser())) {
+        if (orderService.rejectOrder(msg, orderId, TO_AUDIT, getLoginUser())) {
             result = ResponseResult.success();
         } else {
             result = ResponseResult.error(ResponseCode.ERROR);
         }
         return result;
     }
+
     /**
      * 删除订单
      */
     @DeleteMapping("remove")
-    public ResponseResult<String> remove(@RequestParam Integer orderId ){
+    public ResponseResult<String> remove(@RequestParam Integer orderId) {
         ResponseResult<String> result = null;
         if (orderService.remove(orderId)) {
             result = ResponseResult.success();

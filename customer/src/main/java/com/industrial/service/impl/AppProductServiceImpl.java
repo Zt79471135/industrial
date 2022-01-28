@@ -7,6 +7,7 @@ import com.industrial.common.exception.ServiceException;
 import com.industrial.common.pojo.ProductExcel;
 import com.industrial.common.utils.StringUtils;
 import com.industrial.common.vo.ProductVo;
+import com.industrial.controller.AppProductController;
 import com.industrial.domin.*;
 import com.industrial.mapper.*;
 import com.industrial.service.AppProductService;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -75,6 +77,7 @@ public class AppProductServiceImpl implements AppProductService {
         AppProduct product = productMapper.selectById(productId);
         ProductDto productDto = this.apply(product);
         QueryWrapper<AppProductFile> qw = new QueryWrapper<>();
+        qw.lambda().eq(AppProductFile::getProductId, productId);
         List<AppProductFile> productFileList = productFileMapper.selectList(qw);
         List<AppImageFile> imgUrls = productFileList.stream().map(productFile -> {
             Integer fileId = productFile.getFileId();
@@ -94,12 +97,6 @@ public class AppProductServiceImpl implements AppProductService {
     public List<ProductDto> selectProductByStatus(int status) {
         QueryWrapper<AppProduct> qw = new QueryWrapper<>();
         qw.lambda().eq(AppProduct::getStatus, (byte) status);
-        /**
-         * 当查询上架商品时,同样把禁用商品一起查询出来
-         */
-        if (status == PUTAWAY_STATUS) {
-            qw.lambda().eq(com.industrial.domin.AppProduct::getStatus, (byte) 0);
-        }
         List<com.industrial.domin.AppProduct> productList = productMapper.selectList(qw);
         if (productList.size() == 0) {
             throw new ServiceException("无此状态的商品");
@@ -108,6 +105,7 @@ public class AppProductServiceImpl implements AppProductService {
             return productDtoList;
         }
     }
+
     /**
      * 商品保存
      * 成功待审核
@@ -124,19 +122,23 @@ public class AppProductServiceImpl implements AppProductService {
         BigDecimal price = new BigDecimal(productVo.getPrice());
         product.setFloorPrice(floorPrice);
         product.setPrice(price);
-        product.setStatus((byte) 2);
+        product.setStatus(AppProductController.APPROVAL_STATUS);
         Integer[] imgIds = productVo.getIds();
+        List<Integer> imgList = null;
         if (imgIds == null) {
-            throw new ServiceException("图片不能为空");
-        }
-        List<Integer> imgList = Arrays.stream(imgIds).collect(Collectors.toList());
-        if (imgList.size() > 0) {
+            product.setMainImgUrl(AppProductController.DEFAULT_IMAGE_ADDRESS);
+        } else {
+            imgList = Arrays.stream(imgIds).collect(Collectors.toList());
             Integer integer = imgList.get(0);
             AppImageFile imageFile = imageFileMapper.selectById(integer);
             String filePath = imageFile.getFilePath();
             product.setMainImgUrl(filePath);
+            imgList.remove(0);
         }
-        if (productMapper.insert(product) == 1) {
+        if (productMapper.insert(product) == 0) {
+            throw new ServiceException("商品添加失败");
+        }
+        if (imgList != null) {
             AppProductFile productFile = new AppProductFile();
             productFile.setProductId(product.getId());
             List<Integer> integerList = imgList.stream().map(id -> {
@@ -145,7 +147,7 @@ public class AppProductServiceImpl implements AppProductService {
             }).collect(Collectors.toList());
             return imgList.size() == integerList.size();
         } else {
-            throw new ServiceException();
+            return true;
         }
     }
     /**
@@ -158,6 +160,7 @@ public class AppProductServiceImpl implements AppProductService {
     public boolean remove(Integer productId) {
         return productMapper.deleteById(productId) == 1;
     }
+
     /**
      * 商品更新
      *
@@ -184,12 +187,11 @@ public class AppProductServiceImpl implements AppProductService {
                 String filePath = imageFile.getFilePath();
                 product.setMainImgUrl(filePath);
             }
-            if (productMapper.update(product, qw) >0){
+            if (productMapper.update(product, qw) > 0) {
                 QueryWrapper<AppProductFile> wrapper = new QueryWrapper<>();
-                wrapper.lambda().eq(AppProductFile::getProductId,product.getId());
+                wrapper.lambda().eq(AppProductFile::getProductId, product.getId());
                 int delete = productFileMapper.delete(wrapper);
-                System.out.println("delete = " + delete);
-                if (delete>0){
+                if (delete > 0) {
                     AppProductFile productFile = new AppProductFile();
                     productFile.setProductId(product.getId());
                     List<Integer> integerList = imgList.stream().map(imgId -> {
@@ -197,16 +199,17 @@ public class AppProductServiceImpl implements AppProductService {
                         return productFileMapper.insert(productFile);
                     }).collect(Collectors.toList());
                     return imgList.size() == integerList.size();
-                }else {
+                } else {
                     throw new ServiceException("图片修改异常");
                 }
-            }else {
+            } else {
                 throw new ServiceException("商品修改失败");
             }
         } else {
             throw new ServiceException("id不能为空");
         }
     }
+
     @Override
     public boolean soldOut(List<Integer> ids, byte status) {
         int size = ids.size();

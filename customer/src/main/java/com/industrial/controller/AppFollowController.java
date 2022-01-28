@@ -1,6 +1,5 @@
 package com.industrial.controller;
 
-import com.industrial.common.core.domain.ResponseResult;
 import com.industrial.service.IAppFollowService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

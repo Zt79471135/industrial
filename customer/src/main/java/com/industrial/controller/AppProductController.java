@@ -38,6 +38,7 @@ public class AppProductController extends BaseController {
     public static final Byte APPROVAL_STATUS = 2;
     public static final Byte PUTAWAY_STATUS = 3;
     public static final Byte SOLD_OUT_STATUS = 4;
+    public static final String DEFAULT_IMAGE_ADDRESS = "Default image address";
     /**
      * 根据ID查询商品详情
      */
