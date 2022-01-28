@@ -60,7 +60,6 @@ public class AppOrderServiceImpl implements AppOrderService {
         BeanUtils.copyProperties(order, orderDto);
         return orderDto;
     }
-
     @Transactional(rollbackFor = ServiceException.class)
     @Override
     public boolean insert(OrderVo orderVo) {
@@ -97,7 +96,6 @@ public class AppOrderServiceImpl implements AppOrderService {
             throw new ServiceException();
         }
     }
-
     /**
      * 通过订单ID修改订单状态
      *
@@ -112,7 +110,6 @@ public class AppOrderServiceImpl implements AppOrderService {
         order.setStatus((byte) status);
         return orderMapper.updateById(order) > 0;
     }
-
     @Transactional(rollbackFor = ServiceException.class)
     @Override
     public boolean updateAffiliate(ShiftVo shiftVo) {
@@ -136,7 +133,6 @@ public class AppOrderServiceImpl implements AppOrderService {
         }
         return false;
     }
-
     @Override
     public boolean addTeam(List<Integer> ids, Integer orderId) {
         AppOrderUser orderUser = new AppOrderUser();
@@ -147,24 +143,26 @@ public class AppOrderServiceImpl implements AppOrderService {
         }).collect(Collectors.toList());
         return ids.size() == integerList.size();
     }
-
     @Override
     public boolean rejectOrder(String msg, Integer orderId, int status, LoginUser user) {
         if (updateStatus(orderId, status)){
             AppReview review = new AppReview();
+            String record = user.getUsername()+"驳回了订单";
             review.setId(Math.toIntExact(user.getUserId()));
             review.setMsg(msg);
-            reviewMapper.insert(review);
-            AppOrderLog log = new AppOrderLog();
-        };
+            review.setRecord(record);
+            if (reviewMapper.insert(review)>0){
+                throw new ServiceException("记录失败");
+            };
+        }else {
+            throw new ServiceException("驳回失败");
+        }
         return false;
     }
-
     @Override
     public boolean remove(Integer orderId) {
-        return false;
+        return orderMapper.deleteById(orderId)>0;
     }
-
     /**
      * 订单审核  关联审核设置，订单动态，审核 返回为空字符串为成功
      *
@@ -179,7 +177,7 @@ public class AppOrderServiceImpl implements AppOrderService {
             AppCheck model = appCheckMapper.selectAppCheckByOrderNo(orderNo);
             //region 查询配置信息
             CheckDto param = new CheckDto();
-            param.setId(Long.valueOf(1));
+            param.setId(1L);
             List<CheckDto> config = mainConfigMapper.selectAppCheckMainSubList(param);
             if (config == null || config.size() <= 0) {
                 msg.append("找不到审核的配置信息");
@@ -203,8 +201,8 @@ public class AppOrderServiceImpl implements AppOrderService {
                     model.setUserId(String.valueOf(userId) + ",");
                     model.setDeleted(0);
                     model.setStatus(1);
-                    model.setAuditId(Long.valueOf(1));
-                    model.setAuditLevel(Long.valueOf(1));
+                    model.setAuditId(1L);
+                    model.setAuditLevel(1L);
                     model.setUpdateTime(new Date());
                     model.setCreateTime(new Date());
                     appCheckMapper.insertAppCheck(model);
@@ -223,7 +221,6 @@ public class AppOrderServiceImpl implements AppOrderService {
                 //endregion
                 return msg.toString();
                 //endregion
-
             }
             //endregion
             if (model == null) {
@@ -239,8 +236,8 @@ public class AppOrderServiceImpl implements AppOrderService {
                 model.setUserId(String.valueOf(userId) + ",");
                 model.setDeleted(0);
                 model.setStatus(2);
-                model.setAuditId(Long.valueOf(1));
-                model.setAuditLevel(Long.valueOf(1));
+                model.setAuditId(1L);
+                model.setAuditLevel(1L);
                 model.setUpdateTime(new Date());
                 model.setCreateTime(new Date());
                 appCheckMapper.insertAppCheck(model);
@@ -260,7 +257,7 @@ public class AppOrderServiceImpl implements AppOrderService {
             int auditId = model.getAuditId().intValue();
             CheckDto cur = config.stream().filter(item -> item.clevel == level && item.getId() == auditId).collect(Collectors.toList()).stream().findFirst().orElse(null);
             if (cur == null) {
-                msg.append("找不到该层的审核配置信息 层级=" + level + "|id=" + auditId);
+                msg.append("找不到该层的审核配置信息 层级=").append(level).append("|id=").append(auditId);
                 return msg.toString();
             }
             //1.负责人主管
@@ -271,14 +268,14 @@ public class AppOrderServiceImpl implements AppOrderService {
             boolean curFlag = false;
             if (cur.getCheckType() == 1) {
                 List<SysUser> upUserList = sysUserMapper.selectUpUserList((curUser.getDeptId() + "," + curUser.getDept().getAncestors()).split(","));
-                if (upUserList.stream().filter(x -> x.getUserId() == userId).collect(Collectors.toList()).size() > 0) {
+                if (upUserList.stream().anyMatch(x -> x.getUserId() == userId)) {
                     curFlag = true;
                 }
             } else if (cur.getCheckType() == 2) {
                 QueryWrapper<AppCheckUser> qw = new QueryWrapper<>();
                 qw.lambda().eq(com.industrial.domin.AppCheckUser::getCheckId, cur.cid);
                 List<AppCheckUser> upUserList = appCheckUserMapper.selectList(qw);
-                if (upUserList.stream().filter(x -> x.getUserId() == userId).collect(Collectors.toList()).size() > 0) {
+                if (upUserList.stream().anyMatch(x -> x.getUserId() == userId)) {
                     curFlag = true;
                 }
             } else if (cur.getCheckType() == 3) {

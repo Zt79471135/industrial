@@ -108,7 +108,6 @@ public class AppProductServiceImpl implements AppProductService {
             return productDtoList;
         }
     }
-
     /**
      * 商品保存
      * 成功待审核
@@ -149,7 +148,6 @@ public class AppProductServiceImpl implements AppProductService {
             throw new ServiceException();
         }
     }
-
     /**
      * 删除
      *
@@ -160,7 +158,6 @@ public class AppProductServiceImpl implements AppProductService {
     public boolean remove(Integer productId) {
         return productMapper.deleteById(productId) == 1;
     }
-
     /**
      * 商品更新
      *
@@ -174,15 +171,42 @@ public class AppProductServiceImpl implements AppProductService {
             com.industrial.domin.AppProduct product = new com.industrial.domin.AppProduct();
             BeanUtils.copyProperties(productVo, product);
             product.setStatus((byte) 1);
-            QueryWrapper<com.industrial.domin.AppProduct> qw = new QueryWrapper<>();
-            qw.lambda().eq(com.industrial.domin.AppProduct::getId, id);
-            return productMapper.update(product, qw) == 1;
+            QueryWrapper<AppProduct> qw = new QueryWrapper<>();
+            qw.lambda().eq(AppProduct::getId, id);
+            Integer[] imgIds = productVo.getIds();
+            if (imgIds == null) {
+                throw new ServiceException("图片不能为空");
+            }
+            List<Integer> imgList = Arrays.stream(imgIds).collect(Collectors.toList());
+            if (imgList.size() > 0) {
+                Integer integer = imgList.get(0);
+                AppImageFile imageFile = imageFileMapper.selectById(integer);
+                String filePath = imageFile.getFilePath();
+                product.setMainImgUrl(filePath);
+            }
+            if (productMapper.update(product, qw) >0){
+                QueryWrapper<AppProductFile> wrapper = new QueryWrapper<>();
+                wrapper.lambda().eq(AppProductFile::getProductId,product.getId());
+                int delete = productFileMapper.delete(wrapper);
+                System.out.println("delete = " + delete);
+                if (delete>0){
+                    AppProductFile productFile = new AppProductFile();
+                    productFile.setProductId(product.getId());
+                    List<Integer> integerList = imgList.stream().map(imgId -> {
+                        productFile.setFileId(imgId);
+                        return productFileMapper.insert(productFile);
+                    }).collect(Collectors.toList());
+                    return imgList.size() == integerList.size();
+                }else {
+                    throw new ServiceException("图片修改异常");
+                }
+            }else {
+                throw new ServiceException("商品修改失败");
+            }
         } else {
             throw new ServiceException("id不能为空");
         }
-
     }
-
     @Override
     public boolean soldOut(List<Integer> ids, byte status) {
         int size = ids.size();
