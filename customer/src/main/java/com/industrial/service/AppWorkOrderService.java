@@ -6,4 +6,6 @@ package com.industrial.service;
  */
 public interface AppWorkOrderService {
     public boolean payout(Integer workorderId, Integer uid);
+
+
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author zhu
@@ -39,8 +40,8 @@ public class AppWorkOrderController {
      * 工单展示
      */
     @PostMapping("show")
-    public ResponseResult<AppWorkOrder> show(){
-
+    public ResponseResult<List<AppWorkOrder>> show(){
+        //workOrderService.show()
         return null;
     }
 }
