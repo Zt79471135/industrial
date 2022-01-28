@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author zhu
- * @date 2022年01月26日 11:45
+ * @date 2022年01月27日 15:13
  */
 @Data
 @AllArgsConstructor
@@ -54,6 +54,9 @@ public class AppWorkOrder {
     @TableField(value = "create_time")
     private Date createTime;
 
+    @TableField(value = "update_time")
+    private Date updateTime;
+
     /**
      * 工单状态
      */
@@ -83,6 +86,8 @@ public class AppWorkOrder {
     public static final String COL_HANDLING_USER = "handling_user";
 
     public static final String COL_CREATE_TIME = "create_time";
+
+    public static final String COL_UPDATE_TIME = "update_time";
 
     public static final String COL_STATUS = "status";
 

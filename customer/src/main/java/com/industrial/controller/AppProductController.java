@@ -9,6 +9,7 @@ import com.industrial.common.dto.ProductDto;
 import com.industrial.common.pojo.ProductExcel;
 import com.industrial.common.utils.poi.ExcelUtil;
 import com.industrial.common.vo.CheckVo;
+import com.industrial.common.vo.EnableVo;
 import com.industrial.common.vo.ProductVo;
 import com.industrial.domin.AppProduct;
 import com.industrial.service.AppProductPriceService;
@@ -18,7 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author zhu
@@ -35,7 +38,6 @@ public class AppProductController extends BaseController {
     public static final Byte APPROVAL_STATUS = 2;
     public static final Byte PUTAWAY_STATUS = 3;
     public static final Byte SOLD_OUT_STATUS = 4;
-
     /**
      * 根据ID查询商品详情
      */
@@ -46,13 +48,12 @@ public class AppProductController extends BaseController {
         result = ResponseResult.success(productDto);
         return result;
     }
-
     /**
      * 根据分类ID查询与商品名称
      * status = 3 已经上架的商品
      */
     @GetMapping("/classify")
-    public ResponseResult<List<ProductDto>> classify(@RequestParam() Integer categoryId,@RequestParam() String productName) {
+    public ResponseResult<List<ProductDto>> classify(@RequestParam(defaultValue = "0") Integer categoryId, @RequestParam(defaultValue = "") String productName) {
         ResponseResult<List<ProductDto>> result = null;
         startPage();
         List<ProductDto> productDto = productService.selectProductByCategoryId(categoryId, productName, 3);
@@ -60,7 +61,6 @@ public class AppProductController extends BaseController {
         result = ResponseResult.success(productDto);
         return result;
     }
-
     /**
      * 根据状态查询商品
      * status = 1 保存商品
@@ -130,14 +130,13 @@ public class AppProductController extends BaseController {
      * 商品禁用与启用
      * false 禁用 true 启用
      * 状态为0为禁用
-     *
-     * @param checkVo
+     * @param enableVo
      * @return
      */
     @PostMapping("/enable")
-    public ResponseResult enable(@RequestParam Integer productId , @RequestParam Integer enable ) {
+    public ResponseResult enable(@RequestBody EnableVo enableVo) {
         ResponseResult result = null;
-        if (productService.changeEnabled(productId,enable)) {
+        if (productService.changeEnabled(enableVo.getProductId(), enableVo.getEnable())) {
             result = ResponseResult.success();
         } else {
             result = ResponseResult.error(ResponseCode.ERROR);
@@ -169,22 +168,24 @@ public class AppProductController extends BaseController {
      * @return
      */
     @PostMapping("putaway")
-    public ResponseResult putaway(List<Integer> ids) {
+    public ResponseResult putaway(@RequestBody List<Integer> ids) {
         ResponseResult result = null;
-        if (productService.putaway(ids, (byte) APPROVAL_STATUS)) {
+        if (productService.putaway(ids, (byte) PUTAWAY_STATUS)) {
             result = ResponseResult.success();
         } else {
             result = ResponseResult.error(ResponseCode.ERROR);
         }
         return result;
     }
+
     /**
      * 商品批量下架
      * status = 4
+     *
      * @return
      */
     @PostMapping("soldOut")
-    public ResponseResult soldOut(List<Integer> ids) {
+    public ResponseResult soldOut(@RequestBody List<Integer> ids) {
         ResponseResult result = null;
         if (productService.soldOut(ids, (byte) SOLD_OUT_STATUS)) {
             result = ResponseResult.success();
@@ -193,6 +194,7 @@ public class AppProductController extends BaseController {
         }
         return result;
     }
+
     /**
      * 商品报价
      */
@@ -206,31 +208,31 @@ public class AppProductController extends BaseController {
         }
         return result;
     }
+
     /**
      * 导出商品分类列表
      */
     @PostMapping("/export")
-    public void export(HttpServletResponse response, ProductVo productVo)
-    {
-        List<ProductExcel> productList = productService.selectProductExcelList(productVo);
+    public void export(HttpServletResponse response,@RequestBody List<Integer> ids) {
+        List<ProductExcel> productList = productService.selectProductExcelList(ids);
         ExcelUtil<ProductExcel> util = new ExcelUtil<ProductExcel>(ProductExcel.class);
         util.exportExcel(response, productList, "商品数据");
     }
+
     /**
      * 下载模板
      */
     @GetMapping("/importTemplate")
-    public AjaxResult importTemplate()
-    {
-        ExcelUtil<AppProduct> util = new ExcelUtil<AppProduct>(AppProduct.class);
+    public AjaxResult importTemplate() {
+        ExcelUtil<ProductExcel> util = new ExcelUtil<ProductExcel>(ProductExcel.class);
         return util.importTemplateExcel("商品数据");
     }
+
     /**
      * 导入
      */
     @PostMapping("/importStudent")
-    public AjaxResult importStudent(MultipartFile file, boolean updateSupport) throws Exception
-    {
+    public AjaxResult importStudent(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AppProduct> util = new ExcelUtil<AppProduct>(AppProduct.class);
         List<AppProduct> productList = util.importExcel(file.getInputStream());
         String operName = getUsername();

@@ -35,4 +35,11 @@ public class AppWorkOrderController {
 
         return result;
     }
+    /**
+     * 工单展示
+     */
+    @PostMapping("show")
+    public ResponseResult<String> show(){
+        return null;
+    }
 }

@@ -82,10 +82,10 @@ public interface AppProductService {
 
     /**
      * 通过商品信息查询商品
-     * @param productVo
+     * @param ids
      * @return
      */
-    List<ProductExcel> selectProductExcelList(ProductVo productVo);
+    List<ProductExcel> selectProductExcelList(List<Integer> ids);
     /**
      * 导入用户数据
      *

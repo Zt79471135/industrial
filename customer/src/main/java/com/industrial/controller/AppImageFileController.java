@@ -57,6 +57,7 @@ public class AppImageFileController extends BaseController {
             imageFile.setFilePath(url);
             imageFile.setFileName(imgName);
             imageFile.setType(suffix);
+            imageFile.setName(originalName);
             Integer integer = imageFileService.insert(imageFile);
             return AjaxResult.success(imageFile);
         }
@@ -66,15 +67,6 @@ public class AppImageFileController extends BaseController {
         }
 
     }
-    @PostMapping("/save")
-    public ResponseResult save(@RequestBody AppImageFile imageFile){
-        //ResponseResult result = null;
-        /*if (imageFileService.insert(imageFile)) {
-            result = ResponseResult.success();
-        } else {
-            result = ResponseResult.error(ResponseCode.ERROR);
-        }*/
-        return null;
-    }
+
 
 }

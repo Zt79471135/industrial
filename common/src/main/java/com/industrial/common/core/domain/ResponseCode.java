@@ -1,5 +1,6 @@
 package com.industrial.common.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Getter;
  * @date 2021年12月22日 10:28
  */
 @Getter
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ResponseCode {
     /**
      * 返回成功

@@ -1,10 +1,9 @@
 package com.industrial.service;
 
+import com.industrial.common.core.domain.model.LoginUser;
 import com.industrial.common.dto.OrderDto;
-import com.industrial.common.vo.FollowVo;
 import com.industrial.common.vo.OrderVo;
 import com.industrial.common.vo.ShiftVo;
-import com.industrial.domin.AppFollow;
 
 import java.util.List;
 
@@ -20,14 +19,12 @@ public interface AppOrderService {
      * @return
      */
     OrderDto selectById(Integer orderId);
-
     /**
      * 订单添加
      * @param orderVo
      * @return
      */
     boolean insert(OrderVo orderVo);
-
     /**
      * 更改订单状态
      *
@@ -36,14 +33,12 @@ public interface AppOrderService {
      * @return
      */
     boolean updateStatus(Integer orderId, int id);
-
     /**
      * 订单转交
      * @param shiftVo
      * @return
      */
     boolean updateAffiliate(ShiftVo shiftVo);
-
     /**
      * 添加协作人员
      * @param ids
@@ -51,4 +46,20 @@ public interface AppOrderService {
      * @return
      */
     boolean addTeam(List<Integer> ids, Integer orderId);
+    /**
+     * 驳回审核
+     * @param msg
+     * @param orderId
+     * @param status
+     * @param user
+     * @return
+     */
+    boolean rejectOrder(String msg, Integer orderId, int status, LoginUser user);
+
+    /**
+     * 删除订单
+     * @param orderId
+     * @return
+     */
+    boolean remove(Integer orderId);
 }

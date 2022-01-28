@@ -10,6 +10,8 @@ import com.industrial.mapper.AppCheckMapper;
 import com.industrial.domin.AppCheck;
 import com.industrial.service.IAppCheckService;
 
+import javax.annotation.Resource;
+
 /**
  * systemService业务层处理
  * 
@@ -19,7 +21,7 @@ import com.industrial.service.IAppCheckService;
 @Service
 public class AppCheckServiceImpl implements IAppCheckService 
 {
-    @Autowired
+    @Resource
     private AppCheckMapper appCheckMapper;
     @Autowired
     private AppOrderLogMapper orderLogMapper;

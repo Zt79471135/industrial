@@ -6,14 +6,15 @@
     <!--@Table app_image_file-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
     <result column="create_userid" jdbcType="INTEGER" property="createUserid" />
-    <result column="Status" jdbcType="TINYINT" property="status" />
-    <result column="Type" jdbcType="VARCHAR" property="type" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, file_name, file_path, create_userid, `Status`, `Type`, update_time
+    id, file_name, `name`, file_path, create_userid, `status`, `type`, update_time
   </sql>
 </mapper>

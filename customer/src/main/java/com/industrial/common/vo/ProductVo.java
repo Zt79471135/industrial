@@ -35,7 +35,7 @@ public class ProductVo{
     /**
      * 单价
      */
-    private BigDecimal price;
+    private String price;
     /**
      * 售后联系人
      */
@@ -51,7 +51,7 @@ public class ProductVo{
     /**
      * 对内价格
      */
-    private BigDecimal floorPrice;
+    private String floorPrice;
     /**
      * 规格
      */
@@ -71,7 +71,7 @@ public class ProductVo{
     /**
      * 图片外键（关联app_image_file表ID）
      */
-    private List<Integer> imgIds;
+    private Integer[] ids;
     /**
      * 主图URL
      */

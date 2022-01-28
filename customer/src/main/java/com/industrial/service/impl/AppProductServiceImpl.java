@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,12 +57,11 @@ public class AppProductServiceImpl implements AppProductService {
      */
     @Override
     public boolean changeStatus(int status, Integer productId) {
-        com.industrial.domin.AppProduct product = new com.industrial.domin.AppProduct();
+        AppProduct product = new AppProduct();
         product.setStatus((byte) status);
         product.setId(productId);
-        QueryWrapper<com.industrial.domin.AppProduct> qw = new QueryWrapper<>();
-        qw.lambda().eq(com.industrial.domin.AppProduct::getDeleted, 0);
-        return productMapper.update(product, qw) == 1;
+        int update = productMapper.updateById(product);
+        return update > 0;
     }
 
     /**
@@ -72,10 +72,15 @@ public class AppProductServiceImpl implements AppProductService {
      */
     @Override
     public ProductDto selectProductById(Integer productId) {
-        ProductDto productDto = new ProductDto();
-        com.industrial.domin.AppProduct product = productMapper.selectById(productId);
-        Integer categoryId = product.getCategoryId();
-        BeanUtils.copyProperties(product, productDto);
+        AppProduct product = productMapper.selectById(productId);
+        ProductDto productDto = this.apply(product);
+        QueryWrapper<AppProductFile> qw = new QueryWrapper<>();
+        List<AppProductFile> productFileList = productFileMapper.selectList(qw);
+        List<AppImageFile> imgUrls = productFileList.stream().map(productFile -> {
+            Integer fileId = productFile.getFileId();
+            return imageFileMapper.selectById(fileId);
+        }).collect(Collectors.toList());
+        productDto.setImgUrls(imgUrls);
         return productDto;
     }
 
@@ -87,8 +92,8 @@ public class AppProductServiceImpl implements AppProductService {
      */
     @Override
     public List<ProductDto> selectProductByStatus(int status) {
-        QueryWrapper<com.industrial.domin.AppProduct> qw = new QueryWrapper<>();
-        qw.lambda().eq(com.industrial.domin.AppProduct::getStatus, (byte) status);
+        QueryWrapper<AppProduct> qw = new QueryWrapper<>();
+        qw.lambda().eq(AppProduct::getStatus, (byte) status);
         /**
          * 当查询上架商品时,同样把禁用商品一起查询出来
          */
@@ -114,12 +119,20 @@ public class AppProductServiceImpl implements AppProductService {
     @Transactional(rollbackFor = ServiceException.class)
     @Override
     public boolean insert(ProductVo productVo) {
-        com.industrial.domin.AppProduct product = new com.industrial.domin.AppProduct();
+        AppProduct product = new AppProduct();
         BeanUtils.copyProperties(productVo, product);
+        BigDecimal floorPrice = new BigDecimal(productVo.getFloorPrice());
+        BigDecimal price = new BigDecimal(productVo.getPrice());
+        product.setFloorPrice(floorPrice);
+        product.setPrice(price);
         product.setStatus((byte) 2);
-        List<Integer> imgIds = productVo.getImgIds();
-        if (imgIds.size() > 0) {
-            Integer integer = imgIds.get(0);
+        Integer[] imgIds = productVo.getIds();
+        if (imgIds == null) {
+            throw new ServiceException("图片不能为空");
+        }
+        List<Integer> imgList = Arrays.stream(imgIds).collect(Collectors.toList());
+        if (imgList.size() > 0) {
+            Integer integer = imgList.get(0);
             AppImageFile imageFile = imageFileMapper.selectById(integer);
             String filePath = imageFile.getFilePath();
             product.setMainImgUrl(filePath);
@@ -127,11 +140,11 @@ public class AppProductServiceImpl implements AppProductService {
         if (productMapper.insert(product) == 1) {
             AppProductFile productFile = new AppProductFile();
             productFile.setProductId(product.getId());
-            List<Integer> integerList = imgIds.stream().map(id -> {
+            List<Integer> integerList = imgList.stream().map(id -> {
                 productFile.setFileId(id);
                 return productFileMapper.insert(productFile);
             }).collect(Collectors.toList());
-            return imgIds.size() == integerList.size();
+            return imgList.size() == integerList.size();
         } else {
             throw new ServiceException();
         }
@@ -197,15 +210,15 @@ public class AppProductServiceImpl implements AppProductService {
     @Override
     public List<ProductDto> selectProductByCategoryId(Integer categoryId, String productName, int status) {
         QueryWrapper<com.industrial.domin.AppProduct> qw = new QueryWrapper<>();
-        if (categoryId != null || !"".equals(productName)) {
-            if (categoryId != null&&categoryId>0) {
+        if (categoryId != 0 || !"".equals(productName)) {
+            if (categoryId != 0) {
                 qw.lambda().eq(com.industrial.domin.AppProduct::getCategoryId, categoryId);
             }
             if (!"".equals(productName)) {
                 qw.lambda().like(com.industrial.domin.AppProduct::getName, productName);
             }
         }
-        String sql = "and (status = " + status + " or status =" + 0;
+        //qw.lambda().eq(AppProduct::getStatus, status);
         List<com.industrial.domin.AppProduct> productList = productMapper.selectList(qw);
         if (productList.size() == 0) {
             //throw new ServiceException("无此状态的商品");
@@ -224,48 +237,30 @@ public class AppProductServiceImpl implements AppProductService {
         int size = ids.size();
         if (size > 0) {
             List<Integer> integerList = ids.stream().map(id -> {
-                if (!changeStatus(status, id)) {
-                    throw new ServiceException();
+                if (changeStatus(status, id)) {
+                    return 1;
+                } else {
+                    throw new ServiceException("上架失败");
                 }
-                return 1;
             }).collect(Collectors.toList());
             return integerList.size() == size;
         } else {
-            throw new ServiceException();
+            throw new ServiceException("集合为空");
         }
     }
 
     @Override
-    public List<ProductExcel> selectProductExcelList(ProductVo productVo) {
-        Integer id = productVo.getId();
-        Integer categoryId = productVo.getCategoryId();
-        String contacts = productVo.getContacts();
-        Integer createUserId = productVo.getCreateUserId();
-        BigDecimal floorPrice = productVo.getFloorPrice();
-        String name = productVo.getName();
-        String maintenance = productVo.getMaintenance();
-        QueryWrapper<com.industrial.domin.AppProduct> qw = new QueryWrapper<>();
-        if (id != null && id != 0) {
-            qw.lambda().eq(com.industrial.domin.AppProduct::getId, id);
+    public List<ProductExcel> selectProductExcelList(List<Integer> ids) {
+        QueryWrapper<AppProduct> qw = new QueryWrapper<>();
+        StringBuffer sb = new StringBuffer();
+        String sql = " where " + AppProduct.COL_ID + " in (";
+        for (int i = 0; i < ids.size() - 1; i++) {
+            sb.append(ids.get(i));
         }
-        if (categoryId != null && categoryId != 0) {
-            qw.lambda().eq(com.industrial.domin.AppProduct::getCategoryId, categoryId);
-        }
-        if (contacts != null && !"".equals(contacts)) {
-            qw.lambda().like(com.industrial.domin.AppProduct::getContacts, contacts);
-        }
-        if (createUserId != null && createUserId != 0) {
-            qw.lambda().eq(com.industrial.domin.AppProduct::getCreateUserId, createUserId);
-        }
-        if (floorPrice != null) {
-            qw.lambda().eq(com.industrial.domin.AppProduct::getFloorPrice, floorPrice);
-        }
-        if (name != null && !"".equals(name)) {
-            qw.lambda().like(com.industrial.domin.AppProduct::getName, name);
-        }
-        if (maintenance != null && !"".equals(maintenance)) {
-            qw.lambda().eq(com.industrial.domin.AppProduct::getMaintenance, maintenance);
-        }
+        sb.append(ids.get(ids.size() - 1));
+        sb.append(")");
+        sql = sql + sb;
+        qw.lambda().last(sql);
         List<AppProduct> productList = productMapper.selectList(qw);
         return productList.stream().map(this::getProductExcel).collect(Collectors.toList());
     }
@@ -343,13 +338,13 @@ public class AppProductServiceImpl implements AppProductService {
     }
 
 
-    private ProductDto apply(com.industrial.domin.AppProduct product) {
+    private ProductDto apply(AppProduct product) {
         ProductDto productDto = new ProductDto();
         QueryWrapper<DictData> queryWrapper = null;
         /**
          *查询商品分类
          */
-        AppCategory category = categoryMapper.selectAppCategoryById((long)product.getCategoryId());
+        AppCategory category = categoryMapper.selectAppCategoryById((long) product.getCategoryId());
         /**
          * 查询商品单位
          */
@@ -364,9 +359,10 @@ public class AppProductServiceImpl implements AppProductService {
         return productDto;
     }
 
-    private ProductExcel getProductExcel(com.industrial.domin.AppProduct product) {
+    private ProductExcel getProductExcel(AppProduct product) {
         ProductExcel productExcel = new ProductExcel();
-        String categoryName = categoryMapper.selectAppCategoryById((long)product.getCategoryId()).getCategoryName();
+        System.out.println("product = " + product);
+        String categoryName = categoryMapper.selectById(product.getCategoryId()).getCategoryName();
         productExcel.setCategoryName(categoryName);
         String userName = userMapper.selectById(product.getCreateUserId()).getUserName();
         productExcel.setContactsUserName(userName);

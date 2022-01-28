@@ -10,12 +10,14 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="handling_user" jdbcType="INTEGER" property="handlingUser" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="extent" jdbcType="TINYINT" property="extent" />
     <result column="deleted" jdbcType="TINYINT" property="deleted" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `number`, title, `type`, handling_user, create_time, `status`, extent, deleted
+    id, `number`, title, `type`, handling_user, create_time, update_time, `status`, extent, 
+    deleted
   </sql>
 </mapper>

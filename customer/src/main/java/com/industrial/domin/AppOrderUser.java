@@ -9,13 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 /**
+ * 活动与参与人员表
  * @author zhu
  * @date 2022年01月20日 14:52
  */
-/**
-    * 活动与参与人员表
-    */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

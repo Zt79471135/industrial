@@ -3,15 +3,11 @@ package com.industrial.controller;
 import com.industrial.common.core.controller.BaseController;
 import com.industrial.common.core.domain.ResponseCode;
 import com.industrial.common.core.domain.ResponseResult;
-import com.industrial.common.core.domain.model.LoginUser;
 import com.industrial.common.dto.OrderDto;
-import com.industrial.common.vo.CheckVo;
 import com.industrial.common.vo.FollowVo;
 import com.industrial.common.vo.OrderVo;
 import com.industrial.common.vo.ShiftVo;
-import com.industrial.domin.AppFollow;
 import com.industrial.domin.AppOrder;
-import com.industrial.service.AppCheckService;
 import com.industrial.service.AppOrderService;
 import com.industrial.service.IAppFollowService;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +26,18 @@ public class AppOrderController extends BaseController {
     private AppOrderService orderService;
     @Resource
     private IAppFollowService followService;
-    @Resource
-    private AppCheckService checkService;
-    public static final Integer  CHECK_STATUS_SUCCESS = 3;
+    /**
+     * 审核成功
+     */
+    public static final Integer CHECK_STATUS_SUCCESS = 3;
+    /**
+     * 待审核
+     */
+    public static final Integer TO_AUDIT = 2;
+    /**
+     * 已取消
+     */
+    public static final Integer CANCELED = 1;
     /**
      * 用户下单
      * status = 2 待审批
@@ -62,7 +67,7 @@ public class AppOrderController extends BaseController {
     /**
      * 订单添加
      */
-    @PostMapping("add")
+    @PostMapping("/add")
     public ResponseResult<String> add(@RequestBody OrderVo orderVo, @RequestBody FollowVo follow) {
         ResponseResult<String> result = null;
         if (orderService.insert(orderVo)) {
@@ -83,40 +88,61 @@ public class AppOrderController extends BaseController {
         }
         return result;
     }
-    /**
-     * 订单派发,工单新建
-     */
-    @PostMapping("add")
-    public ResponseResult<String> add(){
-        return null;
-    }
+
     /**
      * 转移订单
      */
     @PostMapping
-    public ResponseResult<String> shift(@RequestParam ShiftVo shiftVo){
+    public ResponseResult<String> shift(@RequestParam ShiftVo shiftVo) {
         ResponseResult<String> result = null;
         shiftVo.setFromId(Math.toIntExact(getUserId()));
         shiftVo.setFromName(getUsername());
-        if (orderService.updateAffiliate(shiftVo)){
+        if (orderService.updateAffiliate(shiftVo)) {
             result = ResponseResult.success();
-        }else {
-            result = ResponseResult.error(ResponseCode.ERROR);
-        }
-        return result;
-    }
-    /**
-     * 添加协作人员
-     */
-    @PostMapping("add/team")
-    public ResponseResult<String> addTeam(@RequestBody List<Integer> ids,@RequestParam Integer orderId){
-        ResponseResult<String> result = null;
-        if (orderService.addTeam(ids,orderId)){
-            result = ResponseResult.success();
-        }else {
+        } else {
             result = ResponseResult.error(ResponseCode.ERROR);
         }
         return result;
     }
 
+    /**
+     * 添加协作人员
+     */
+    @PostMapping("add/team")
+    public ResponseResult<String> addTeam(@RequestBody List<Integer> ids, @RequestParam Integer orderId) {
+        ResponseResult<String> result = null;
+        if (orderService.addTeam(ids, orderId)) {
+            result = ResponseResult.success();
+        } else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
+
+    /**
+     * 驳回审核
+     */
+    @PostMapping("reject")
+    public ResponseResult<String> reject(@RequestParam String msg, Integer orderId) {
+        ResponseResult<String> result = null;
+        if (orderService.rejectOrder(msg,orderId,TO_AUDIT, getLoginUser())) {
+            result = ResponseResult.success();
+        } else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
+    /**
+     * 删除订单
+     */
+    @DeleteMapping("remove")
+    public ResponseResult<String> remove(@RequestParam Integer orderId ){
+        ResponseResult<String> result = null;
+        if (orderService.remove(orderId)) {
+            result = ResponseResult.success();
+        } else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
 }

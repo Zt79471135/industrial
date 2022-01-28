@@ -5,7 +5,7 @@ import com.industrial.domin.AppImageFile;
 
 /**
  * @author zhu
- * @date 2022年01月17日 17:38
+ * @date 2022年01月27日 17:22
  */
 public interface AppImageFileMapper extends BaseMapper<AppImageFile> {
 }

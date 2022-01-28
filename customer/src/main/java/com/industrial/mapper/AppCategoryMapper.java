@@ -13,7 +13,7 @@ import org.apache.ibatis.annotations.Param;
  * @author 合晟开发部-陈俊辉
  * @version industrial V1.0.0
  */
-public interface AppCategoryMapper
+public interface AppCategoryMapper extends BaseMapper<AppCategory>
 {
     /**
      * 查询商品分类
