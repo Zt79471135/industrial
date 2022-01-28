@@ -1,5 +1,6 @@
 package com.industrial.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.industrial.common.dto.CheckConfigDto;
@@ -16,6 +17,8 @@ import com.industrial.service.IAppCheckMainConfigService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import javax.annotation.Resource;
+
 /**
  * 审核设置主Service业务层处理
  * 
@@ -25,11 +28,11 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 @Service
 public class AppCheckMainConfigServiceImpl implements IAppCheckMainConfigService
 {
-    @Autowired
+    @Resource
     private AppCheckMainConfigMapper appCheckMainConfigMapper;
-    @Autowired
+    @Resource
     private AppSubCheckConfigMapper appSubCheckConfigMapper;
-    @Autowired
+    @Resource
     private AppCheckUserMapper appCheckUserMapper;
 
     /**
@@ -112,22 +115,26 @@ public class AppCheckMainConfigServiceImpl implements IAppCheckMainConfigService
             AppCheckMainConfig model=new AppCheckMainConfig();
             BeanUtils.copyProperties(checkConfigDto,model);
             if(appCheckMainConfigMapper.updateAppCheckMainConfig(model)<=0){ throw new Exception("appCheckMainConfigMapper插入失败");}
-            if(appCheckUserMapper.deleteByMainId(model.getId())<=0){ throw new Exception("appCheckUserMapper删除失败");}
-            if(appSubCheckConfigMapper.deleteAppSubCheckConfigByConfigId(model.getId())<=0){ throw new Exception("aappSubCheckConfigMapper删除失败");}
+            appCheckUserMapper.deleteByMainId(model.getId());
+            appSubCheckConfigMapper.deleteAppSubCheckConfigByConfigId(model.getId());
             for (AppSubCheckConfig item:checkConfigDto.subList) {
+                item.setAddTime(new Date());
+                item.setUpdateTime(new Date());
                 if(appSubCheckConfigMapper.insertAppSubCheckConfig(item)<=0){ throw new Exception("appSubCheckConfigMapper插入失败");}
                 for (String str:item.getAdminList().split(",")) {
-                    AppCheckUser temp=new AppCheckUser();
-                    temp.setCheckId(item.getId().intValue());
-                    temp.setMainId(model.getId().intValue());
-                    temp.setUserId(Integer.getInteger(str));
-                    if(appCheckUserMapper.insert(temp)<=0){ throw new Exception("appCheckUserMapper插入失败");}
-
+                    if(!str.isEmpty()){
+                        AppCheckUser temp=new AppCheckUser();
+                        temp.setCheckId(item.getId().intValue());
+                        temp.setMainId(model.getId().intValue());
+                        temp.setUserId(Integer.parseInt(str));
+                        if(appCheckUserMapper.insert(temp)<=0){ throw new Exception("appCheckUserMapper插入失败");}
+                    }
                 }
             }
             return 1;
         }catch (Exception ex){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            System.out.println(ex);
             return 0;
         }
     }

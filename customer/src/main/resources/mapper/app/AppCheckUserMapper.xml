@@ -16,4 +16,8 @@
   <delete id="deleteByMainId" parameterType="Long">
     delete from app_check_user where main_id = #{id}
   </delete>
+
+  <insert id="insertAppCheckUser"  >
+    insert into app_check_user(check_id,main_id,user_id) values(#{temp.check_id},#{temp.main_id},#{temp.user_id})
+  </insert>
 </mapper>

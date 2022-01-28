@@ -1,6 +1,7 @@
 package com.industrial.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -72,16 +73,18 @@ public class AppCheckMainConfigController extends BaseController
             BeanUtils.copyProperties(item,model);
             for (AppSubCheckConfig subItem:sublist) {
                 if(item.getId()==subItem.getConfigId()){
-                    if(model.subList.isEmpty()){
+                    if(model.subList==null){
                         model.subList=new ArrayList<>();
-                        for (AppCheckUser user:userlist) {
-                            if(user.getCheckId().intValue()==subItem.getId()){
-                                subItem.setAdminList(subItem.getAdminList()+user.getUserId()+",");
-                            }
+                    }
+                    for (AppCheckUser user:userlist) {
+                        if(user.getCheckId().longValue()==subItem.getId()){
+                            subItem.setAdminList((subItem.getAdminList()!=null?subItem.getAdminList():"")+user.getUserId()+",");
                         }
                     }
-                    subItem.setAdminList(subItem.getAdminList().length()>0?
+                    subItem.setAdminList(subItem.getAdminList()!=null&&subItem.getAdminList().length()>0?
                             subItem.getAdminList().substring(0,subItem.getAdminList().length()-1):subItem.getAdminList());
+                    String[] tempArray=subItem.getAdminList()!=null?subItem.getAdminList().split(","):new String[0];
+                    subItem.setAdminIntList(subItem.getAdminList()!=null?Arrays.asList(tempArray).stream().mapToInt(Integer::parseInt).toArray():new int[1]);
                     model.subList.add(subItem);
                 }
             }

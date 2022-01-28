@@ -2,6 +2,7 @@ package com.industrial.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.industrial.domin.AppCheckUser;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author zhu
@@ -9,4 +10,6 @@ import com.industrial.domin.AppCheckUser;
  */
 public interface AppCheckUserMapper extends BaseMapper<AppCheckUser> {
     Integer deleteByMainId(Long id);
+
+    Integer insertAppCheckUser(@Param("temp") AppCheckUser temp);
 }

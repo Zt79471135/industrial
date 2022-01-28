@@ -34,6 +34,11 @@ public class AppSubCheckConfig extends BaseEntity
 
     private String adminList;
 
+
+
+
+    private int[] adminIntList;
+
     /** $column.columnComment */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Date addTime;
@@ -92,7 +97,13 @@ public class AppSubCheckConfig extends BaseEntity
     {
         return addTime;
     }
+    public int[] getAdminIntList() {
+        return adminIntList;
+    }
 
+    public void setAdminIntList(int[] adminIntList) {
+        this.adminIntList = adminIntList;
+    }
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)

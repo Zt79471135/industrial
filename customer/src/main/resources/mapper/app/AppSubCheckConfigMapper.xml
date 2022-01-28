@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.industrial.mapper.AppSubCheckConfigMapper">
     
     <resultMap type="com.industrial.domin.AppSubCheckConfig" id="AppSubCheckConfigResult">
-        <result property="Id"    column="id"    />
+        <result property="id"    column="id"    />
         <result property="configId"    column="config_id"    />
         <result property="ctype"    column="ctype"    />
         <result property="clevel"    column="clevel"    />

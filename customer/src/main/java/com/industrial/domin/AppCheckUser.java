@@ -20,7 +20,7 @@ public class AppCheckUser {
     /**
      * 关联表ID
      */
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
@@ -37,6 +37,7 @@ public class AppCheckUser {
 
     @TableField(value = "main_id")
     private Integer mainId;
+
 
     public static final String COL_ID = "id";
 
