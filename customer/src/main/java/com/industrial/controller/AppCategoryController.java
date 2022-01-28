@@ -144,19 +144,20 @@ public class AppCategoryController extends BaseController
     @PutMapping("/update")
     public AjaxResult edit(@RequestBody AppCategory appCategory)
     {
-        if (UserConstants.NOT_UNIQUE.equals(appCategoryService.checkDeptNameUnique(appCategory)))
+        Long parentId = appCategory.getParentId();
+        if (appCategoryService.checkDeptNameUnique(appCategory)=="1")
         {
             return AjaxResult.error("修改分类'" + appCategory.getCategoryName() + "'失败，分类名称已存在");
         }
-        else if (appCategory.getParentId().equals(appCategory.getId()))
+        else if (appCategory.getId() == parentId)
         {
             return AjaxResult.error("修改分类'" + appCategory.getCategoryName() + "'失败，上级分类不能是自己");
         }
-        else if (StringUtils.equals(UserConstants.DEPT_DISABLE, appCategory.getEnabled().toString())
-                && appCategoryService.selectNormalChildrenDeptById(appCategory.getId()) > 0)
-        {
-            return AjaxResult.error("该分类包含未停用的子分类！");
-        }
+//        else if (StringUtils.equals("1", appCategory.getEnabled().toString())
+//                && appCategoryService.selectNormalChildrenDeptById(appCategory.getId()) > 0)
+//        {
+//            return AjaxResult.error("该分类包含未停用的子分类！");
+//        }
         // 4位随机数
         long round = Math.round((Math.random() + 1) * 100);
         //分类编号

@@ -54,7 +54,7 @@
 
   <select id="hasChildByDeptId" parameterType="Long" resultType="int">
     select count(1) from app_category
-    where deleted = 0 and parent_id = #{deptId} limit 1
+    where deleted = 0 and parent_id = #{Id} limit 1
   </select>
 
   <select id="checkDeptNameUnique" resultMap="AppCategoryResult">
@@ -63,26 +63,26 @@
   </select>
 
   <select id="selectNormalChildrenDeptById" parameterType="Long" resultType="int">
-    select count(*) from app_category where status = 0 and deleted = 0 and find_in_set(#{deptId}, ancestors)
+    select count(*) from app_category where enabled = 0 and deleted = 0 and find_in_set(#{Id}, ancestors)
   </select>
 
   <update id="updateDeptChildren" parameterType="java.util.List">
     update app_category set ancestors =
     <foreach collection="depts" item="item" index="index"
-             separator=" " open="case dept_id" close="end">
-      when #{item.deptId} then #{item.ancestors}
+             separator=" " open="case id" close="end">
+      when #{item.id} then #{item.ancestors}
     </foreach>
     where id in
     <foreach collection="depts" item="item" index="index"
              separator="," open="(" close=")">
-      #{item.deptId}
+      #{item.id}
     </foreach>
   </update>
 
   <update id="updateDeptStatusNormal" parameterType="Long">
     update app_category set enabled = '0' where id in
-    <foreach collection="array" item="deptId" open="(" separator="," close=")">
-      #{deptId}
+    <foreach collection="array" item="Id" open="(" separator="," close=")">
+      #{Id}
     </foreach>
   </update>
 

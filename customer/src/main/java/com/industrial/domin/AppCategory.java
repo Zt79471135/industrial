@@ -7,7 +7,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.industrial.common.annotation.Excel;
 import com.industrial.common.annotation.Excels;
-import com.industrial.common.core.domain.entity.SysDept;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.industrial.common.core.domain.BaseEntity;
@@ -29,10 +28,6 @@ public class AppCategory extends BaseEntity
     @Excel(name = "序号", cellType = Excel.ColumnType.NUMERIC, prompt = "编号")
     private Long id;
 
-    /** 父分类id */
-    @Excel(name = "父分类id")
-    private Long parentId;
-
     /** 分类名称 */
     @Excel(name = "分类名称")
     private String categoryName;
@@ -40,6 +35,10 @@ public class AppCategory extends BaseEntity
     /** 描述 */
     @Excel(name = "描述")
     private String description;
+
+    /** 父分类id */
+    @Excel(name = "上级分类id")
+    private Long parentId;
 
     /** 分类编号 */
     @Excel(name = "分类编号")

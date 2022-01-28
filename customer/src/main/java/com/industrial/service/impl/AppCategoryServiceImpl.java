@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import com.industrial.common.constant.UserConstants;
 import com.industrial.common.core.text.Convert;
 import com.industrial.domin.TreeSelect;
-import com.industrial.common.core.domain.entity.SysDept;
 import com.industrial.common.utils.StringUtils;
 import com.industrial.common.utils.bean.BeanValidators;
 import com.industrial.common.vo.UpdateDeletedVo;
@@ -105,8 +104,8 @@ public class AppCategoryServiceImpl implements IAppCategoryService
     public String checkDeptNameUnique(AppCategory appCategory)
     {
         Long deptId = StringUtils.isNull(appCategory.getId()) ? -1L : appCategory.getId();
-        SysDept info = appCategoryMapper.checkDeptNameUnique(appCategory.getCategoryName(), appCategory.getParentId());
-        if (StringUtils.isNotNull(info) && info.getDeptId().longValue() != deptId.longValue())
+        AppCategory info = appCategoryMapper.checkDeptNameUnique(appCategory.getCategoryName(), appCategory.getParentId());
+        if (StringUtils.isNotNull(info) && info.getId().longValue() != deptId.longValue())
         {
             return UserConstants.NOT_UNIQUE;
         }
@@ -168,27 +167,27 @@ public class AppCategoryServiceImpl implements IAppCategoryService
     }
 
     /**
-     * 修改该部门的父级部门状态
+     * 修改该部门的父级分类状态
      *
-     * @param dept 当前部门
+     * @param category 当前分类
      */
-    private void updateParentDeptStatusNormal(AppCategory dept)
+    private void updateParentDeptStatusNormal(AppCategory category)
     {
-        String ancestors = dept.getAncestors();
-        Long[] deptIds = Convert.toLongArray(ancestors);
-        appCategoryMapper.updateDeptStatusNormal(deptIds);
+        String ancestors = category.getAncestors();
+        Long[] Ids = Convert.toLongArray(ancestors);
+        appCategoryMapper.updateDeptStatusNormal(Ids);
     }
 
     /**
      * 修改子元素关系
      *
-     * @param deptId 被修改的部门ID
+     * @param Id 被修改的ID
      * @param newAncestors 新的父ID集合
      * @param oldAncestors 旧的父ID集合
      */
-    public void updateDeptChildren(Long deptId, String newAncestors, String oldAncestors)
+    public void updateDeptChildren(Long Id, String newAncestors, String oldAncestors)
     {
-        List<AppCategory> children = appCategoryMapper.selectChildrenDeptById(deptId);
+        List<AppCategory> children = appCategoryMapper.selectChildrenDeptById(Id);
         for (AppCategory child : children)
         {
             child.setAncestors(child.getAncestors().replaceFirst(oldAncestors, newAncestors));

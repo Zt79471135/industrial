@@ -3,7 +3,6 @@ package com.industrial.service;
 import java.util.List;
 
 import com.industrial.domin.TreeSelect;
-import com.industrial.common.core.domain.entity.SysDept;
 import com.industrial.common.vo.UpdateDeletedVo;
 import com.industrial.common.vo.updateTypeVo;
 import com.industrial.domin.AppCategory;
