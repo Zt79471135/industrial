@@ -285,7 +285,10 @@ public class AppOrderServiceImpl implements AppOrderService {
                 QueryWrapper<AppCheckUser> qw = new QueryWrapper<>();
                 qw.lambda().eq(com.industrial.domin.AppCheckUser::getCheckId, cur.cid);
                 List<AppCheckUser> upUserList = appCheckUserMapper.selectList(qw);
-                List<AppOrderLog> hadUserList = orderLogMapper.selectOrderLogListForCheck(cur.clevel, orderNo);
+                AppOrderLog tempParam=new AppOrderLog();
+                tempParam.setLevel(cur.clevel);
+                tempParam.setOrderNo(orderNo);
+                List<AppOrderLog> hadUserList = orderLogMapper.selectAppOrderLogList(tempParam);
                 if (upUserList.size() == hadUserList.size()) {
                     curFlag = true;
                 }

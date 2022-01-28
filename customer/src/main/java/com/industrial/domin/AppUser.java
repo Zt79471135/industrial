@@ -85,7 +85,7 @@ public class AppUser extends BaseEntity
     private String phoneNum;
 
     /** 所在地区 */
-    @Excel(name = "所在地区")
+//    @Excel(name = "所在地区")
     private String addrArea;
 
     /** 单位地址 */
@@ -97,7 +97,6 @@ public class AppUser extends BaseEntity
     private String extend;
 
     /** 标志（0：禁用，1：启用) */
-    @Excel(name = "标志", readConverterExp = "标志（0：禁用，1：启用)")
     private Integer deleted;
 
     private String addrCode;

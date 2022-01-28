@@ -62,5 +62,4 @@ public interface AppOrderLogMapper extends BaseMapper<AppOrderLog>
      */
     public int deleteAppOrderLogByIds(Long[] ids);
 
-    List<AppOrderLog> selectOrderLogListForCheck(@Param("clevel")Integer clevel, @Param("orderNo") String orderNo);
 }
