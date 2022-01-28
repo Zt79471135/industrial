@@ -2,9 +2,7 @@ package com.industrial.service.impl;
 
 import java.util.List;
 import com.industrial.common.utils.DateUtils;
-import com.industrial.domin.AppOrderLog;
 import com.industrial.mapper.AppOrderLogMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.industrial.mapper.AppCheckMapper;
 import com.industrial.domin.AppCheck;
@@ -23,7 +21,7 @@ public class AppCheckServiceImpl implements IAppCheckService
 {
     @Resource
     private AppCheckMapper appCheckMapper;
-    @Autowired
+    @Resource
     private AppOrderLogMapper orderLogMapper;
 
     /**

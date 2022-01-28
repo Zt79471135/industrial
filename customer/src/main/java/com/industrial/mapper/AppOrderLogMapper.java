@@ -1,6 +1,8 @@
 package com.industrial.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.industrial.domin.AppOrderLog;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,7 +12,7 @@ import org.apache.ibatis.annotations.Param;
  * @author lishenkang
  * @date 2022-01-26
  */
-public interface AppOrderLogMapper 
+public interface AppOrderLogMapper extends BaseMapper<AppOrderLog>
 {
     /**
      * 查询log

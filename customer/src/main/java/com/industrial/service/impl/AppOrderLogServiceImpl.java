@@ -2,11 +2,13 @@ package com.industrial.service.impl;
 
 import java.util.List;
 import com.industrial.common.utils.DateUtils;
+import com.industrial.domin.AppOrderLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.industrial.mapper.AppOrderLogMapper;
-import com.industrial.domin.AppOrderLog;
 import com.industrial.service.IAppOrderLogService;
+
+import javax.annotation.Resource;
 
 /**
  * logService业务层处理
@@ -17,7 +19,7 @@ import com.industrial.service.IAppOrderLogService;
 @Service
 public class AppOrderLogServiceImpl implements IAppOrderLogService 
 {
-    @Autowired
+    @Resource
     private AppOrderLogMapper appOrderLogMapper;
 
     /**

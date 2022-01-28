@@ -3,7 +3,17 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.industrial.mapper.AppOrderLogMapper">
-    
+    <resultMap type="com.industrial.domin.AppOrderLog" id="BaseResultMap">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="sysRemark"    column="sys_remark"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="level"    column="level"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
     <resultMap type="com.industrial.domin.AppOrderLog" id="AppOrderLogResult">
         <result property="id"    column="id"    />
         <result property="userId"    column="user_id"    />
@@ -87,4 +97,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+
 </mapper>

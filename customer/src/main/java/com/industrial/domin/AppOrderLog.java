@@ -1,110 +1,103 @@
 package com.industrial.domin;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.util.Date;
+
 import com.industrial.common.annotation.Excel;
 import com.industrial.common.core.domain.BaseEntity;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * log对象 app_order_log
- * 
- * @author lishenkang
- * @date 2022-01-26
+ * @author zhu
+ * @date 2022年01月28日 9:56
  */
-public class AppOrderLog extends BaseEntity
-{
-    private static final long serialVersionUID = 1L;
+/**
+    * 订单动态表
+    */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@TableName(value = "app_order_log")
+public class AppOrderLog extends BaseEntity {
+    @TableId(value = "id", type = IdType.INPUT)
+    private Integer id;
 
-    /** $column.columnComment */
-    private Long id;
-
-    /** $column.columnComment */
+    /**
+     * 用户id
+     */
+    @TableField(value = "user_id")
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
-    private Long userId;
+    private Integer userId;
 
-    /** $column.columnComment */
+    /**
+     * 显示备注
+     */
+    @TableField(value = "remark")
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private String remark;
+
+    /**
+     * 系统备注
+     */
+    @TableField(value = "sys_remark")
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String sysRemark;
 
-    /** $column.columnComment */
+    /**
+     * 订单编号
+     */
+    @TableField(value = "order_no")
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String orderNo;
 
-    /** $column.columnComment */
+    /**
+     * 审核层级 其他为0
+     */
+    @TableField(value = "`level`")
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Integer level;
 
-    /** $column.columnComment */
+    /**
+     * 审核状态 其他为0
+     */
+    @TableField(value = "`status`")
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private Integer status;
 
-    public void setId(Long id) 
-    {
-        this.id = id;
-    }
+    /**
+     * 创建时间
+     */
+    @TableField(value = "create_time")
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    private Date createTime;
 
-    public Long getId() 
-    {
-        return id;
-    }
-    public void setUserId(Long userId) 
-    {
-        this.userId = userId;
-    }
+    /**
+     * 更新时间
+     */
+    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @TableField(value = "update_time")
+    private Date updateTime;
 
-    public Long getUserId() 
-    {
-        return userId;
-    }
-    public void setSysRemark(String sysRemark) 
-    {
-        this.sysRemark = sysRemark;
-    }
+    public static final String COL_ID = "id";
 
-    public String getSysRemark() 
-    {
-        return sysRemark;
-    }
-    public void setOrderNo(String orderNo)
-    {
-        this.orderNo = orderNo;
-    }
+    public static final String COL_USER_ID = "user_id";
 
-    public String getOrderNo()
-    {
-        return orderNo;
-    }
-    public void setLevel(Integer level) 
-    {
-        this.level = level;
-    }
+    public static final String COL_REMARK = "remark";
 
-    public Integer getLevel() 
-    {
-        return level;
-    }
-    public void setStatus(Integer status) 
-    {
-        this.status = status;
-    }
+    public static final String COL_SYS_REMARK = "sys_remark";
 
-    public Integer getStatus() 
-    {
-        return status;
-    }
+    public static final String COL_ORDER_NO = "order_no";
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("userId", getUserId())
-            .append("remark", getRemark())
-            .append("sysRemark", getSysRemark())
-            .append("orderNo", getOrderNo())
-            .append("level", getLevel())
-            .append("status", getStatus())
-            .append("createTime", getCreateTime())
-            .append("updateTime", getUpdateTime())
-            .toString();
-    }
+    public static final String COL_LEVEL = "level";
+
+    public static final String COL_STATUS = "status";
+
+    public static final String COL_CREATE_TIME = "create_time";
+
+    public static final String COL_UPDATE_TIME = "update_time";
 }

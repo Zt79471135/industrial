@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * 上传附件表
+ * @author 79471
  */
 @Data
 @AllArgsConstructor
@@ -25,7 +26,7 @@ public class AppImageFile {
     /**
      * 编号
      */
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
