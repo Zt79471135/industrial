@@ -1,6 +1,10 @@
 package com.industrial.service;
 
+import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.vo.FollowVo;
+import com.industrial.domin.User;
+
+import java.util.List;
 
 /**
  * @author zhu
@@ -18,4 +22,13 @@ public interface IAppFollowService {
      * 跟进任务通知
      */
     void executeList();
+
+
+
+    /**
+     * 查询跟进人员名单
+     * @return
+     */
+    List<User>  selectStaff(SysUser user);
+
 }

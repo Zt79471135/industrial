@@ -41,7 +41,7 @@ public class AppWorkOrderController {
      */
     @PostMapping("show")
     public ResponseResult<List<AppWorkOrder>> show(){
-        //workOrderService.show()
+        workOrderService.show();
         return null;
     }
 }

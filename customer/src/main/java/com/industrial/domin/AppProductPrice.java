@@ -21,7 +21,7 @@ public class AppProductPrice {
     /**
      * 商品报价表ID
      */
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**

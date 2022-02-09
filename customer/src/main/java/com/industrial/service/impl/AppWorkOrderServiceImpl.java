@@ -14,4 +14,9 @@ public class AppWorkOrderServiceImpl implements AppWorkOrderService {
 
         return false;
     }
+
+    @Override
+    public void show() {
+
+    }
 }

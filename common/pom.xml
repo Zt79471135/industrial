@@ -48,9 +48,11 @@
             <artifactId>pagehelper</artifactId>
             <version>5.2.0</version>
         </dependency>
-
-
-
+        <!--邮箱-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
         <!-- 自定义验证注解 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

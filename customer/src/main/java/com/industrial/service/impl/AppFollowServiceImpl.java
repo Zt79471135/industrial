@@ -1,14 +1,13 @@
 package com.industrial.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.industrial.common.core.domain.entity.SysDept;
+import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.vo.FollowVo;
-import com.industrial.domin.AppFollow;
-import com.industrial.domin.AppOrder;
-import com.industrial.domin.AppUserNotice;
-import com.industrial.mapper.AppFollowMapper;
-import com.industrial.mapper.AppOrderMapper;
-import com.industrial.mapper.AppUserNoticeMapper;
+import com.industrial.domin.*;
+import com.industrial.mapper.*;
 import com.industrial.service.IAppFollowService;
+import com.industrial.system.mapper.SysDeptMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,10 @@ public class AppFollowServiceImpl implements IAppFollowService {
     private AppOrderMapper orderMapper;
     @Resource
     private AppUserNoticeMapper userNoticeMapper;
-
+    @Resource
+    private SysDeptMapper deptMapper;
+    @Resource
+    private UserMapper userMapper;
     @Override
     public boolean insertFollow(FollowVo follow) {
         AppFollow appFollow = new AppFollow();
@@ -50,7 +52,6 @@ public class AppFollowServiceImpl implements IAppFollowService {
             Date now = new Date();
             long time = reminderTime.getTime();
             long nowTime = now.getTime();
-
             if (time - nowTime < 10000) {
                 follows.add(follow);
                 follow.setNotified((byte)1);
@@ -66,5 +67,21 @@ public class AppFollowServiceImpl implements IAppFollowService {
             userNotice.setMsg(msg);
             return userNoticeMapper.insert(userNotice);
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<User> selectStaff(SysUser user) {
+        Long deptId = user.getDeptId();
+        SysDept dept = deptMapper.selectDeptById(deptId);
+        String leader = dept.getLeader();
+        long uid = Long.parseLong(leader);
+        if (uid==user.getUserId()){
+            QueryWrapper<User> qw = new QueryWrapper<>();
+            qw.lambda().eq(User::getDeptId,deptId);
+            List<User> userList = userMapper.selectList(qw);
+            return userList;
+        }else {
+           return null;
+        }
     }
 }
