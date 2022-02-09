@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author zhu
- * @date 2022年02月09日 16:16
+ * @date 2022年02月09日 16:31
  */
 
 /**
@@ -33,6 +33,12 @@ public class AppWorkOrder {
      */
     @TableField(value = "`number`")
     private String number;
+
+    /**
+     * 关联ID
+     */
+    @TableField(value = "relate_id")
+    private Integer relateId;
 
     /**
      * 工单标题
@@ -91,6 +97,8 @@ public class AppWorkOrder {
     public static final String COL_ID = "id";
 
     public static final String COL_NUMBER = "number";
+
+    public static final String COL_RELATE_ID = "relate_id";
 
     public static final String COL_TITLE = "title";
 

@@ -6,6 +6,7 @@
     <!--@Table app_work_order-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="relate_id" jdbcType="INTEGER" property="relateId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="start_user" jdbcType="INTEGER" property="startUser" />
@@ -18,7 +19,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `number`, title, `type`, start_user, handling_user, create_time, update_time, 
+    id, `number`, relate_id, title, `type`, start_user, handling_user, create_time, update_time, 
     `status`, extent, deleted
   </sql>
 </mapper>
