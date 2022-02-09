@@ -11,6 +11,7 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="start_user" jdbcType="INTEGER" property="startUser" />
     <result column="handling_user" jdbcType="INTEGER" property="handlingUser" />
+    <result column="cc_user" jdbcType="VARCHAR" property="ccUser" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="status" jdbcType="TINYINT" property="status" />
@@ -19,7 +20,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `number`, relate_id, title, `type`, start_user, handling_user, create_time, update_time, 
-    `status`, extent, deleted
+    id, `number`, relate_id, title, `type`, start_user, handling_user, cc_user, create_time, 
+    update_time, `status`, extent, deleted
   </sql>
 </mapper>
