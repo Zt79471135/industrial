@@ -64,6 +64,9 @@ public class AppWorkOrder {
     @TableField(value = "handling_user")
     private Integer handlingUser;
 
+    @TableField(value = "cc_user")
+    private String ccUser;
+
     /**
      * 发起时间
      */
@@ -107,6 +110,8 @@ public class AppWorkOrder {
     public static final String COL_START_USER = "start_user";
 
     public static final String COL_HANDLING_USER = "handling_user";
+
+    public static final String COL_CC_USER = "cc_user";
 
     public static final String COL_CREATE_TIME = "create_time";
 
