@@ -4,12 +4,15 @@ import com.industrial.common.core.controller.BaseController;
 import com.industrial.common.core.domain.ResponseCode;
 import com.industrial.common.core.domain.ResponseResult;
 import com.industrial.common.dto.OrderDto;
+import com.industrial.common.dto.UserDto;
 import com.industrial.common.vo.FollowVo;
 import com.industrial.common.vo.OrderVo;
 import com.industrial.common.vo.ShiftVo;
 import com.industrial.domin.AppOrder;
+import com.industrial.domin.User;
 import com.industrial.service.AppOrderService;
 import com.industrial.service.IAppFollowService;
+import com.industrial.system.service.ISysUserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -103,6 +106,15 @@ public class AppOrderController extends BaseController {
             result = ResponseResult.error(ResponseCode.ERROR);
         }
         return result;
+    }
+
+    /**
+     * 通知人员
+     */
+    @GetMapping("select/team")
+    public ResponseResult<List<UserDto>> selectTeam() {
+        List<UserDto> userList = followService.selectTeam();
+        return ResponseResult.success(userList);
     }
 
     /**

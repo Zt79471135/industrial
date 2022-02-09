@@ -251,8 +251,8 @@ public class AppProductController extends BaseController {
     /**
      * 导入
      */
-    @PostMapping("/importStudent")
-    public AjaxResult importStudent(MultipartFile file, boolean updateSupport) throws Exception {
+    @PostMapping("/importProduct")
+    public AjaxResult importProduct(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AppProduct> util = new ExcelUtil<AppProduct>(AppProduct.class);
         List<AppProduct> productList = util.importExcel(file.getInputStream());
         String operName = getUsername();

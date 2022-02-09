@@ -3,6 +3,7 @@ package com.industrial.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.industrial.common.core.domain.entity.SysDept;
 import com.industrial.common.core.domain.entity.SysUser;
+import com.industrial.common.dto.UserDto;
 import com.industrial.common.vo.FollowVo;
 import com.industrial.domin.*;
 import com.industrial.mapper.*;
@@ -83,5 +84,21 @@ public class AppFollowServiceImpl implements IAppFollowService {
         }else {
            return null;
         }
+    }
+
+    @Override
+    public List<UserDto> selectTeam() {
+        QueryWrapper<User> qw = new QueryWrapper<>();
+        List<User> userList = userMapper.selectList(qw);
+        List<UserDto> userDtoList = userList.stream().map(user -> {
+            Long deptId = user.getDeptId();
+            SysDept dept = deptMapper.selectDeptById(deptId);
+            String deptName = dept.getDeptName();
+            UserDto userDto = new UserDto();
+            BeanUtils.copyProperties(user, userDto);
+            userDto.setDeptName(deptName);
+            return userDto;
+        }).collect(Collectors.toList());
+        return userDtoList;
     }
 }

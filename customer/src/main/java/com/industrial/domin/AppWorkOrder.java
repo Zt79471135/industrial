@@ -11,7 +11,11 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author zhu
- * @date 2022年01月27日 15:13
+ * @date 2022年02月09日 16:16
+ */
+
+/**
+ * 工单主表
  */
 @Data
 @AllArgsConstructor
@@ -43,6 +47,12 @@ public class AppWorkOrder {
     private Integer type;
 
     /**
+     * 发起人
+     */
+    @TableField(value = "start_user")
+    private Integer startUser;
+
+    /**
      * 处理人员
      */
     @TableField(value = "handling_user")
@@ -54,6 +64,9 @@ public class AppWorkOrder {
     @TableField(value = "create_time")
     private Date createTime;
 
+    /**
+     * 更新时间
+     */
     @TableField(value = "update_time")
     private Date updateTime;
 
@@ -82,6 +95,8 @@ public class AppWorkOrder {
     public static final String COL_TITLE = "title";
 
     public static final String COL_TYPE = "type";
+
+    public static final String COL_START_USER = "start_user";
 
     public static final String COL_HANDLING_USER = "handling_user";
 

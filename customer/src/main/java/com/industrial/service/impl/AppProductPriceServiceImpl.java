@@ -6,7 +6,6 @@ import com.industrial.domin.AppProductPrice;
 import com.industrial.mapper.AppProductMapper;
 import com.industrial.mapper.AppProductPriceMapper;
 import com.industrial.service.AppProductPriceService;
-import com.industrial.service.AppProductService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 

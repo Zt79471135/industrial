@@ -5,7 +5,7 @@ import com.industrial.domin.AppWorkOrder;
 
 /**
  * @author zhu
- * @date 2022年01月27日 15:13
+ * @date 2022年02月09日 16:16
  */
 public interface AppWorkOrderMapper extends BaseMapper<AppWorkOrder> {
 }

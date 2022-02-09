@@ -24,6 +24,9 @@ public class AppFollowController extends BaseController {
     @Resource
     private IAppFollowService followService;
 
+    /**
+     * 定时任务,查看数据库的时间
+     */
     @PostMapping("/execute")
     public void execute() {
         followService.executeList();
