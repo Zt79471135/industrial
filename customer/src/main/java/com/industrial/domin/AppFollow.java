@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author zhu
- * @date 2022年01月24日 17:16
+ * @date 2022年02月10日 10:08
  */
 
 /**
@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @TableName(value = "app_follow")
 public class AppFollow {
+    public static final String COL_FOLLOW_ORDER = "follow_order";
     /**
      * 跟进任务表ID
      */
@@ -29,16 +30,28 @@ public class AppFollow {
     private Integer id;
 
     /**
-     * 跟进订单
+     * 跟进id
      */
-    @TableField(value = "follow_order")
-    private Integer followOrder;
+    @TableField(value = "follow_id")
+    private Integer followId;
+
+    /**
+     * 1.客户,2.联系人,3.订单,4.费用
+     */
+    @TableField(value = "follow_type")
+    private Integer followType;
 
     /**
      * 跟进人
      */
     @TableField(value = "follow_user")
     private Integer followUser;
+
+    /**
+     * 跟进方式
+     */
+    @TableField(value = "follow_way")
+    private String followWay;
 
     /**
      * 下次跟进时间
@@ -72,9 +85,13 @@ public class AppFollow {
 
     public static final String COL_ID = "id";
 
-    public static final String COL_FOLLOW_ORDER = "follow_order";
+    public static final String COL_FOLLOW_ID = "follow_id";
+
+    public static final String COL_FOLLOW_TYPE = "follow_type";
 
     public static final String COL_FOLLOW_USER = "follow_user";
+
+    public static final String COL_FOLLOW_WAY = "follow_way";
 
     public static final String COL_FOLLOW_TIME = "follow_time";
 

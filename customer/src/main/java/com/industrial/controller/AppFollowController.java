@@ -21,6 +21,13 @@ import java.util.List;
 @RestController
 @RequestMapping("follow")
 public class AppFollowController extends BaseController {
+    public static final int CLIENT_FOLLOW = 1;
+    public static final int CONTACTS_FOLLOW = 2;
+    public static final int ORDER_FOLLOW = 3;
+    public static final int COST_FOLLOW = 4;
+
+
+
     @Resource
     private IAppFollowService followService;
 

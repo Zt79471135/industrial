@@ -5,6 +5,7 @@ import com.industrial.common.core.domain.entity.SysDept;
 import com.industrial.common.core.domain.entity.SysUser;
 import com.industrial.common.dto.UserDto;
 import com.industrial.common.vo.FollowVo;
+import com.industrial.controller.AppFollowController;
 import com.industrial.domin.*;
 import com.industrial.mapper.*;
 import com.industrial.service.IAppFollowService;
@@ -35,18 +36,21 @@ public class AppFollowServiceImpl implements IAppFollowService {
     @Resource
     private UserMapper userMapper;
     @Override
-    public boolean insertFollow(FollowVo follow) {
-        AppFollow appFollow = new AppFollow();
-        BeanUtils.copyProperties(follow, appFollow);
-        long aheadTime = follow.getFollowTime().getTime() - follow.getAheadTime();
+    public boolean insertFollow(FollowVo followVo,int type) {
+        AppFollow follow = new AppFollow();
+        BeanUtils.copyProperties(followVo, follow);
+        long aheadTime = followVo.getFollowTime().getTime() - followVo.getAheadTime();
         Date date = new Date(aheadTime);
-        appFollow.setReminderTime(date);
-        return followMapper.insert(appFollow) == 1;
+        follow.setReminderTime(date);
+        follow.setFollowType(type);
+        return followMapper.insert(follow) == 1;
     }
 
     @Override
     public void executeList() {
-        List<AppFollow> followList = followMapper.selectList(new QueryWrapper<>());
+        QueryWrapper<AppFollow> qw = new QueryWrapper<>();
+        qw.lambda().eq(AppFollow::getFollowType, AppFollowController.ORDER_FOLLOW);
+        List<AppFollow> followList = followMapper.selectList(qw);
         List<AppFollow> follows = new ArrayList<AppFollow>();
         for (AppFollow follow : followList) {
             Date reminderTime = follow.getReminderTime();
@@ -60,7 +64,7 @@ public class AppFollowServiceImpl implements IAppFollowService {
             }
         }
         List<Integer> integerList = follows.stream().map(follow -> {
-            AppOrder order = orderMapper.selectById(follow.getFollowOrder());
+            AppOrder order = orderMapper.selectById(follow.getFollowId());
             String orderNo = order.getOrderNo();
             String msg = "你有" + orderNo + "订单需要处理";
             AppUserNotice userNotice = new AppUserNotice();

@@ -18,7 +18,7 @@ public interface IAppFollowService {
      * @param follow
      * @return
      */
-    boolean insertFollow(FollowVo follow);
+    boolean insertFollow(FollowVo follow,int type);
 
     /**
      * 跟进任务通知

@@ -78,7 +78,7 @@ public class AppOrderController extends BaseController {
                 /*
                   建立跟进任务
                  */
-                if (followService.insertFollow(follow)) {
+                if (followService.insertFollow(follow,AppFollowController.ORDER_FOLLOW)) {
                     result = ResponseResult.success();
                 } else {
                     result = ResponseResult.error(ResponseCode.ERROR);
