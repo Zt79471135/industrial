@@ -218,7 +218,7 @@ public class AppActivityServiceImpl implements AppActivityService {
                 for (Integer userId : userIds) {
                     activityUser.setUserId(userId);
                     SysUser sysUser = userService.selectUserById(Long.parseLong(userId.toString()));
-                    activityUser.setUserName(sysUser.getUserName());
+                    activityUser.setUserName(sysUser.getNickName());
                     activityUserMapper.insert(activityUser);  //添加活动参与用户
                 }
             }
@@ -264,7 +264,7 @@ public class AppActivityServiceImpl implements AppActivityService {
                     activityUser.setActivityId(activity.getId());
                     activityUser.setUserId(userId);
                     SysUser sysUser = userService.selectUserById(Long.parseLong(userId.toString()));
-                    activityUser.setUserName(sysUser.getUserName());
+                    activityUser.setUserName(sysUser.getNickName());
                     activityUserMapper.insert(activityUser);  //添加活动参与用户
                 }
             }
