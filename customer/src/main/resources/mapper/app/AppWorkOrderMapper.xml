@@ -20,7 +20,6 @@
     <result column="deleted" jdbcType="TINYINT" property="deleted"/>
     <result property="startUserName" column="startUserName"/>
     <result property="handlingUserName" column="handlingUserName"/>
-    <result property="hours" column="hours"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
@@ -55,8 +54,8 @@
       <if test="status != null ">and t.status = #{status}</if>
       <if test="type != null ">and t.type = #{type}</if>
       <if test="extent != null">and t.extent = #{extent}</if>
-      <if test="start_user != null  and start_user != ''">and t.start_user = #{start_user}</if>
-      <if test="handling_user != null  and handling_user != ''">and t.handling_user = #{handling_user}</if>
+      <if test="startUser != null  and startUser != ''">and t.start_user = #{startUser}</if>
+      <if test="handlingUser != null  and handlingUser != ''">and t.handling_user = #{handlingUser}</if>
       <if test="cc_user != null  and cc_user != ''">and t.cc_user like concat('%', #{cc_user}, '%')</if>
       <if test="ids != null  and ids != ''">
         and id in
@@ -65,8 +64,8 @@
         </foreach>
       </if>
     </where>
-    <if test="hours != null and hours&gt;0 ">and hours &gt;= TIMESTAMPDIFF(HOUR, t.create_time, now())</if>
-    <if test="hours != null and hours&lt;0 ">and hours &lt; TIMESTAMPDIFF(HOUR, t.create_time, now())</if>
+    <if test="hours != null and hours&gt;0 ">and #{hours} &gt;= TIMESTAMPDIFF(HOUR, t.create_time, now())</if>
+    <if test="hours != null and hours&lt;0 ">and #{hours} &lt; TIMESTAMPDIFF(HOUR, t.create_time, now())</if>
     <if test="1=1">and t.deleted=0</if>
   </select>
   <update id="deleteAppWorkOrderByIds" parameterType="String">
