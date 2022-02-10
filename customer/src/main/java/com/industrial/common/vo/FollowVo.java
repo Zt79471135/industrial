@@ -1,5 +1,8 @@
 package com.industrial.common.vo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.util.Date;
@@ -14,10 +17,6 @@ public class FollowVo {
      * 跟进任务表ID
      */
     private Integer id;
-    /**
-     * 跟进订单
-     */
-    private Integer followOrder;
     /**
      * 跟进人
      */
@@ -34,4 +33,14 @@ public class FollowVo {
      * 提前通知时间(毫秒)
      */
     private Long aheadTime;
+
+    /**
+     * 跟进id
+     */
+    private Integer followId;
+    /**
+     * 跟进方式
+     */
+    private String followWay;
+
 }

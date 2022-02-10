@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.industrial.common.annotation.Excel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,60 +30,70 @@ public class AppProduct {
      * 主键
      */
     @TableId(value = "id", type = IdType.AUTO)
+    @Excel(name = "分类序号", cellType = Excel.ColumnType.NUMERIC, prompt = "分类编号")
     private Integer id;
 
     /**
      * 商品编号
      */
     @TableField(value = "`number`")
+    @Excel(name = "商品编号")
     private String number;
 
     /**
      * 商品名称
      */
     @TableField(value = "`name`")
+    @Excel(name = "商品名称")
     private String name;
 
     /**
      * 商品类别
      */
     @TableField(value = "category_id")
+    @Excel(name = "商品类别")
     private Integer categoryId;
 
     /**
      * 库存量
      */
     @TableField(value = "stock")
+    @Excel(name = "库存量")
     private Integer stock;
 
     /**
      * 单价
      */
     @TableField(value = "price")
+    @Excel(name = "单价")
     private BigDecimal price;
 
     /**
      * 售后联系人
      */
     @TableField(value = "contacts")
+    @Excel(name = "售后联系人")
     private String contacts;
 
     /**
      * 售后服务电话
      */
     @TableField(value = "telephone")
+    @Excel(name = "售后服务电话")
     private String telephone;
 
     /**
      * 单位编号
      */
     @TableField(value = "unit_id")
+    @Excel(name = "单位编号")
     private String unitId;
 
     /**
      * 对内价格
      */
     @TableField(value = "floor_price")
+    @Excel(name = "对内价格")
     private BigDecimal floorPrice;
 
     /**

@@ -94,7 +94,11 @@ mybatis-plus:
   type-aliases-package: com.industrial.**.domain
   mapper-locations: classpath*:mapper/**/*Mapper.xml
   config-location: classpath:/mybatis/mybatis-config.xml
-
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 0
+      logic-not-delete-value: 1
 
 # PageHelper分页插件
 pagehelper: 

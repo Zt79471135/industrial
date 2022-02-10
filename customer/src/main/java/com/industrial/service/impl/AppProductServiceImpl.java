@@ -138,7 +138,7 @@ public class AppProductServiceImpl implements AppProductService {
         if (productMapper.insert(product) == 0) {
             throw new ServiceException("商品添加失败");
         }
-        if (imgList != null) {
+        if (imgList!=null){
             AppProductFile productFile = new AppProductFile();
             productFile.setProductId(product.getId());
             List<Integer> integerList = imgList.stream().map(id -> {
@@ -146,10 +146,11 @@ public class AppProductServiceImpl implements AppProductService {
                 return productFileMapper.insert(productFile);
             }).collect(Collectors.toList());
             return imgList.size() == integerList.size();
-        } else {
+        }else {
             return true;
         }
     }
+
     /**
      * 删除
      *
@@ -191,6 +192,7 @@ public class AppProductServiceImpl implements AppProductService {
                 QueryWrapper<AppProductFile> wrapper = new QueryWrapper<>();
                 wrapper.lambda().eq(AppProductFile::getProductId, product.getId());
                 int delete = productFileMapper.delete(wrapper);
+                System.out.println("delete = " + delete);
                 if (delete > 0) {
                     AppProductFile productFile = new AppProductFile();
                     productFile.setProductId(product.getId());

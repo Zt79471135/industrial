@@ -6,12 +6,14 @@ import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.core.domain.ResponseCode;
 import com.industrial.common.core.domain.ResponseResult;
 import com.industrial.common.dto.ProductDto;
+import com.industrial.common.dto.ProductPriceDto;
 import com.industrial.common.pojo.ProductExcel;
 import com.industrial.common.utils.poi.ExcelUtil;
 import com.industrial.common.vo.CheckVo;
 import com.industrial.common.vo.EnableVo;
 import com.industrial.common.vo.ProductVo;
 import com.industrial.domin.AppProduct;
+import com.industrial.domin.AppProductPrice;
 import com.industrial.service.AppProductPriceService;
 import com.industrial.service.AppProductService;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +41,7 @@ public class AppProductController extends BaseController {
     public static final Byte PUTAWAY_STATUS = 3;
     public static final Byte SOLD_OUT_STATUS = 4;
     public static final String DEFAULT_IMAGE_ADDRESS = "Default image address";
+
     /**
      * 根据ID查询商品详情
      */
@@ -49,6 +52,7 @@ public class AppProductController extends BaseController {
         result = ResponseResult.success(productDto);
         return result;
     }
+
     /**
      * 根据分类ID查询与商品名称
      * status = 3 已经上架的商品
@@ -62,6 +66,7 @@ public class AppProductController extends BaseController {
         result = ResponseResult.success(productDto);
         return result;
     }
+
     /**
      * 根据状态查询商品
      * status = 1 保存商品
@@ -76,6 +81,7 @@ public class AppProductController extends BaseController {
         result = ResponseResult.success(productDto);
         return result;
     }
+
     /**
      * 保存商品
      * 成为保存商品
@@ -91,6 +97,7 @@ public class AppProductController extends BaseController {
         }
         return result;
     }
+
     /**
      * 商品审核
      * 成功 status = 3 上架商品
@@ -110,6 +117,7 @@ public class AppProductController extends BaseController {
         }
         return result;
     }
+
     /**
      * 商品删除
      *
@@ -127,10 +135,12 @@ public class AppProductController extends BaseController {
         return result;
 
     }
+
     /**
      * 商品禁用与启用
      * false 禁用 true 启用
      * 状态为0为禁用
+     *
      * @param enableVo
      * @return
      */
@@ -197,12 +207,12 @@ public class AppProductController extends BaseController {
     }
 
     /**
-     * 商品报价
+     * 编辑商品报价
      */
     @PostMapping("prices")
-    public ResponseResult prices() {
+    public ResponseResult prices(@RequestBody List<AppProductPrice> productPriceList) {
         ResponseResult result = null;
-        if (productPriceService.selectList()) {
+        if (productPriceService.update(productPriceList)) {
             result = ResponseResult.success();
         } else {
             result = ResponseResult.error(ResponseCode.ERROR);
@@ -211,10 +221,19 @@ public class AppProductController extends BaseController {
     }
 
     /**
+     * 商品报价展示
+     */
+    @PostMapping("prices/show")
+    public ResponseResult<List<ProductPriceDto>> pricesShow(@RequestBody List<Integer> productPriceId) {
+        List<ProductPriceDto> productPriceDtoList = productPriceService.selectList(productPriceId);
+        return ResponseResult.success(productPriceDtoList);
+    }
+
+    /**
      * 导出商品分类列表
      */
     @PostMapping("/export")
-    public void export(HttpServletResponse response,@RequestBody List<Integer> ids) {
+    public void export(HttpServletResponse response, @RequestBody List<Integer> ids) {
         List<ProductExcel> productList = productService.selectProductExcelList(ids);
         ExcelUtil<ProductExcel> util = new ExcelUtil<ProductExcel>(ProductExcel.class);
         util.exportExcel(response, productList, "商品数据");
@@ -232,8 +251,8 @@ public class AppProductController extends BaseController {
     /**
      * 导入
      */
-    @PostMapping("/importStudent")
-    public AjaxResult importStudent(MultipartFile file, boolean updateSupport) throws Exception {
+    @PostMapping("/importProduct")
+    public AjaxResult importProduct(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<AppProduct> util = new ExcelUtil<AppProduct>(AppProduct.class);
         List<AppProduct> productList = util.importExcel(file.getInputStream());
         String operName = getUsername();

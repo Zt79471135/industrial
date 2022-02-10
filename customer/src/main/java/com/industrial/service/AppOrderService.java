@@ -4,6 +4,7 @@ import com.industrial.common.core.domain.model.LoginUser;
 import com.industrial.common.dto.OrderDto;
 import com.industrial.common.vo.OrderVo;
 import com.industrial.common.vo.ShiftVo;
+import com.industrial.domin.User;
 
 import java.util.List;
 
@@ -62,4 +63,6 @@ public interface AppOrderService {
      * @return
      */
     boolean remove(Integer orderId);
+
+
 }
