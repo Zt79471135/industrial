@@ -41,10 +41,16 @@ public class AppActivityLog {
     private String logContents;
 
     /**
-     * 创建人
+     * 创建ID
      */
     @TableField(value = "create_id")
     private Integer createId;
+
+    /**
+     * 创建人
+     */
+    @TableField(value = "create_name")
+    private String createName;
 
     /**
      * 创建时间
@@ -59,6 +65,8 @@ public class AppActivityLog {
     public static final String COL_LOG_CONTENTS = "log_contents";
 
     public static final String COL_CREATE_ID = "create_id";
+
+    public static final String COL_CREATE_NAME = "create_name";
 
     public static final String COL_CREATE_TIME = "create_time";
 }

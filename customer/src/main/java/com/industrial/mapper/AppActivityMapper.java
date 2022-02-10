@@ -43,6 +43,14 @@ public interface AppActivityMapper extends BaseMapper<AppActivity> {
         public int updateAppActivity(AppActivity appActivity);
 
         /**
+         * 更新活动状态
+         *
+         * @param appActivity 活动
+         * @return 结果
+         */
+        public int updateActivityStatus(AppActivity appActivity);
+
+        /**
          * 删除活动
          *
          * @param id 活动主键

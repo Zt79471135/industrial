@@ -6,6 +6,8 @@ import com.industrial.common.dto.ActivityDto;
 import com.industrial.common.dto.ProductDto;
 import com.industrial.common.exception.ServiceException;
 import com.industrial.common.vo.ActivityVo;
+import com.industrial.common.vo.ActivityFileVo;
+import com.industrial.controller.AppProductController;
 import com.industrial.domin.*;
 import com.industrial.mapper.*;
 import com.industrial.mapper.AppProductFileMapper;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.Resource;
 import javax.xml.crypto.Data;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,8 @@ public class AppActivityServiceImpl implements AppActivityService {
     private AppActivityMapper activityMapper;
     @Resource
     private AppActivityUserMapper activityUserMapper;
+    @Resource
+    private AppActivityLogMapper activityLogMapper;
     @Resource
     private SysUserMapper sysUserMapper;
     @Autowired
@@ -83,6 +88,8 @@ public class AppActivityServiceImpl implements AppActivityService {
 
         QueryWrapper<com.industrial.domin.AppActivity> qw = new QueryWrapper<>();
 
+        //存在的记录
+        qw.lambda().eq(com.industrial.domin.AppActivity::getDeleted, 0);
         //活动类型
         if (activityType != 0) {
             qw.lambda().eq(com.industrial.domin.AppActivity::getActivityType, activityType);
@@ -125,9 +132,9 @@ public class AppActivityServiceImpl implements AppActivityService {
         QueryWrapper<DictData> queryWrapper = null;
         QueryWrapper<DictData> queryWrapper_status = null;
         /**
-         *查询用户
+         *查询负责人
          */
-        SysUser user = sysUserMapper.selectUserById((long) activity.getHeadUser());
+        SysUser user = sysUserMapper.selectUserById(Long.valueOf(activity.getHeadUser()));
         /**
          * 查询活动类型
          */
@@ -148,30 +155,44 @@ public class AppActivityServiceImpl implements AppActivityService {
         String dictLabel_status = dictData_status.getDictLabel();
         activityDto.setActStatuName(dictLabel_status);
 
-        //用户实体
+        //负责人名称
+        activityDto.setHeadUserName(user.getNickName());
         activityDto.setUser(user);
         BeanUtils.copyProperties(activity, activityDto);
         return activityDto;
     }
 
     /**
-     * 查询活动
+     * 查询活动详情
      *
      * @param activityId 活动主键
      * @return 活动
      */
     @Override
     public ActivityDto selectActivityById(Integer activityId) {
+        //活动信息
         AppActivity appActivity = activityMapper.selectById(activityId);
         if (appActivity != null) {
-           // SysUser user = sysUserMapper.selectUserById(Long.valueOf(appActivity.getHeadUser()));
+            //查询负责人
+            SysUser user = sysUserMapper.selectUserById(Long.valueOf(appActivity.getHeadUser()));
+
+            //活动用户列表
             QueryWrapper<AppActivityUser> qw = new QueryWrapper<>();
             qw.lambda().eq(AppActivityUser::getActivityId, activityId);
             List<AppActivityUser> activityUserList = activityUserMapper.selectList(qw);
+            //活动日志
+            QueryWrapper<AppActivityLog> qw_AppActivityLog = new QueryWrapper<>();
+            qw_AppActivityLog.lambda().eq(AppActivityLog::getActivityId, activityId);
+            List<AppActivityLog> activityLogList = activityLogMapper.selectList(qw_AppActivityLog);
 
             ActivityDto activityDto = new ActivityDto();
+            activityDto.setActivityUserList(activityUserList);//活动用户列表
+            activityDto.setActivityLogList(activityLogList); //活动日志
+            //负责人名称
+            activityDto.setHeadUserName(user.getNickName());
+
             BeanUtils.copyProperties(appActivity, activityDto);
-            activityDto.setActivityUserList(activityUserList);
+
 
             return activityDto;
         } else {
@@ -246,8 +267,94 @@ public class AppActivityServiceImpl implements AppActivityService {
         return  ret;
     }
 
+    /**
+     * 更新活动信息
+     *
+     * @param appActivity 活动
+     * @return 结果
+     */
+    @Override
+    public boolean updateActivityById(AppActivity appActivity) {
+        int ret = 0;
+        //ret = activityMapper.updateActivityStatus(appActivity);
+        ret = activityMapper.updateById(appActivity);
+        if(ret == 1) {
+            return true;
+        }
+        else {
+            throw new ServiceException();
+        }
+    }
+
+    /**
+     * 添加活动日志
+     *
+     * @param activityLog 活动
+     * @return 结果
+     */
+    @Override
+    public boolean insertActivityLog(AppActivityLog activityLog) {
+        int ret = 0;
+        if (activityLog.getCreateId() != null) {
+            SysUser sysUser = userService.selectUserById(Long.parseLong(activityLog.getCreateId().toString()));
+            activityLog.setCreateName(sysUser.getUserName());
+            ret = activityLogMapper.insert(activityLog);
+        }
+
+        if(ret == 1) {
+            return true;
+        }
+        else {
+            throw new ServiceException();
+        }
+    }
+
+    /**
+     * 根据活动ID删除活动
+     * @param activityId
+     * @return
+     */
     @Override
     public boolean deleteActivityById(Integer activityId) {
-        return activityMapper.deleteById(activityId) == 1;
+
+        //return activityMapper.deleteById(activityId) == 1;
+        int ret = 0;
+        AppActivity appActivity = new AppActivity();
+        appActivity.setId(activityId);
+        Byte Deleted = 1;
+        appActivity.setDeleted(Deleted);//逻辑删除状态
+        ret = activityMapper.deleteById(activityId);
+        if(ret == 1) {
+            return true;
+        }
+        else {
+            throw new ServiceException();
+        }
     }
+
+    //添加活动文件
+    @Override
+    public boolean insertActivityFile(ActivityFileVo activityFileVo)
+    {
+        //添加活动附件
+        Integer[] imgIds = activityFileVo.getFileIds();
+        List<Integer> imgList = null;
+        if (imgIds != null) {
+            imgList = Arrays.stream(imgIds).collect(Collectors.toList());
+        }
+        if (imgList != null) {
+            AppActivityFile activityFile = new AppActivityFile();
+            activityFile.setActivityId(activityFileVo.getId());
+            activityFile.setRemark(activityFileVo.getRemark());
+            List<Integer> intList = imgList.stream().map(id -> {
+                activityFile.setFileId(id);
+                return activityFileMapper.insert(activityFile);
+            }).collect(Collectors.toList());
+            return imgList.size() == intList.size();
+        } else {
+            return true;
+        }
+
+    }
+
 }

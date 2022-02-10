@@ -162,6 +162,11 @@
     where id = #{id}
   </update>
 
+  <update id="updateActivityStatus"  parameterType="com.industrial.domin.AppActivity">
+    update app_activity set activity_status = #{activityStatus}
+    where id = #{id}
+  </update>
+
   <delete id="deleteAppActivityById" parameterType="Long">
     delete from app_activity where id = #{id}
   </delete>

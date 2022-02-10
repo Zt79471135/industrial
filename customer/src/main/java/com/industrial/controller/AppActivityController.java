@@ -4,8 +4,11 @@ import com.industrial.common.constant.UserConstants;
 import com.industrial.common.core.domain.ResponseCode;
 import com.industrial.common.core.domain.ResponseResult;
 import com.industrial.common.dto.ActivityDto;
+import com.industrial.common.utils.DateUtils;
 import com.industrial.common.utils.StringUtils;
+import com.industrial.common.vo.ActivityFileVo;
 import com.industrial.common.vo.ActivityVo;
+import com.industrial.domin.AppActivityLog;
 import com.industrial.domin.AppCategory;
 import com.industrial.service.AppActivityService;
 import org.springframework.web.bind.annotation.*;
@@ -78,6 +81,7 @@ public class AppActivityController extends BaseController {
         }
         return result;
     }
+
     /**
      * 修改活动
      */
@@ -93,10 +97,75 @@ public class AppActivityController extends BaseController {
     /**
      * 删除活动
      */
-    @PostMapping("/remove/{id}")
+    @DeleteMapping("/remove/{id}")
     public ResponseResult<ActivityDto> remove(@PathVariable Integer activityId) {
         ResponseResult<ActivityDto> result = null;
         if (activityService.deleteActivityById(activityId)) {
+            result = ResponseResult.success();
+        }else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
+
+    /**
+     * 更新活动状态(终至活动、锁定活动)
+     */
+    @PostMapping("/updateStatus")
+    public ResponseResult<AppActivity> updateStatus(@RequestBody AppActivity appActivity) {
+        ResponseResult<AppActivity> result = null;
+        if (activityService.updateActivityById(appActivity)) {
+            result = ResponseResult.success();
+        }else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
+
+    /**
+     * 更新总结信息
+     */
+    @PostMapping("/updateConclusion")
+    public ResponseResult<AppActivity> updateConclusion(@RequestBody AppActivity appActivity) {
+        ResponseResult<AppActivity> result = null;
+        Long operId = getUserId();
+        //String operName = getUsername();
+        appActivity.setConclusionPerson(operId);
+        appActivity.setConclusionTime(DateUtils.getNowDate());
+
+        if (activityService.updateActivityById(appActivity)) {
+            result = ResponseResult.success();
+        }else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
+
+    /**
+     * 添加活动日志
+     */
+    @PostMapping("/insertActivityLog")
+    public ResponseResult<AppActivityLog> insertActivityLog(@RequestBody AppActivityLog activityLog) {
+        ResponseResult<AppActivityLog> result = null;
+        Long operId = getUserId();
+        String operName = getUsername();
+        activityLog.setCreateId(operId.intValue());
+        activityLog.setCreateName(operName);
+        if (activityService.insertActivityLog(activityLog)) {
+            result = ResponseResult.success();
+        }else {
+            result = ResponseResult.error(ResponseCode.ERROR);
+        }
+        return result;
+    }
+
+    /**
+     * 上传活动附件
+     */
+    @PostMapping("/insertActivityFile")
+    public ResponseResult<AppActivity> insertActivityFile(@RequestBody ActivityFileVo activityFileVo) {
+        ResponseResult<AppActivity> result = null;
+        if (activityService.insertActivityFile(activityFileVo)) {
             result = ResponseResult.success();
         }else {
             result = ResponseResult.error(ResponseCode.ERROR);

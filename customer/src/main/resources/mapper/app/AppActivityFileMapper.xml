@@ -9,9 +9,10 @@
     <result column="activity_id" jdbcType="INTEGER" property="activityId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, file_id, activity_id, create_time, deleted
+    id, file_id, activity_id, create_time, deleted,remark
   </sql>
 </mapper>

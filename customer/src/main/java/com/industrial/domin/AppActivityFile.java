@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
+
+import com.industrial.common.annotation.Excel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,6 +41,11 @@ public class AppActivityFile {
     @TableField(value = "activity_id")
     private Integer activityId;
 
+    /** 备注 */
+    @Excel(name = "备注")
+    @TableField(value = "remark")
+    private String remark;
+
     /**
      * 创建时间
      */
@@ -57,4 +64,6 @@ public class AppActivityFile {
     public static final String COL_CREATE_TIME = "create_time";
 
     public static final String COL_DELETED = "deleted";
+
+    public static final String COL_REMARK = "remark";
 }

@@ -1,4 +1,6 @@
 package com.industrial.service;
+import com.industrial.common.vo.ActivityFileVo;
+import com.industrial.domin.AppActivityLog;
 import com.industrial.mapper.AppActivityMapper;
 import com.industrial.domin.AppActivity;
 import com.industrial.common.dto.ActivityDto;
@@ -48,4 +50,22 @@ public interface AppActivityService {
      * @return
      */
     boolean deleteActivityById(Integer  activityId);
+
+    /**
+     * 更新活动信息
+     *
+     * @param appActivity 活动
+     * @return 结果
+     */
+    public boolean updateActivityById(AppActivity appActivity);
+
+    /**
+     * 添加活动日志
+     *
+     * @param activityLog 活动
+     * @return 结果
+     */
+    public boolean insertActivityLog(AppActivityLog activityLog);
+
+    public boolean insertActivityFile(ActivityFileVo activityFileVo);
 }
