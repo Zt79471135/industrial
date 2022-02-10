@@ -54,7 +54,10 @@ public class ResponseResult<T>{
      * @return
      */
     public static<T> ResponseResult<T> error(T date,ResponseCode responseCode) {
-        return result(date,ResponseCode.SUCCESS);
+        return result(date,ResponseCode.ERROR);
+    }
+    public static<T> ResponseResult<T> error() {
+        return error(ResponseCode.ERROR);
     }
     /**
      * 不带数据的参数返回

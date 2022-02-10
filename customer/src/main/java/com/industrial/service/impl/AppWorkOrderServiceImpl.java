@@ -42,13 +42,9 @@ public class AppWorkOrderServiceImpl implements AppWorkOrderService {
 
     @Override
     public boolean payout(Integer workorderId, Integer uid) {
-
-        return false;
-    }
-
-    @Override
-    public void show() {
-
+        AppWorkOrder workOrder = new AppWorkOrder();
+        workOrder.setHandlingUser(uid);
+        return workOrderMapper.updateById(workOrder) == 1;
     }
 
     @Override

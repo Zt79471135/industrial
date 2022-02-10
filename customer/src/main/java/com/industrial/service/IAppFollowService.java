@@ -39,4 +39,12 @@ public interface IAppFollowService {
      */
     List<UserDto> selectTeam();
 
+    /**
+     * 添加协作人员
+     * @param uids
+     * @param followId
+     * @return
+     */
+    boolean insertUser(List<Integer> uids,Integer followId);
+
 }

@@ -219,7 +219,6 @@ public class AppProductController extends BaseController {
         }
         return result;
     }
-
     /**
      * 商品报价展示
      */
@@ -245,7 +244,6 @@ public class AppProductController extends BaseController {
         ExcelUtil<ProductExcel> util = new ExcelUtil<ProductExcel>(ProductExcel.class);
         util.exportExcel(response, productList, "商品数据");
     }
-
     /**
      * 下载模板
      */
@@ -254,7 +252,6 @@ public class AppProductController extends BaseController {
         ExcelUtil<ProductExcel> util = new ExcelUtil<ProductExcel>(ProductExcel.class);
         return util.importTemplateExcel("商品数据");
     }
-
     /**
      * 导入
      */

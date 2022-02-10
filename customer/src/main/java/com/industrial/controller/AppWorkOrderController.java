@@ -46,14 +46,6 @@ public class AppWorkOrderController extends BaseController {
         return result;
     }
 
-    /**
-     * 工单展示
-     */
-    @PostMapping("show")
-    public ResponseResult<List<AppWorkOrder>> show() {
-        workOrderService.show();
-        return null;
-    }
 
     @GetMapping("/list")
     public TableDataInfo list(AppWorkOrder appWorkOrder) {

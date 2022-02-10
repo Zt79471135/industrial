@@ -11,12 +11,11 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author zhu
- * @date 2022年01月27日 17:22
+ * @date 2022年02月10日 14:42
  */
 
 /**
  * 上传附件表
- * @author 79471
  */
 @Data
 @AllArgsConstructor
@@ -26,20 +25,20 @@ public class AppImageFile {
     /**
      * 编号
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.INPUT)
     private Integer id;
+
+    /**
+     * 附件名称（原文件名）
+     */
+    @TableField(value = "`name`")
+    private String name;
 
     /**
      * 文件名
      */
     @TableField(value = "file_name")
     private String fileName;
-
-    /**
-     * 原文件名
-     */
-    @TableField(value = "`name`")
-    private String name;
 
     /**
      * 文件路径
@@ -54,16 +53,16 @@ public class AppImageFile {
     private Integer createUserid;
 
     /**
-     * 状态
-     */
-    @TableField(value = "`status`")
-    private Byte status;
-
-    /**
      * 文件类型
      */
     @TableField(value = "`type`")
     private String type;
+
+    /**
+     * 文件大小
+     */
+    @TableField(value = "file_size")
+    private String fileSize;
 
     /**
      * 更新时间
@@ -71,19 +70,27 @@ public class AppImageFile {
     @TableField(value = "update_time")
     private Date updateTime;
 
+    /**
+     * 状态
+     */
+    @TableField(value = "`status`")
+    private Byte status;
+
     public static final String COL_ID = "id";
 
-    public static final String COL_FILE_NAME = "file_name";
-
     public static final String COL_NAME = "name";
+
+    public static final String COL_FILE_NAME = "file_name";
 
     public static final String COL_FILE_PATH = "file_path";
 
     public static final String COL_CREATE_USERID = "create_userid";
 
-    public static final String COL_STATUS = "status";
-
     public static final String COL_TYPE = "type";
 
+    public static final String COL_FILE_SIZE = "file_size";
+
     public static final String COL_UPDATE_TIME = "update_time";
+
+    public static final String COL_STATUS = "status";
 }

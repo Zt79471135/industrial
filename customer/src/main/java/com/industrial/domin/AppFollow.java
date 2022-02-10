@@ -10,9 +10,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 订单跟进记录表
  * @author zhu
- * @date 2022年02月10日 10:08
+ * @date 2022年02月10日 16:49
+ */
+
+/**
+ * 订单跟进记录表
  */
 @Data
 @AllArgsConstructor
@@ -20,6 +23,7 @@ import lombok.NoArgsConstructor;
 @TableName(value = "app_follow")
 public class AppFollow {
     public static final String COL_FOLLOW_ORDER = "follow_order";
+    public static final String COL_FOLLOW_USER = "follow_user";
     /**
      * 跟进任务表ID
      */
@@ -37,12 +41,6 @@ public class AppFollow {
      */
     @TableField(value = "follow_type")
     private Integer followType;
-
-    /**
-     * 跟进人
-     */
-    @TableField(value = "follow_user")
-    private Integer followUser;
 
     /**
      * 跟进方式
@@ -75,7 +73,7 @@ public class AppFollow {
     private Byte notified;
 
     /**
-     * 0表删除
+     * 删除标志（0代表存在 ，1代表删除）
      */
     @TableField(value = "deleted")
     private Byte deleted;
@@ -85,8 +83,6 @@ public class AppFollow {
     public static final String COL_FOLLOW_ID = "follow_id";
 
     public static final String COL_FOLLOW_TYPE = "follow_type";
-
-    public static final String COL_FOLLOW_USER = "follow_user";
 
     public static final String COL_FOLLOW_WAY = "follow_way";
 
