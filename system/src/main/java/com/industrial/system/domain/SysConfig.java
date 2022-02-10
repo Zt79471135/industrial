@@ -8,13 +8,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.industrial.common.core.domain.BaseEntity;
 
+import java.util.Date;
+
 /**
  * 参数配置表 sys_config
- * 
+ *
  * @author ruoyi
  */
-public class SysConfig extends BaseEntity
-{
+public class SysConfig extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 参数主键 */
