@@ -6,7 +6,7 @@
     <!--@Table app_work_order-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="number" jdbcType="VARCHAR" property="number" />
-    <result column="relate_id" jdbcType="String" property="relateId"/>
+    <result column="relate_id" jdbcType="VARCHAR" property="relateId"/>
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="content" jdbcType="VARCHAR" property="content"/>
     <result column="type" jdbcType="INTEGER" property="type"/>
@@ -65,8 +65,8 @@
         </foreach>
       </if>
     </where>
-    <if test="hours != null and hours>=0 ">and hours &gt;= TIMESTAMPDIFF(HOUR, t.create_time, now())</if>
-    <if test="hours != null and hours<0 ">and hours &lt; TIMESTAMPDIFF(HOUR, t.create_time, now())</if>
+    <if test="hours != null and hours&gt;0 ">and hours &gt;= TIMESTAMPDIFF(HOUR, t.create_time, now())</if>
+    <if test="hours != null and hours&lt;0 ">and hours &lt; TIMESTAMPDIFF(HOUR, t.create_time, now())</if>
     <if test="1=1">and t.deleted=0</if>
   </select>
   <update id="deleteAppWorkOrderByIds" parameterType="String">
