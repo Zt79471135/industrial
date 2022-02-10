@@ -1,5 +1,6 @@
 package com.industrial.service;
 
+import com.industrial.common.core.domain.model.LoginUser;
 import com.industrial.domin.AppCheckMainConfig;
 import com.industrial.domin.AppWorkOrder;
 
@@ -24,4 +25,12 @@ public interface AppWorkOrderService {
     void show();
 
     List<AppWorkOrder> selectAppWorkOrderList(AppWorkOrder appWorkOrder);
+
+    String importUser(List<AppWorkOrder> workList, boolean updateSupport, String operName);
+
+    int deleteAppWorkOrderByIds(Long[] ids);
+
+    int addOrEditAppWorkOrder(AppWorkOrder appWorkOrder);
+
+    String turnWorkOrder(AppWorkOrder appWorkOrder, LoginUser user);
 }

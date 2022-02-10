@@ -125,7 +125,6 @@ public class AppUserServiceImpl implements IAppUserService
     @Transactional(rollbackFor = Exception.class)
     public int addOrEditAppUserAll(AppUser appUser, List<AppUserAddress> customList, List<AppUserSalesman> saleManList) {
         try{
-            appUser.setClientCode("C-"+UUID.randomUUID().toString());
             for (AppUserAddress item:customList) {
                 if(item.getIsdefault()==0){
                     appUser.setNickname(item.getName());
@@ -136,6 +135,7 @@ public class AppUserServiceImpl implements IAppUserService
             if(appUser.getId()!=null&&appUser.getId()>0){
                 if(appUserMapper.updateAppUser(appUser)<=0){ throw new Exception("appUserMapper插入失败");}
             }else{
+                appUser.setClientCode("C" + DateUtils.dateTimeNow());
                 if(appUserMapper.insertAppUser(appUser)<=0){ throw new Exception("appUserMapper插入失败");}
             }
             appUserAddressMapper.deleteAppUserAddressByUserId(appUser.getId());

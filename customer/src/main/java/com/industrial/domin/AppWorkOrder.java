@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.util.Date;
+
+import com.industrial.common.annotation.Excel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,24 +35,34 @@ public class AppWorkOrder {
      * 工单编号
      */
     @TableField(value = "`number`")
+    @Excel(name = "工单编号")
     private String number;
 
     /**
      * 关联ID
      */
     @TableField(value = "relate_id")
-    private Integer relateId;
+    private String relateId;
 
     /**
      * 工单标题
      */
     @TableField(value = "title")
+    @Excel(name = "工单标题")
     private String title;
+
+    /**
+     * 工单内容
+     */
+    @TableField(value = "content")
+    @Excel(name = "工单内容")
+    private String content;
 
     /**
      * 工单类型
      */
     @TableField(value = "`type`")
+    @Excel(name = "工单类型")
     private Integer type;
 
     /**
@@ -58,37 +71,49 @@ public class AppWorkOrder {
     @TableField(value = "start_user")
     private Integer startUser;
 
+    @Excel(name = "发起人")
+    public String startUserName;
+
     /**
      * 处理人员
      */
     @TableField(value = "handling_user")
+    @Excel(name = "处理人员")
     private Integer handlingUser;
 
+    @Excel(name = "处理人员")
+    private String handlingUserName;
+
     @TableField(value = "cc_user")
+    @Excel(name = "抄送人员")
     private String ccUser;
 
     /**
      * 发起时间
      */
     @TableField(value = "create_time")
+    @Excel(name = "发起时间")
     private Date createTime;
 
     /**
      * 更新时间
      */
     @TableField(value = "update_time")
+    @Excel(name = "更新时间")
     private Date updateTime;
 
     /**
      * 工单状态
      */
     @TableField(value = "`status`")
+    @Excel(name = "工单状态")
     private Byte status;
 
     /**
      * 紧急程度
      */
     @TableField(value = "extent")
+    @Excel(name = "紧急程度")
     private Byte extent;
 
     /**
@@ -96,6 +121,12 @@ public class AppWorkOrder {
      */
     @TableField(value = "deleted")
     private Byte deleted;
+
+    public String ids;
+
+    public Integer menuType;
+    public Integer hours;
+
 
     public static final String COL_ID = "id";
 

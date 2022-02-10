@@ -6,21 +6,73 @@
     <!--@Table app_work_order-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="number" jdbcType="VARCHAR" property="number" />
-    <result column="relate_id" jdbcType="INTEGER" property="relateId" />
+    <result column="relate_id" jdbcType="String" property="relateId"/>
     <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="start_user" jdbcType="INTEGER" property="startUser" />
-    <result column="handling_user" jdbcType="INTEGER" property="handlingUser" />
-    <result column="cc_user" jdbcType="VARCHAR" property="ccUser" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="extent" jdbcType="TINYINT" property="extent" />
-    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="content" jdbcType="VARCHAR" property="content"/>
+    <result column="type" jdbcType="INTEGER" property="type"/>
+    <result column="start_user" jdbcType="INTEGER" property="startUser"/>
+    <result column="handling_user" jdbcType="INTEGER" property="handlingUser"/>
+    <result column="cc_user" jdbcType="VARCHAR" property="cc_user"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="status" jdbcType="TINYINT" property="status"/>
+    <result column="extent" jdbcType="TINYINT" property="extent"/>
+    <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+    <result property="startUserName" column="startUserName"/>
+    <result property="handlingUserName" column="handlingUserName"/>
+    <result property="hours" column="hours"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `number`, relate_id, title, `type`, start_user, handling_user, cc_user, create_time, 
-    update_time, `status`, extent, deleted
+    id, `number`, relate_id, title,content, `type`, start_user, handling_user,cc_user, create_time, update_time,
+    `status`, extent, deleted
   </sql>
+  <sql id="selectAppWorkOrderVo">
+    select id,
+           `number`,
+           relate_id,
+           title,
+           content,
+           `type`,
+           start_user,
+           handling_user,
+           cc_user,
+           create_time,
+           update_time,
+           `status`,
+           extent,
+           deleted
+    from app_work_order
+  </sql>
+  <select id="selectAppWorkOrderList" parameterType="com.industrial.domin.AppWorkOrder" resultMap="BaseResultMap">
+    select t.id, t.`number`, t.relate_id, t.title,t.content, t.`type`, t.start_user, t.handling_user,t.cc_user,
+    t.create_time, t.update_time,
+    t.`status`, t.extent, t.deleted,su1.nick_name as handlingUserName,su2.nick_name as startUserName
+    from app_work_order t
+    LEFT JOIN sys_user su1 ON su.user_id=t.handling_user
+    LEFT JOIN sys_user su2 ON su.user_id=t.start_user
+    <where>
+      <if test="status != null ">and t.status = #{status}</if>
+      <if test="type != null ">and t.type = #{type}</if>
+      <if test="extent != null">and t.extent = #{extent}</if>
+      <if test="start_user != null  and start_user != ''">and t.start_user = #{start_user}</if>
+      <if test="handling_user != null  and handling_user != ''">and t.handling_user = #{handling_user}</if>
+      <if test="cc_user != null  and cc_user != ''">and t.cc_user like concat('%', #{cc_user}, '%')</if>
+      <if test="ids != null  and ids != ''">
+        and id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+          #{id}
+        </foreach>
+      </if>
+    </where>
+    <if test="hours != null and hours>=0 ">and hours &gt;= TIMESTAMPDIFF(HOUR, t.create_time, now())</if>
+    <if test="hours != null and hours<0 ">and hours &lt; TIMESTAMPDIFF(HOUR, t.create_time, now())</if>
+    <if test="1=1">and t.deleted=0</if>
+  </select>
+  <update id="deleteAppWorkOrderByIds" parameterType="String">
+    update app_work_order set deleted=1 where id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </update>
 </mapper>
