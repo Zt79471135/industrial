@@ -34,7 +34,7 @@ public class FileSizeUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return FormetFileSize(blockSize, sizeType);
+        return formatFileSize(blockSize, sizeType);
     }
 
     /**
@@ -78,7 +78,7 @@ public class FileSizeUtil {
      */
     private static long getFileSizes(File f) throws Exception {
         long size = 0;
-        File flist[] = f.listFiles();
+        File[] flist = f.listFiles();
         assert flist != null;
         for (File file : flist) {
             if (file.isDirectory()) {
@@ -115,21 +115,21 @@ public class FileSizeUtil {
     /**
      * 转换文件大小,指定转换的类型
      */
-    private static double FormetFileSize(long fileS, int sizeType) {
+    private static double formatFileSize(long fileS, int sizeType) {
         DecimalFormat df = new DecimalFormat("#.00");
         double fileSizeLong = 0;
         switch (sizeType) {
             case SIZETYPE_B:
-                fileSizeLong = Double.valueOf(df.format((double) fileS));
+                fileSizeLong = Double.parseDouble(df.format((double) fileS));
                 break;
             case SIZETYPE_KB:
-                fileSizeLong = Double.valueOf(df.format((double) fileS / 1024));
+                fileSizeLong = Double.parseDouble(df.format((double) fileS / 1024));
                 break;
             case SIZETYPE_MB:
-                fileSizeLong = Double.valueOf(df.format((double) fileS / 1048576));
+                fileSizeLong = Double.parseDouble(df.format((double) fileS / 1048576));
                 break;
             case SIZETYPE_GB:
-                fileSizeLong = Double.valueOf(df.format((double) fileS / 1073741824));
+                fileSizeLong = Double.parseDouble(df.format((double) fileS / 1073741824));
                 break;
             default:
                 break;

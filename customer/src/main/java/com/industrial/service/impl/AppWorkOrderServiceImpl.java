@@ -47,7 +47,6 @@ public class AppWorkOrderServiceImpl implements AppWorkOrderService {
         return workOrderMapper.updateById(workOrder) == 1;
     }
 
-
     @Override
     public List<AppWorkOrder> selectAppWorkOrderList(AppWorkOrder appWorkOrder) {
 
@@ -169,15 +168,5 @@ public class AppWorkOrderServiceImpl implements AppWorkOrderService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return msg.toString();
         }
-    }
-    @Override
-    public List<AppWorkOrder> show() {
-        QueryWrapper<AppWorkOrder> qw = new QueryWrapper<>();
-        return workOrderMapper.selectList(qw);
-    }
-
-    @Override
-    public boolean delete(Integer workorderId) {
-       return workOrderMapper.deleteById(workorderId)==1;
     }
 }

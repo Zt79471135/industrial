@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author zhu
@@ -20,7 +21,7 @@ public class FollowVo {
     /**
      * 跟进人
      */
-    private Integer followUser;
+    private List<Integer> followUser;
     /**
      * 下次跟进时间
      */

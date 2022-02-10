@@ -32,11 +32,14 @@ public class AppFollowServiceImpl implements IAppFollowService {
     @Resource
     private AppUserNoticeMapper userNoticeMapper;
     @Resource
+    private AppFollowUserMapper followUserMapper;
+    @Resource
     private SysDeptMapper deptMapper;
     @Resource
     private UserMapper userMapper;
+
     @Override
-    public boolean insertFollow(FollowVo followVo,int type) {
+    public boolean insertFollow(FollowVo followVo, int type) {
         AppFollow follow = new AppFollow();
         BeanUtils.copyProperties(followVo, follow);
         long aheadTime = followVo.getFollowTime().getTime() - followVo.getAheadTime();
@@ -59,18 +62,21 @@ public class AppFollowServiceImpl implements IAppFollowService {
             long nowTime = now.getTime();
             if (time - nowTime < 10000) {
                 follows.add(follow);
-                follow.setNotified((byte)1);
+                follow.setNotified((byte) 1);
                 followMapper.updateById(follow);
             }
         }
-        List<Integer> integerList = follows.stream().map(follow -> {
+        List<List<Integer>> listList = follows.stream().map(follow -> {
             AppOrder order = orderMapper.selectById(follow.getFollowId());
             String orderNo = order.getOrderNo();
+            List<AppFollowUser> followUserList = followUserMapper.selectList(new QueryWrapper<AppFollowUser>().lambda().eq(AppFollowUser::getFollowId, follow.getId()));
             String msg = "你有" + orderNo + "订单需要处理";
-            AppUserNotice userNotice = new AppUserNotice();
-            userNotice.setUid(follow.getFollowUser());
-            userNotice.setMsg(msg);
-            return userNoticeMapper.insert(userNotice);
+            return followUserList.stream().map(followUser -> {
+                AppUserNotice userNotice = new AppUserNotice();
+                userNotice.setUid(followUser.getUserId());
+                userNotice.setMsg(msg);
+                return userNoticeMapper.insert(userNotice);
+            }).collect(Collectors.toList());
         }).collect(Collectors.toList());
     }
 
@@ -80,13 +86,13 @@ public class AppFollowServiceImpl implements IAppFollowService {
         SysDept dept = deptMapper.selectDeptById(deptId);
         String leader = dept.getLeader();
         long uid = Long.parseLong(leader);
-        if (uid==user.getUserId()){
+        if (uid == user.getUserId()) {
             QueryWrapper<User> qw = new QueryWrapper<>();
-            qw.lambda().eq(User::getDeptId,deptId);
+            qw.lambda().eq(User::getDeptId, deptId);
             List<User> userList = userMapper.selectList(qw);
             return userList;
-        }else {
-           return null;
+        } else {
+            return null;
         }
     }
 
@@ -104,5 +110,16 @@ public class AppFollowServiceImpl implements IAppFollowService {
             return userDto;
         }).collect(Collectors.toList());
         return userDtoList;
+    }
+
+    @Override
+    public boolean insertUser(List<Integer> uids, Integer followId) {
+        AppFollowUser followUser = new AppFollowUser();
+        followUser.setFollowId(followId);
+        List<Integer> integerList = uids.stream().map(uid -> {
+            followUser.setUserId(uid);
+            return followUserMapper.insert(followUser);
+        }).collect(Collectors.toList());
+        return integerList.size() == uids.size();
     }
 }

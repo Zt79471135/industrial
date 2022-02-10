@@ -19,11 +19,6 @@ public interface AppWorkOrderService {
      */
     boolean payout(Integer workorderId, Integer uid);
 
-    /**
-     * 工单展示
-     */
-    void show();
-
     List<AppWorkOrder> selectAppWorkOrderList(AppWorkOrder appWorkOrder);
 
     String importUser(List<AppWorkOrder> workList, boolean updateSupport, String operName);

@@ -7,7 +7,6 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="follow_id" jdbcType="INTEGER" property="followId" />
     <result column="follow_type" jdbcType="INTEGER" property="followType" />
-    <result column="follow_user" jdbcType="INTEGER" property="followUser" />
     <result column="follow_way" jdbcType="VARCHAR" property="followWay" />
     <result column="follow_time" jdbcType="TIMESTAMP" property="followTime" />
     <result column="reminder_type" jdbcType="TINYINT" property="reminderType" />
@@ -17,7 +16,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, follow_id, follow_type, follow_user, follow_way, follow_time, reminder_type, 
-    reminder_time, notified, deleted
+    id, follow_id, follow_type, follow_way, follow_time, reminder_type, reminder_time, 
+    notified, deleted
   </sql>
 </mapper>
