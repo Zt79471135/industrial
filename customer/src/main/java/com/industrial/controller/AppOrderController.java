@@ -74,7 +74,7 @@ public class AppOrderController extends BaseController {
     public ResponseResult<String> add(@RequestBody OrderVo orderVo, @RequestBody FollowVo follow) {
         ResponseResult<String> result = null;
         if (orderService.insert(orderVo)) {
-            if (follow.getFollowOrder() != 0) {
+            if (follow.getFollowId() != 0) {
                 /*
                   建立跟进任务
                  */
