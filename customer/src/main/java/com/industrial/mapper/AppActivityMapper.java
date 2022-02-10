@@ -27,6 +27,14 @@ public interface AppActivityMapper extends BaseMapper<AppActivity> {
         public List<AppActivity> selectAppActivityList(AppActivity appActivity);
 
         /**
+         * 查询活动最大ID
+         *
+         * @param
+         * @return 活动
+         */
+        public AppActivity selectActivityMaxId();
+
+        /**
          * 新增活动
          *
          * @param appActivity 活动

@@ -68,6 +68,10 @@
     where id = #{id}
   </select>
 
+  <select id="selectActivityMaxId" parameterType="Long" resultMap="BaseResultMap">
+    SELECT max(id) id from app_activity
+  </select>
+
   <insert id="insertAppActivity" parameterType="com.industrial.domin.AppActivity" useGeneratedKeys="true" keyProperty="id">
     insert into app_activity
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -126,7 +130,6 @@
       <if test="attachParam != null">#{attachParam},</if>
       <if test="invalidReason != null">#{invalidReason},</if>
     </trim>
-    SELECT LAST_INSERT_ID();
   </insert>
 
   <update id="updateAppActivity" parameterType="com.industrial.domin.AppActivity">

@@ -205,25 +205,29 @@ public class AppActivityServiceImpl implements AppActivityService {
         AppActivity activity = new AppActivity();
         List<Integer> integerList = new ArrayList<>();
         BeanUtils.copyProperties(activityVo, activity);
+        activity.setActivityStatus(1); //状态
         int ret = activityMapper.insert(activity);  //添加活动基本信息
+        //int ret = activityMapper.insertAppActivity(activity);  //添加活动基本信息
         if (ret > 0) {
-
+            AppActivity activity1 = activityMapper.selectActivityMaxId();//获取插入的活动ID
             AppActivityUser activityUser = new AppActivityUser();
-            activityUser.setActivityId(ret);
-            Integer[] ids = activityVo.getUserIds();
-            // 循环添加活动参与用户
-            for (Integer userId : ids) {
-                activityUser.setUserId(userId);
-                SysUser sysUser = userService.selectUserById(Long.parseLong(userId.toString()));
-                activityUser.setUserName(sysUser.getUserName());
-                activityUserMapper.insert(activityUser);  //添加活动参与用户
+            activityUser.setActivityId(activity1.getId());
+            Integer[] userIds = activityVo.getUserIds();
+            if (userIds != null) {
+                // 循环添加活动参与用户
+                for (Integer userId : userIds) {
+                    activityUser.setUserId(userId);
+                    SysUser sysUser = userService.selectUserById(Long.parseLong(userId.toString()));
+                    activityUser.setUserName(sysUser.getUserName());
+                    activityUserMapper.insert(activityUser);  //添加活动参与用户
+                }
             }
             //添加活动附件
-            Integer[] imgIds = activityVo.getIds();
+            Integer[] imgIds = activityVo.getFileIds();
             List<Integer> imgList = null;
             if (imgList != null) {
                 AppActivityFile activityFile = new AppActivityFile();
-                activityFile.setActivityId(activity.getId());
+                activityFile.setActivityId(activity1.getId());
                 List<Integer> intList = imgList.stream().map(id -> {
                     activityFile.setFileId(id);
                     return activityFileMapper.insert(activityFile);
@@ -252,15 +256,29 @@ public class AppActivityServiceImpl implements AppActivityService {
         ret = activityMapper.updateAppActivity(activity);
         List<Integer> integerList = new ArrayList<>();
         if (ret == 1) {
-            Integer[] ids = activityVo.getUserIds();
+            Integer[] userIds = activityVo.getUserIds();
             AppActivityUser activityUser = new AppActivityUser();
-            for (Integer userId : ids) {
-                appActivityUserService.deleteActivityUserById(Long.parseLong(activity.getId().toString()));
-                activityUser.setActivityId(activity.getId());
-                activityUser.setUserId(userId);
-                SysUser sysUser = userService.selectUserById(Long.parseLong(userId.toString()));
-                activityUser.setUserName(sysUser.getUserName());
-                activityUserMapper.insert(activityUser);  //添加活动参与用户
+            if (userIds != null) {
+                for (Integer userId : userIds) {
+                    appActivityUserService.deleteActivityUserById(Long.parseLong(activity.getId().toString()));
+                    activityUser.setActivityId(activity.getId());
+                    activityUser.setUserId(userId);
+                    SysUser sysUser = userService.selectUserById(Long.parseLong(userId.toString()));
+                    activityUser.setUserName(sysUser.getUserName());
+                    activityUserMapper.insert(activityUser);  //添加活动参与用户
+                }
+            }
+            //添加活动附件
+            Integer[] imgIds = activityVo.getFileIds();
+            List<Integer> imgList = null;
+            if (imgList != null) {
+                AppActivityFile activityFile = new AppActivityFile();
+                activityFile.setActivityId(activity.getId());
+                List<Integer> intList = imgList.stream().map(id -> {
+                    activityFile.setFileId(id);
+                    return activityFileMapper.insert(activityFile);
+                }).collect(Collectors.toList());
+
             }
         }
 
@@ -278,6 +296,7 @@ public class AppActivityServiceImpl implements AppActivityService {
         int ret = 0;
         //ret = activityMapper.updateActivityStatus(appActivity);
         ret = activityMapper.updateById(appActivity);
+
         if(ret == 1) {
             return true;
         }
@@ -323,7 +342,7 @@ public class AppActivityServiceImpl implements AppActivityService {
         appActivity.setId(activityId);
         Byte Deleted = 1;
         appActivity.setDeleted(Deleted);//逻辑删除状态
-        ret = activityMapper.deleteById(activityId);
+        ret = activityMapper.updateById(appActivity);
         if(ret == 1) {
             return true;
         }

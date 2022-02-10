@@ -90,7 +90,6 @@ public class AppActivityController extends BaseController {
     @PutMapping("/update")
     public AjaxResult edit(@RequestBody ActivityVo activityVo)
     {
-
         return toAjax(activityService.updateAppActivity(activityVo));
     }
 
@@ -98,9 +97,9 @@ public class AppActivityController extends BaseController {
      * 删除活动
      */
     @DeleteMapping("/remove/{id}")
-    public ResponseResult<ActivityDto> remove(@PathVariable Integer activityId) {
+    public ResponseResult<ActivityDto> remove(@PathVariable Integer id) {
         ResponseResult<ActivityDto> result = null;
-        if (activityService.deleteActivityById(activityId)) {
+        if (activityService.deleteActivityById(id)) {
             result = ResponseResult.success();
         }else {
             result = ResponseResult.error(ResponseCode.ERROR);
@@ -109,14 +108,27 @@ public class AppActivityController extends BaseController {
     }
 
     /**
-     * 更新活动状态(终至活动、锁定活动)
+     * 更新活动状态(终止活动、锁定活动)
      */
     @PostMapping("/updateStatus")
     public ResponseResult<AppActivity> updateStatus(@RequestBody AppActivity appActivity) {
         ResponseResult<AppActivity> result = null;
         if (activityService.updateActivityById(appActivity)) {
+            //写活动日志
+            Long operId = getUserId();
+            String operName = getUsername();
+            AppActivityLog activityLog = new AppActivityLog();
+            activityLog.setCreateId(operId.intValue());
+            activityLog.setCreateName(operName);
+            if (appActivity.getActivityStatus() == 5) {
+                activityLog.setLogContents("终止活动");
+            } else if (appActivity.getActivityStatus() == 3) {
+                activityLog.setLogContents("锁定活动");
+            }
+
+            activityService.insertActivityLog(activityLog);
             result = ResponseResult.success();
-        }else {
+        } else {
             result = ResponseResult.error(ResponseCode.ERROR);
         }
         return result;
@@ -171,5 +183,17 @@ public class AppActivityController extends BaseController {
             result = ResponseResult.error(ResponseCode.ERROR);
         }
         return result;
+    }
+
+    /**
+     * 查询活动列表
+     */
+    //@PreAuthorize("@ss.hasPermi('activity:list')")
+    @GetMapping("/fileList")
+    public TableDataInfo fileList(AppActivity appActivity)
+    {
+        startPage();
+        List<ActivityDto> list = activityService.selectAppActivityList(appActivity);
+        return getDataTable(list);
     }
 }

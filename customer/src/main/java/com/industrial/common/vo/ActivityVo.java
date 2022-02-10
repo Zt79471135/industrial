@@ -20,5 +20,5 @@ public class ActivityVo extends AppActivity {
     /**
      * 图片外键（关联app_image_file表ID）
      */
-    public Integer[] ids;
+    public Integer[] FileIds;
 }
