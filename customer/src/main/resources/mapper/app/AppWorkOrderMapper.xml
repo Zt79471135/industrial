@@ -12,7 +12,7 @@
     <result column="type" jdbcType="INTEGER" property="type"/>
     <result column="start_user" jdbcType="INTEGER" property="startUser"/>
     <result column="handling_user" jdbcType="INTEGER" property="handlingUser"/>
-    <result column="cc_user" jdbcType="VARCHAR" property="cc_user"/>
+    <result column="cc_user" jdbcType="VARCHAR" property="ccUser"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     <result column="status" jdbcType="TINYINT" property="status"/>
@@ -48,15 +48,15 @@
     t.create_time, t.update_time,
     t.`status`, t.extent, t.deleted,su1.nick_name as handlingUserName,su2.nick_name as startUserName
     from app_work_order t
-    LEFT JOIN sys_user su1 ON su.user_id=t.handling_user
-    LEFT JOIN sys_user su2 ON su.user_id=t.start_user
+    LEFT JOIN sys_user su1 ON su1.user_id=t.handling_user
+    LEFT JOIN sys_user su2 ON su2.user_id=t.start_user
     <where>
       <if test="status != null ">and t.status = #{status}</if>
       <if test="type != null ">and t.type = #{type}</if>
       <if test="extent != null">and t.extent = #{extent}</if>
       <if test="startUser != null  and startUser != ''">and t.start_user = #{startUser}</if>
       <if test="handlingUser != null  and handlingUser != ''">and t.handling_user = #{handlingUser}</if>
-      <if test="cc_user != null  and cc_user != ''">and t.cc_user like concat('%', #{cc_user}, '%')</if>
+      <if test="ccUser != null  and ccUser != ''">and t.cc_user like concat('%', #{ccUser}, '%')</if>
       <if test="ids != null  and ids != ''">
         and id in
         <foreach item="id" collection="ids" open="(" separator="," close=")">
@@ -66,7 +66,7 @@
     </where>
     <if test="hours != null and hours&gt;0 ">and #{hours} &gt;= TIMESTAMPDIFF(HOUR, t.create_time, now())</if>
     <if test="hours != null and hours&lt;0 ">and #{hours} &lt; TIMESTAMPDIFF(HOUR, t.create_time, now())</if>
-    <if test="1=1">and t.deleted=0</if>
+    <if test="1==1">and t.deleted=0</if>
   </select>
   <update id="deleteAppWorkOrderByIds" parameterType="String">
     update app_work_order set deleted=1 where id in
