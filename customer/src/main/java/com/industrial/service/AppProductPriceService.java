@@ -24,4 +24,10 @@ public interface AppProductPriceService {
      */
     boolean update(List<AppProductPrice> productPriceList);
 
+    /**
+     * 根据单个活动ID查询商品报价
+     * @param activityId
+     * @return
+     */
+    List<ProductPriceDto> selectListByActivityId(List<Integer> activityId);
 }

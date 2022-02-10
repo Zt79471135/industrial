@@ -5,7 +5,7 @@ import com.industrial.domin.AppProductPrice;
 
 /**
  * @author zhu
- * @date 2022年01月26日 14:54
+ * @date 2022年02月10日 11:14
  */
 public interface AppProductPriceMapper extends BaseMapper<AppProductPrice> {
 }

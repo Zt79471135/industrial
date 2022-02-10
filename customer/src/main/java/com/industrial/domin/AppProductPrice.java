@@ -11,7 +11,11 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author zhu
- * @date 2022年01月26日 14:54
+ * @date 2022年02月10日 11:14
+ */
+
+/**
+ * 商品报价表
  */
 @Data
 @AllArgsConstructor
@@ -21,7 +25,7 @@ public class AppProductPrice {
     /**
      * 商品报价表ID
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.INPUT)
     private Integer id;
 
     /**
@@ -29,6 +33,12 @@ public class AppProductPrice {
      */
     @TableField(value = "product_id")
     private Integer productId;
+
+    /**
+     * 活动表ID
+     */
+    @TableField(value = "activity_id")
+    private Integer activityId;
 
     /**
      * 销售单价
@@ -69,6 +79,8 @@ public class AppProductPrice {
     public static final String COL_ID = "id";
 
     public static final String COL_PRODUCT_ID = "product_id";
+
+    public static final String COL_ACTIVITY_ID = "activity_id";
 
     public static final String COL_SELLING_PRICE = "selling_price";
 

@@ -6,6 +6,7 @@
     <!--@Table app_product_price-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="activity_id" jdbcType="INTEGER" property="activityId" />
     <result column="selling_price" jdbcType="DECIMAL" property="sellingPrice" />
     <result column="amount" jdbcType="INTEGER" property="amount" />
     <result column="discount" jdbcType="INTEGER" property="discount" />
@@ -15,6 +16,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, product_id, selling_price, amount, discount, total_prices, gift, remark
+    id, product_id, activity_id, selling_price, amount, discount, total_prices, gift, 
+    remark
   </sql>
 </mapper>

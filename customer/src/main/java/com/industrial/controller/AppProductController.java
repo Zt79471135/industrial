@@ -228,7 +228,14 @@ public class AppProductController extends BaseController {
         List<ProductPriceDto> productPriceDtoList = productPriceService.selectList(productPriceId);
         return ResponseResult.success(productPriceDtoList);
     }
-
+    /**
+     * 根据活动ID查询
+     */
+    @PostMapping("prices/activity")
+    public ResponseResult<List<ProductPriceDto>> pricesActivity(@RequestBody List<Integer> activityId) {
+        List<ProductPriceDto> productPriceDtoList = productPriceService.selectListByActivityId(activityId);
+        return ResponseResult.success(productPriceDtoList);
+    }
     /**
      * 导出商品分类列表
      */

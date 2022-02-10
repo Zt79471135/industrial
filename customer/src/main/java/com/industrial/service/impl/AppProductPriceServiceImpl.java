@@ -1,5 +1,6 @@
 package com.industrial.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.industrial.common.dto.ProductPriceDto;
 import com.industrial.domin.AppProduct;
 import com.industrial.domin.AppProductPrice;
@@ -30,18 +31,7 @@ public class AppProductPriceServiceImpl implements AppProductPriceService {
         List<AppProductPrice> productPriceList = productPriceIds.stream().map(productPriceId -> {
             return productPriceMapper.selectById(productPriceId);
         }).collect(Collectors.toList());
-        List<ProductPriceDto> productPriceDtoList = productPriceList.stream().map(productPrice -> {
-            ProductPriceDto priceDto = new ProductPriceDto();
-            BeanUtils.copyProperties(productPrice, priceDto);
-            Integer productId = productPrice.getProductId();
-            AppProduct product = productMapper.selectById(productId);
-            priceDto.setProductName(product.getName());
-            priceDto.setNumber(product.getNumber());
-            priceDto.setPrice(String.valueOf(product.getPrice()));
-            priceDto.setSpecifica(product.getSpecifica());
-            return priceDto;
-        }).collect(Collectors.toList());
-        return productPriceDtoList;
+        return productPriceList.stream().map(this::apply).collect(Collectors.toList());
     }
 
     @Override
@@ -50,5 +40,25 @@ public class AppProductPriceServiceImpl implements AppProductPriceService {
             return productPriceMapper.updateById(productPrice);
         }).collect(Collectors.toList());
         return productPriceList.size() == integerList.size();
+    }
+
+    @Override
+    public List<ProductPriceDto> selectListByActivityId(List<Integer> activityId) {
+        QueryWrapper<AppProductPrice> qw = new QueryWrapper<>();
+        qw.lambda().eq(AppProductPrice::getActivityId,activityId);
+        List<AppProductPrice> productPriceList = productPriceMapper.selectList(qw);
+        return productPriceList.stream().map(this::apply).collect(Collectors.toList());
+    }
+
+    private ProductPriceDto apply(AppProductPrice productPrice) {
+        ProductPriceDto priceDto = new ProductPriceDto();
+        BeanUtils.copyProperties(productPrice, priceDto);
+        Integer productId = productPrice.getProductId();
+        AppProduct product = productMapper.selectById(productId);
+        priceDto.setProductName(product.getName());
+        priceDto.setNumber(product.getNumber());
+        priceDto.setPrice(String.valueOf(product.getPrice()));
+        priceDto.setSpecifica(product.getSpecifica());
+        return priceDto;
     }
 }
