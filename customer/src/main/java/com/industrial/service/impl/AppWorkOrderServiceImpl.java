@@ -42,14 +42,11 @@ public class AppWorkOrderServiceImpl implements AppWorkOrderService {
 
     @Override
     public boolean payout(Integer workorderId, Integer uid) {
-
-        return false;
+        AppWorkOrder workOrder = new AppWorkOrder();
+        workOrder.setHandlingUser(uid);
+        return workOrderMapper.updateById(workOrder) == 1;
     }
 
-    @Override
-    public void show() {
-
-    }
 
     @Override
     public List<AppWorkOrder> selectAppWorkOrderList(AppWorkOrder appWorkOrder) {
@@ -172,5 +169,15 @@ public class AppWorkOrderServiceImpl implements AppWorkOrderService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return msg.toString();
         }
+    }
+    @Override
+    public List<AppWorkOrder> show() {
+        QueryWrapper<AppWorkOrder> qw = new QueryWrapper<>();
+        return workOrderMapper.selectList(qw);
+    }
+
+    @Override
+    public boolean delete(Integer workorderId) {
+       return workOrderMapper.deleteById(workorderId)==1;
     }
 }

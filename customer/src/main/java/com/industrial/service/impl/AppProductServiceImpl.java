@@ -289,6 +289,7 @@ public class AppProductServiceImpl implements AppProductService {
         sb.append(ids.get(ids.size() - 1));
         sb.append(")");
         sql = sql + sb;
+        System.out.println("sql = " + sql);
         qw.lambda().last(sql);
         List<AppProduct> productList = productMapper.selectList(qw);
         return productList.stream().map(this::getProductExcel).collect(Collectors.toList());

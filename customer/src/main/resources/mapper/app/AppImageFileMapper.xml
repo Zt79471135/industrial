@@ -5,16 +5,18 @@
     <!--@mbg.generated-->
     <!--@Table app_image_file-->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
     <result column="create_userid" jdbcType="INTEGER" property="createUserid" />
-    <result column="status" jdbcType="TINYINT" property="status" />
     <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="file_size" jdbcType="VARCHAR" property="fileSize" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, file_name, `name`, file_path, create_userid, `status`, `type`, update_time
+    id, `name`, file_name, file_path, create_userid, `type`, file_size, update_time, 
+    `status`
   </sql>
 </mapper>

@@ -6,6 +6,7 @@ import com.industrial.common.core.domain.AjaxResult;
 import com.industrial.common.core.domain.ResponseCode;
 import com.industrial.common.core.domain.ResponseResult;
 import com.industrial.common.core.domain.model.LoginUser;
+import com.industrial.common.utils.FileSizeUtil;
 import com.industrial.common.utils.file.FileUploadUtils;
 import com.industrial.common.utils.file.MimeTypeUtils;
 import com.industrial.domin.AppImageFile;
@@ -55,6 +56,7 @@ public class AppImageFileController extends BaseController {
             //获取登陆用户信息
             imageFile.setCreateUserid(Math.toIntExact(user.getUserId()));
             imageFile.setFilePath(url);
+            imageFile.setFileSize(FileSizeUtil.getAutoFileOrFilesSize(url));
             imageFile.setFileName(imgName);
             imageFile.setType(suffix);
             imageFile.setName(originalName);
